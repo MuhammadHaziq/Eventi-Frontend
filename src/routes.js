@@ -34,8 +34,10 @@ const Layout = React.lazy(() => import('./views/forms/layout/Layout'))
 const Range = React.lazy(() => import('./views/forms/range/Range'))
 const Select = React.lazy(() => import('./views/forms/select/Select'))
 const Validation = React.lazy(() => import('./views/forms/validation/Validation'))
-
 const Charts = React.lazy(() => import('./views/charts/Charts'))
+
+const CustomerRegistration = React.lazy(() => import('./pages/Forms/CustomerRegistration'))
+const VendarRegistration = React.lazy(() => import('./pages/Forms/VendarRegistration'))
 
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
@@ -76,6 +78,10 @@ const routes = [
   { path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns },
   { path: '/buttons/button-groups', name: 'Button Groups', element: ButtonGroups },
   { path: '/charts', name: 'Charts', element: Charts },
+
+  { path: '/CustomerRegistration', name: 'Customer Registration', element: CustomerRegistration },
+  { path: '/VendarRegistration', name: 'Vendar Registration', element: VendarRegistration },
+
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },
   { path: '/forms/select', name: 'Select', element: Select },

@@ -1,0 +1,37 @@
+project/
+├── public/
+│   ├── index.html
+│   ├── favicon.ico
+│   └── ...
+│
+├── src/
+│   ├── components/
+│   │   ├── App.js
+│   │   ├── Header.js
+│   │   ├── Footer.js
+│   │   └── ...
+│   │
+│   ├── pages/
+│   │   ├── Home.js
+│   │   ├── About.js
+│   │   ├── Contact.js
+│   │   └── ...
+│   │
+│   ├── services/
+│   │   ├── api.js
+│   │   └── ...
+│   │
+│   ├── styles/
+│   │   ├── main.css
+│   │   └── ...
+│   │
+│   ├── App.css
+│   ├── App.test.js
+│   ├── index.js
+│   ├── index.css
+│   ├── logo.svg
+│   └── ...
+│
+├── package.json
+├── package-lock.json
+└── README.md
