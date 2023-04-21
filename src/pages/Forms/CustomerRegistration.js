@@ -18,6 +18,7 @@ import {
   CRow,
 } from '@coreui/react'
 
+import logo from '../../assets/images/LogoWhite.png'
 const CustomerRegistration = () => {
   const [validated, setValidated] = useState(false)
   const handleSubmit = (event) => {

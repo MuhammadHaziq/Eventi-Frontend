@@ -1,13 +1,15 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
+import { CImage, CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
-import { logoNegative } from 'src/assets/brand/logo-negative'
-import { sygnet } from 'src/assets/brand/sygnet'
+// import { logoNegative } from 'src/assets/brand/logo-negative'
+// import { sygnet } from 'src/assets/brand/sygnet'
+
+import logo from 'src/assets/images/LogoWhite.png'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
@@ -19,7 +21,6 @@ const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
-
   return (
     <CSidebar
       position="fixed"
@@ -30,8 +31,20 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
+        <CImage
+          className="sidebar-brand-full"
+          align="center"
+          rounded
+          src={logo}
+          // width={300}
+          // height={120}
+          style={{
+            width: '80%',
+            aspectRatio: 3 / 2,
+            objectFit: 'contain',
+          }}
+        />
+        <CIcon className="sidebar-brand-narrow" icon={logo} height={35} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

@@ -38,6 +38,8 @@ const Charts = React.lazy(() => import('./views/charts/Charts'))
 
 const CustomerRegistration = React.lazy(() => import('./pages/Forms/CustomerRegistration'))
 const VendarRegistration = React.lazy(() => import('./pages/Forms/VendarRegistration'))
+const CustomerList = React.lazy(() => import('./pages/Tables/CustomerList'))
+const VendarList = React.lazy(() => import('./pages/Tables/VendarList'))
 
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
@@ -81,6 +83,8 @@ const routes = [
 
   { path: '/CustomerRegistration', name: 'Customer Registration', element: CustomerRegistration },
   { path: '/VendarRegistration', name: 'Vendar Registration', element: VendarRegistration },
+  { path: '/CustomerList', name: 'Customer List', element: CustomerList },
+  { path: '/VendarList', name: 'Vendar List', element: VendarList },
 
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },
