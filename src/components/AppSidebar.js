@@ -1,15 +1,21 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { CImage, CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import {
+  // CImage,
+  CSidebar,
+  CSidebarBrand,
+  CSidebarNav,
+  CSidebarToggler,
+} from '@coreui/react'
+// import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
 // import { logoNegative } from 'src/assets/brand/logo-negative'
 // import { sygnet } from 'src/assets/brand/sygnet'
 
-import logo from 'src/assets/images/LogoWhite.png'
+import logo from 'src/assets/logs/redBGLogo.png'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
@@ -30,21 +36,15 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CImage
-          className="sidebar-brand-full"
-          align="center"
-          rounded
+      <CSidebarBrand className="d-md-down-none" to="/">
+        <img
           src={logo}
-          // width={300}
-          // height={120}
-          style={{
-            width: '80%',
-            aspectRatio: 3 / 2,
-            objectFit: 'contain',
-          }}
+          alt="kyrio POS"
+          className="c-sidebar-brand-full"
+          height="25%"
+          width="90%"
+          style={{ position: 'absolute' }}
         />
-        <CIcon className="sidebar-brand-narrow" icon={logo} height={35} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

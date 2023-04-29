@@ -36,10 +36,14 @@ const Select = React.lazy(() => import('./views/forms/select/Select'))
 const Validation = React.lazy(() => import('./views/forms/validation/Validation'))
 const Charts = React.lazy(() => import('./views/charts/Charts'))
 
+// Eventi Foms
 const CustomerRegistration = React.lazy(() => import('./pages/Forms/CustomerRegistration'))
 const VendarRegistration = React.lazy(() => import('./pages/Forms/VendarRegistration'))
+const EventRegistration = React.lazy(() => import('./pages/Forms/EventRegistration'))
+
 const CustomerList = React.lazy(() => import('./pages/Tables/CustomerList'))
 const VendarList = React.lazy(() => import('./pages/Tables/VendarList'))
+const ProductList = React.lazy(() => import('./pages/Tables/ProductList'))
 
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
@@ -83,8 +87,11 @@ const routes = [
 
   { path: '/CustomerRegistration', name: 'Customer Registration', element: CustomerRegistration },
   { path: '/VendarRegistration', name: 'Vendar Registration', element: VendarRegistration },
+  { path: '/EventRegistration', name: 'Event Registration', element: EventRegistration },
+
   { path: '/CustomerList', name: 'Customer List', element: CustomerList },
   { path: '/VendarList', name: 'Vendar List', element: VendarList },
+  { path: '/ProductList', name: 'Products  List', element: ProductList },
 
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },

@@ -14,31 +14,36 @@ import {
   CTableRow,
   CButton,
   CButtonGroup,
-  CCardFooter,
-  CProgress,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle,
+  // CCardFooter,
+  // CProgress,
+  // CDropdown,
+  // CDropdownMenu,
+  // CDropdownItem,
+  // CDropdownToggle,
   CWidgetStatsA,
 } from '@coreui/react'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
+import {
+  getStyle,
+  // hexToRgba
+} from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
-import { cilCloudDownload, cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import {
+  cilCloudDownload,
+  // cilArrowBottom, cilArrowTop, cilOptions
+} from '@coreui/icons'
 
-import WidgetsDropdown from '../../views/widgets/WidgetsDropdown'
+// import WidgetsDropdown from '../../views/widgets/WidgetsDropdown'
 
 const VendarList = () => {
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
   const random2 = () => Math.round(Math.random() * 100)
-  const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
-  ]
+  // const progressExample = [
+  //   { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
+  //   { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
+  //   { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
+  //   { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
+  //   { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
+  // ]
   return (
     <>
       <CRow>

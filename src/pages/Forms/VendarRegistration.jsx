@@ -9,7 +9,7 @@ import {
   CFormCheck,
   CFormInput,
   CFormFeedback,
-  CFormLabel,
+  // CFormLabel,
   // CFormSelect,
   // CFormFloating,
   // CFormTextarea,
@@ -60,10 +60,38 @@ const VendarRegistration = () => {
                   <CInputGroup>
                     <CFormInput
                       type="number"
-                      id="validationContact Person"
+                      id="validationContactPerson"
                       floatingClassName="mb-3"
                       floatingLabel="Contact Person"
                       placeholder="Contact Person"
+                      defaultValue=""
+                      required
+                    />
+                    <CFormFeedback invalid>Please enter name.</CFormFeedback>
+                  </CInputGroup>
+                </CCol>
+                <CCol md={6}>
+                  <CInputGroup>
+                    <CFormInput
+                      type="number"
+                      id="validationemail"
+                      floatingClassName="mb-3"
+                      floatingLabel="Email Address"
+                      placeholder="Email Address"
+                      defaultValue=""
+                      required
+                    />
+                    <CFormFeedback invalid>Please enter Email.</CFormFeedback>
+                  </CInputGroup>
+                </CCol>
+                <CCol md={6}>
+                  <CInputGroup>
+                    <CFormInput
+                      type="number"
+                      id="validationAddress"
+                      floatingClassName="mb-3"
+                      floatingLabel="Address"
+                      placeholder="Address"
                       defaultValue=""
                       required
                     />
