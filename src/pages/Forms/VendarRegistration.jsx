@@ -98,30 +98,6 @@ const VendarRegistration = () => {
                     <CFormFeedback invalid>Please enter name.</CFormFeedback>
                   </CInputGroup>
                 </CCol>
-                <CCol md={6}>
-                  <CFormInput
-                    type="text"
-                    id="validationProductName"
-                    floatingClassName="mb-3"
-                    floatingLabel="Product/Service Name"
-                    placeholder="Product/Service Name"
-                    defaultValue=""
-                    required
-                  />
-                  <CFormFeedback invalid>Please provide a Product/Service Name.</CFormFeedback>
-                </CCol>
-                <CCol md={6}>
-                  <CFormInput
-                    type="text"
-                    id="validationProductPrice"
-                    floatingClassName="mb-3"
-                    floatingLabel="Product/Service Price"
-                    placeholder="Product/Service Price"
-                    defaultValue=""
-                    required
-                  />
-                  <CFormFeedback invalid>Please provide a Product/Service Price.</CFormFeedback>
-                </CCol>
                 <CCol xs={12}>
                   <CFormCheck
                     type="checkbox"
