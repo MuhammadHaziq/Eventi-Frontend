@@ -10,6 +10,7 @@ import {
   CFormInput,
   CFormFeedback,
   CFormLabel,
+  CFormSwitch,
   // CFormSelect,
   // CFormFloating,
   // CFormTextarea,
@@ -135,6 +136,10 @@ const CustomerRegistration = () => {
                     label="Other"
                   />
                   <CFormFeedback invalid>Please must selecte.</CFormFeedback>
+                </CCol>
+                <CCol xs={12}>
+                  <CFormLabel>Age Verification</CFormLabel>
+                  <CFormSwitch label="Are you over 18+ years old?" id="maxage" />
                 </CCol>
                 <CCol xs={12}>
                   <CFormCheck

@@ -154,7 +154,7 @@ const WidgetsDropdown = () => {
           className="mb-4"
           color="warning"
           value={<>56749 </>}
-          title="Points remaining"
+          title="Points remaining"
           chart={
             <CChartLine
               className="mt-3"

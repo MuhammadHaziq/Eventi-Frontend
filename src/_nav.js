@@ -3,7 +3,7 @@ import CIcon from '@coreui/icons-react'
 import {
   // cilBell,
   // cilCalculator,
-  // cilChartPie,
+  cilChartPie,
   // cilCursor,
   // cilDescription,
   // cilDrop,
@@ -66,9 +66,15 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Event Registration',
-        to: '/CustomerRegistration',
+        to: '/EventRegistration',
       },
     ],
+  },
+  {
+    component: CNavItem,
+    name: 'Products',
+    to: '/ProductList',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
@@ -281,8 +287,8 @@ const _nav = [
   // },
   // {
   //   component: CNavItem,
-  //   name: 'Charts',
-  //   to: '/charts',
+  //   name: 'Products List',
+  //   to: '/ProductList',
   //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   // },
   // {

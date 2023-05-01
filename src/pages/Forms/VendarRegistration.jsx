@@ -9,7 +9,7 @@ import {
   CFormCheck,
   CFormInput,
   CFormFeedback,
-  CFormLabel,
+  // CFormLabel,
   // CFormSelect,
   // CFormFloating,
   // CFormTextarea,
@@ -60,7 +60,7 @@ const VendarRegistration = () => {
                   <CInputGroup>
                     <CFormInput
                       type="number"
-                      id="validationContact Person"
+                      id="validationContactPerson"
                       floatingClassName="mb-3"
                       floatingLabel="Contact Person"
                       placeholder="Contact Person"
@@ -71,28 +71,32 @@ const VendarRegistration = () => {
                   </CInputGroup>
                 </CCol>
                 <CCol md={6}>
-                  <CFormInput
-                    type="text"
-                    id="validationProductName"
-                    floatingClassName="mb-3"
-                    floatingLabel="Product/Service Name"
-                    placeholder="Product/Service Name"
-                    defaultValue=""
-                    required
-                  />
-                  <CFormFeedback invalid>Please provide a Product/Service Name.</CFormFeedback>
+                  <CInputGroup>
+                    <CFormInput
+                      type="number"
+                      id="validationemail"
+                      floatingClassName="mb-3"
+                      floatingLabel="Email Address"
+                      placeholder="Email Address"
+                      defaultValue=""
+                      required
+                    />
+                    <CFormFeedback invalid>Please enter Email.</CFormFeedback>
+                  </CInputGroup>
                 </CCol>
                 <CCol md={6}>
-                  <CFormInput
-                    type="text"
-                    id="validationProductPrice"
-                    floatingClassName="mb-3"
-                    floatingLabel="Product/Service Price"
-                    placeholder="Product/Service Price"
-                    defaultValue=""
-                    required
-                  />
-                  <CFormFeedback invalid>Please provide a Product/Service Price.</CFormFeedback>
+                  <CInputGroup>
+                    <CFormInput
+                      type="number"
+                      id="validationAddress"
+                      floatingClassName="mb-3"
+                      floatingLabel="Address"
+                      placeholder="Address"
+                      defaultValue=""
+                      required
+                    />
+                    <CFormFeedback invalid>Please enter name.</CFormFeedback>
+                  </CInputGroup>
                 </CCol>
                 <CCol xs={12}>
                   <CFormCheck
