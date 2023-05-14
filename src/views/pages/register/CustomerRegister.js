@@ -35,7 +35,6 @@ const CustomerRegister = () => {
 
     const handleSubmit = (event) => {
         const form = event.currentTarget
-        console.log(form.checkValidity(), "form.checkValidity()")
         if (form.checkValidity() === false) {
             event.preventDefault()
             event.stopPropagation()

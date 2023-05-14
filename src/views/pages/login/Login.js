@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -13,15 +13,39 @@ import {
   CInputGroupText,
   CRow,
   CFormSwitch,
-  CFormLabel
+  CFormFeedback
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-
+import { login } from 'src/context/AuthContext/service'
 const Login = () => {
   const [userType, setUserType] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [validated, setValidated] = useState(false)
+const navigate = useNavigate()
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    } else {
+      event.preventDefault()
+      event.stopPropagation()
+      try{
+        login({email:email, password:password, user_type:userType ? "customer" : "vendor"}).then(response=> {
+          localStorage.setItem("eventi", response.data.data)
+          navigate("/");
+        }).catch(err=> {
+          console.log(err)
+        })
+      }catch(err){
+        console.error(err.message)
+      }
+    }
+
+    setValidated(true)
+  }
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -31,14 +55,19 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm
+                    className="needs-validation"
+                    noValidate
+                    validated={validated}
+                    onSubmit={handleSubmit}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Email" autoComplete="email" type='email' value={email} onChange={(e)=>setEmail(e.target.value)} />
+                      <CFormInput placeholder="Email" autoComplete="email" type='email' value={email} onChange={(e) => setEmail(e.target.value)} id="validationEmail" required/>
+                      <CFormFeedback invalid>Please enter email.</CFormFeedback>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -48,21 +77,21 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        id="validationPassword"
                         value={password}
-                        onChange={(e)=>setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
                       />
+                      <CFormFeedback invalid>Please enter password.</CFormFeedback>
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" type="submit">
                           Login
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CFormSwitch label={userType ? "Customer" : "Vendor"} id="userType" size="lg" className="px-5" checked={userType} onChange={()=>setUserType(!userType)}/>
-                        {/* <CButton color="link" className="px-0">
-                          Forgot password?
-                        </CButton> */}
+                        <CFormSwitch label={userType ? "Customer" : "Vendor"} id="userType" size="lg" className="px-5" checked={userType} onChange={() => setUserType(!userType)} />
                       </CCol>
                     </CRow>
                   </CForm>

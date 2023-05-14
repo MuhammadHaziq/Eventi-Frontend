@@ -4,6 +4,7 @@ import { CContainer, CSpinner } from '@coreui/react'
 // routes config
 import routes from '../routes'
 import LoginCheck from 'src/utils/checkAuth'
+const Page404 = React.lazy(() => import('../views/pages/page404/Page404'))
 
 const AppContent = () => {
   return (
