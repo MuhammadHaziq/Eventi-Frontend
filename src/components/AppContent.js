@@ -27,6 +27,7 @@ const AppContent = () => {
               )
             })}
             <Route path="/" element={<Navigate to="dashboard" replace />} />
+            <Route path="*" name="Page 404" element={<Page404 />} />
           </Routes>
         </Suspense>
       </CContainer>
