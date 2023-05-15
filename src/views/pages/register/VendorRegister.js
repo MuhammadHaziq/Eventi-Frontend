@@ -10,9 +10,13 @@ import {
     CFormFeedback,
     CInputGroup,
 } from '@coreui/react'
+import { GenderSelection } from 'src/components/Inputs/GenderSelection'
+import { signUp } from 'src/context/AuthContext/service'
+import { PhoneInput } from 'src/components/Inputs/PhoneInput'
 
 const VendorRegister = () => {
     const [validated, setValidated] = useState(false)
+    const [agree, setAgree] = useState(false);
     const [state, setState] = useState({
         first_name: "",
         last_name: "",
@@ -22,7 +26,8 @@ const VendorRegister = () => {
         address: "",
         date_of_birth: "",
         gender: "",
-        phone_number: ""
+        phone_number: "",
+        user_type:"vendor"
     })
 
     const handleOnChange = (e) => {
@@ -32,13 +37,21 @@ const VendorRegister = () => {
 
     const handleSubmit = (event) => {
         const form = event.currentTarget
-        console.log(form.checkValidity(), "form.checkValidity()")
         if (form.checkValidity() === false) {
             event.preventDefault()
             event.stopPropagation()
         } else {
             event.preventDefault()
             event.stopPropagation()
+            try{
+                signUp(state).then(response=> {
+                    console.log(response)
+                }).catch(err=> {
+                    console.log(err)
+                })
+            }catch(err){
+                    console.log("CATCH ERROR", err)
+            }
             console.log(state, event, "state")
         }
 
@@ -126,20 +139,7 @@ const VendorRegister = () => {
                     <CFormFeedback valid>Looks good!</CFormFeedback>
                 </CCol>
                 <CCol md={6}>
-                    <CInputGroup>
-                        <CFormInput
-                            type="number"
-                            id="validationContactNumber"
-                            floatingClassName="mb-3"
-                            floatingLabel="Contact Number"
-                            placeholder="Contact Number"
-                            defaultValue={state.phone_number}
-                            name="phone_number"
-                            onChange={handleOnChange}
-                            required
-                        />
-                        <CFormFeedback invalid>Please enter contact number.</CFormFeedback>
-                    </CInputGroup>
+                    <PhoneInput phone_number={state.phone_number} handleOnChange={handleOnChange} />
                 </CCol>
                 <CCol md={6}>
                     <CInputGroup>
@@ -174,20 +174,7 @@ const VendorRegister = () => {
                     </CInputGroup>
                 </CCol>
                 <CCol md={6}>
-                    <CFormSelect size="sm" aria-label="select example" id="validationGender"
-                        floatingClassName="mb-3"
-                        floatingLabel="Gender"
-                        placeholder="Gender"
-                        name="gender"
-                        defaultValue={state.gender}
-                        onChange={handleOnChange}
-                        required>
-                        <option></option>
-                        <option value="Men">Men</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </CFormSelect>
-                    <CFormFeedback invalid>Please provide a valid gender.</CFormFeedback>
+                    <GenderSelection gender={state.gender} handleOnChange={handleOnChange}/>
                 </CCol>
                 <CCol xs={12}>
                     <CFormCheck
@@ -195,6 +182,8 @@ const VendorRegister = () => {
                         id="invalidCheck"
                         label="Agree to terms and conditions"
                         required
+                        checked={agree}
+                        onChange={()=>setAgree(!agree)}
                     />
                     <CFormFeedback invalid>You must agree before submitting.</CFormFeedback>
                 </CCol>

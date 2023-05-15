@@ -30,7 +30,7 @@ function useAuthAppDispatch() {
     return context
 }
 
-export default {
+export {
     AuthAppProvider,
     useAuthAppState,
     useAuthAppDispatch

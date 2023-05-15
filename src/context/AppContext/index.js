@@ -32,7 +32,7 @@ function useAppDispatch() {
     return context
 }
 
-export default {
+export {
     AppProvider,
     useAppState,
     useAppDispatch

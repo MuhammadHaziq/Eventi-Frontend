@@ -1,10 +1,14 @@
 function appReducer(state, action){
     switch(action.type){
-        case "USER_LOGIN":{
+        case "set":{
             return {
                 ...state,
                 sidebarShow:action.sidebarShow,
+                unfoldable:action.unfoldable || false
             }
+        }
+        default:{
+            return {...state}
         }
     }
 }

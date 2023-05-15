@@ -10,29 +10,29 @@ const _nav = [
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
-  {
-    component: CNavGroup,
-    name: 'Registration Forms',
-    to: '/customer-registration',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Customer Registration',
-        to: '/customer-registration',
-      },
-      {
-        component: CNavItem,
-        name: 'Vendar Registration',
-        to: '/vendar-registration',
-      },
-      {
-        component: CNavItem,
-        name: 'Event Registration',
-        to: '/event-registration',
-      },
-    ],
-  },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Registration Forms',
+  //   to: '/customer-registration',
+  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Customer Registration',
+  //       to: '/customer-registration',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Vendar Registration',
+  //       to: '/vendar-registration',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Event Registration',
+  //       to: '/event-registration',
+  //     },
+  //   ],
+  // },
   {
     component: CNavItem,
     name: 'Products',

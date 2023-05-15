@@ -8,6 +8,9 @@ function authReducer(state, action){
                     token:action.token
                 }
             }
+            default:{
+                return {...state}
+            }
         }
 
 }

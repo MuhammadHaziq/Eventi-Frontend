@@ -18,6 +18,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { login } from 'src/context/AuthContext/service'
+import authAxios from 'src/utils/axios'
 const Login = () => {
   const [userType, setUserType] = useState(true);
   const [email, setEmail] = useState("");
@@ -34,6 +35,7 @@ const navigate = useNavigate()
       event.stopPropagation()
       try{
         login({email:email, password:password, user_type:userType ? "customer" : "vendor"}).then(response=> {
+          authAxios.defaults.headers.common["Authorization"] = response.data.data;
           localStorage.setItem("eventi", response.data.data)
           navigate("/");
         }).catch(err=> {

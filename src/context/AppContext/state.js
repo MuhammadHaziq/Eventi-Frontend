@@ -1,4 +1,4 @@
 export default {
-    sidebarShow:true          
-
+    sidebarShow:true,          
+    unfoldable:false
 }
