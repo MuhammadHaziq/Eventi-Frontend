@@ -34,7 +34,7 @@ authAxios.interceptors.response.use(
   function (error) {
     if (error.response.status === 401) {
       localStorage.removeItem("eventi");
-      localStorage.removeItem("user");
+      localStorage.removeItem("eventi-user");
       <Navigate exact to="/login" />
       return Promise.reject(error);
     }

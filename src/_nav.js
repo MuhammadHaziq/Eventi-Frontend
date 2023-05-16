@@ -3,7 +3,7 @@ import CIcon from '@coreui/icons-react'
 import { cilChartPie, cilNotes, cilSpeedometer } from '@coreui/icons'
 import { CNavGroup, CNavItem } from '@coreui/react'
 
-const _nav = [
+let _nav = [
   {
     component: CNavItem,
     name: 'Dashboard',
@@ -39,9 +39,10 @@ const _nav = [
     to: '/product-list',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
+
   {
     component: CNavGroup,
-    name: 'List',
+    name: 'Customer',
     to: '/customer-list',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
@@ -50,15 +51,18 @@ const _nav = [
         name: 'Customer List',
         to: '/customer-list',
       },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Vendor',
+    to: '/vendor-list',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
       {
         component: CNavItem,
-        name: 'Vendar List',
-        to: '/vendar-list',
-      },
-      {
-        component: CNavItem,
-        name: 'Event List',
-        to: '/customer-list',
+        name: 'Vendor List',
+        to: '/vendor-list',
       },
     ],
   },
@@ -101,5 +105,25 @@ const _nav = [
   //   ],
   // },
 ]
-
+JSON.parse(localStorage.getItem('eventi-user'))?.user_type === "vendor" && (
+  _nav = [..._nav, 
+    {
+    component: CNavGroup,
+    name: 'Events',
+    to: '/event-list',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Event List',
+        to: '/event-list',
+      },
+      {
+        component: CNavItem,
+        name: 'Event Registration',
+        to: '/event-registration',
+      },
+    ],
+  }]
+  )
 export default _nav

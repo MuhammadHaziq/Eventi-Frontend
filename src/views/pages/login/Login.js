@@ -18,12 +18,14 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { login } from 'src/context/AuthContext/service'
+import jwtDecode from "jwt-decode";
 import authAxios from 'src/utils/axios'
 const Login = () => {
   const [userType, setUserType] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false)
+  const [errors, setErrors]=useState("") 
 const navigate = useNavigate()
   const handleSubmit = (event) => {
     const form = event.currentTarget
@@ -34,14 +36,19 @@ const navigate = useNavigate()
       event.preventDefault()
       event.stopPropagation()
       try{
+        setErrors("")
         login({email:email, password:password, user_type:userType ? "customer" : "vendor"}).then(response=> {
           authAxios.defaults.headers.common["Authorization"] = response.data.data;
           localStorage.setItem("eventi", response.data.data)
+          const decodedHeader = jwtDecode(response.data.data);
+          localStorage.setItem("eventi-user",JSON.stringify(decodedHeader?.user))
           navigate("/");
         }).catch(err=> {
+          setErrors(err.response.data.message)
           console.log(err)
         })
       }catch(err){
+        setErrors(err.message)
         console.error(err.message)
       }
     }
@@ -63,7 +70,7 @@ const navigate = useNavigate()
                     validated={validated}
                     onSubmit={handleSubmit}>
                     <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <p className={`text-medium-emphasis ${errors ? "text-danger" :""}` }>{errors ? errors : "Sign In to your account"}</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />

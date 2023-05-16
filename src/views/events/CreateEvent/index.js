@@ -1,0 +1,1 @@
+export {EventRegistration as default } from "./EventForm"
