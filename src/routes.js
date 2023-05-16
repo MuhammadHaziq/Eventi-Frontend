@@ -5,9 +5,9 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const CustomerRegistration = React.lazy(() => import('./pages/Forms/CustomerRegistration'))
 const VendarRegistration = React.lazy(() => import('./pages/Forms/VendarRegistration'))
 const EventRegistration = React.lazy(() => import('./pages/Forms/EventRegistration'))
-const CustomerList = React.lazy(() => import('./pages/Tables/CustomerList'))
-const VendarList = React.lazy(() => import('./pages/Tables/VendarList'))
-const ProductList = React.lazy(() => import('./pages/Tables/ProductList'))
+const CustomerList = React.lazy(() => import('./views/customer/CustomerList'))
+const VendorList = React.lazy(() => import('./views/vendor/VendorList'))
+const ProductList = React.lazy(() => import('./views/product'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -17,7 +17,7 @@ const routes = [
   { path: '/event-registration', name: 'Event Registration', element: EventRegistration },
 
   { path: '/customer-list', name: 'Customer List', element: CustomerList },
-  { path: '/vendar-list', name: 'Vendar List', element: VendarList },
+  { path: '/vendar-list', name: 'Vendar List', element: VendorList },
   { path: '/product-list', name: 'Products  List', element: ProductList },
 ]
 
