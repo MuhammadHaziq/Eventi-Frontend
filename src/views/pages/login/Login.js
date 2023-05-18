@@ -18,6 +18,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { login } from 'src/context/AuthContext/service'
+import useToastContext from 'src/context/ToastContext'
 import jwtDecode from "jwt-decode";
 import authAxios from 'src/utils/axios'
 const Login = () => {
@@ -26,6 +27,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false)
   const [errors, setErrors]=useState("") 
+  const addToast = useToastContext()
 const navigate = useNavigate()
   const handleSubmit = (event) => {
     const form = event.currentTarget
@@ -44,11 +46,13 @@ const navigate = useNavigate()
           localStorage.setItem("eventi-user",JSON.stringify(decodedHeader?.user))
           navigate("/");
         }).catch(err=> {
+          addToast({message:err.response.data.message, messageType:"danger"})
           setErrors(err.response.data.message)
           console.log(err)
         })
       }catch(err){
         setErrors(err.message)
+        addToast({message:err.message, messageType:"danger"})
         console.error(err.message)
       }
     }
