@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   CCard,
   CCardBody,
@@ -7,153 +7,61 @@ import {
   CRow,
   CTable,
   CTableBody,
-  CForm,
-  CFormCheck,
-  CFormInput,
-  CFormFeedback,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
   CButton,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-  CWidgetStatsA,
-} from '@coreui/react'
-import { addProduct, getProducts } from 'src/context/ProductContext/service'
-import { useProductAppState, useProductAppDispatch } from 'src/context/ProductContext'
+} from "@coreui/react";
+import { getProducts } from "src/context/ProductContext/service";
+import {
+  useProductAppState,
+  useProductAppDispatch,
+} from "src/context/ProductContext";
+import ProductModal from "../ProductModal";
+import AppDeleteButton from "src/components/AppDeleteButton";
+import AppEditButton from "src/components/AppEditButton";
+import { deleteProduct } from "src/context/ProductContext/service";
 
 export const ProductList = () => {
-  const {products} = useProductAppState();
-  const dispatch = useProductAppDispatch()
-  const [state, setState] = useState({
-    product_name:"",
-    product_quantity:0,
-    product_price:0
-  })
-  const [visible, setVisible] = useState(false)
-  const [validated, setValidated] = useState(false)
-
-  const handleOnChange = (e) => {
-    const {name, value} = e.target;
-    setState({...state, [name]:value})
-  }
-
-  const handleSubmit = (event) => {
-    const form = event.currentTarget
-    if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
-    }else{
-      event.preventDefault()
-      event.stopPropagation()
-      try{
-        addProduct({product_name:state.product_name, product_price:state.product_price, product_quantity:state.product_quantity}).then(response=> {
-          dispatch({type:"ADD_PRODUCT", product:response.data.data})
-          setVisible(false)
-        }).catch(err=> {
-          console.log(err)
-        })
-      }catch(err){
-        console.error(err.message)
-      }
-    }
-    setValidated(true)
-  }
+  const { products } = useProductAppState();
+  const dispatch = useProductAppDispatch();
+  const [visible, setVisible] = useState(false);
+  const [selectProduct, setSelectedProduct] = useState("");
 
   const getAllProducts = () => {
-  try{
-        getProducts().then(response=> {
-          dispatch({type:"GET_PRODUCTS", products:response.data.data})
-        }).catch(err=> {
-          console.log(err)
+    try {
+      getProducts()
+        .then((response) => {
+          dispatch({ type: "GET_PRODUCTS", products: response.data.data });
         })
-      }catch(err){
-        console.error(err.message)
-      }
-  }
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-  useEffect(()=> {
-    getAllProducts()
-  },[])
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  const clickOnEdit = (id) => {
+    setSelectedProduct(id);
+    setVisible(true);
+  };
+
+  const clickHideModal = () => {
+    setSelectedProduct("");
+    setVisible(false);
+  };
 
   return (
     <>
       <CButton onClick={() => setVisible(!visible)}>Add Product</CButton>
       <br></br>
       <br></br>
-      <CModal visible={visible} onClose={() => setVisible(false)}>
-        <CModalHeader>
-          <CModalTitle>Add Product</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CForm
-            className="row g-2 needs-validation"
-            noValidate
-            validated={validated}
-            onSubmit={handleSubmit}
-          >
-            <CRow>
-            <CCol md={4}>
-              <CFormInput
-                type="text"
-                id="floatingInputValid"
-                floatingClassName="mb-3"
-                floatingLabel="Product Name"
-                placeholder="Product Name"
-                name="product_name"
-                defaultValue={state.product_name}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback valid>Looks good!</CFormFeedback>
-            </CCol>
-            <CCol md={4}>
-              <CFormInput
-                type="number"
-                id="floatingInputValid2"
-                floatingClassName="mb-3"
-                floatingLabel="Price"
-                placeholder="Price"
-                name="product_price"
-                defaultValue={state.product_price}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback valid>Looks good!</CFormFeedback>
-            </CCol>
-            <CCol md={4}>
-              <CFormInput
-                type="number"
-                id="floatingInputValid2"
-                floatingClassName="mb-3"
-                floatingLabel="Quantity"
-                placeholder="Quantity"
-                name="product_quantity"
-                defaultValue={state.product_quantity}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback valid>Looks good!</CFormFeedback>
-            </CCol>
-            </CRow>
-            <CRow>
-            <CButton color="primary" type='submit'>Save changes</CButton>
-            </CRow>
-            
-
-          </CForm>
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-          
-        </CModalFooter>
-      </CModal>
       <CRow>
         <CCol>
           <CCard className="mb-4">
@@ -165,19 +73,38 @@ export const ProductList = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Product Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                      Product Name
+                    </CTableHeaderCell>
                     <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {(products || [])?.map((item, index)=> (
+                  {(products || [])?.map((item, index) => (
                     <CTableRow key={item._id}>
-                    <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
-                    <CTableDataCell>{item.product_name}</CTableDataCell>
-                    <CTableDataCell>$ {item.product_price}</CTableDataCell>
-                    <CTableDataCell>{item.product_quantity}</CTableDataCell>
-                  </CTableRow>
+                      <CTableHeaderCell scope="row">
+                        {index + 1}
+                      </CTableHeaderCell>
+                      <CTableDataCell>{item.product_name}</CTableDataCell>
+                      <CTableDataCell>$ {item.product_price}</CTableDataCell>
+                      <CTableDataCell>{item.product_quantity}</CTableDataCell>
+                      <CTableDataCell>
+                        <div className="d-flex gap-2">
+                          <AppDeleteButton
+                            title="Delete Product"
+                            message="Do you really want to delete this product?"
+                            delete_id={item._id}
+                            apiUrl={deleteProduct}
+                          />
+                          <AppEditButton
+                            onClick={clickOnEdit}
+                            edit_id={item._id}
+                          />
+                        </div>
+                      </CTableDataCell>
+                    </CTableRow>
                   ))}
                 </CTableBody>
               </CTable>
@@ -185,6 +112,13 @@ export const ProductList = () => {
           </CCard>
         </CCol>
       </CRow>
+      {visible && (
+        <ProductModal
+          setVisible={clickHideModal}
+          visible={visible}
+          product_id={selectProduct}
+        />
+      )}
     </>
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -13,52 +13,74 @@ import {
   CInputGroupText,
   CRow,
   CFormSwitch,
-  CFormFeedback
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { login } from 'src/context/AuthContext/service'
-import useToastContext from 'src/context/ToastContext'
+  CFormFeedback,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilLockLocked, cilUser } from "@coreui/icons";
+import { login } from "src/context/AuthContext/service";
+import useToastContext from "src/context/ToastContext";
 import jwtDecode from "jwt-decode";
-import authAxios from 'src/utils/axios'
+import authAxios from "src/utils/axios";
+import { useAppDispatch } from "src/context/AppContext";
+import { AppToast } from "src/components/AppToast";
 const Login = () => {
   const [userType, setUserType] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [validated, setValidated] = useState(false)
-  const [errors, setErrors]=useState("") 
-  const addToast = useToastContext()
-const navigate = useNavigate()
+  const [validated, setValidated] = useState(false);
+  const [errors, setErrors] = useState("");
+  const addToast = useToastContext();
+  const navigate = useNavigate();
+  const app_dispatch = useAppDispatch();
+
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     } else {
-      event.preventDefault()
-      event.stopPropagation()
-      try{
-        setErrors("")
-        login({email:email, password:password, user_type:userType ? "customer" : "vendor"}).then(response=> {
-          authAxios.defaults.headers.common["Authorization"] = response.data.data;
-          localStorage.setItem("eventi", response.data.data)
-          const decodedHeader = jwtDecode(response.data.data);
-          localStorage.setItem("eventi-user",JSON.stringify(decodedHeader?.user))
-          navigate("/");
-        }).catch(err=> {
-          addToast({message:err.response.data.message, messageType:"danger"})
-          setErrors(err.response.data.message)
-          console.log(err)
+      event.preventDefault();
+      event.stopPropagation();
+      try {
+        setErrors("");
+        login({
+          email: email,
+          password: password,
+          user_type: userType ? "customer" : "vendor",
         })
-      }catch(err){
-        setErrors(err.message)
-        addToast({message:err.message, messageType:"danger"})
-        console.error(err.message)
+          .then((response) => {
+            authAxios.defaults.headers.common["Authorization"] =
+              response.data.data;
+            localStorage.setItem("eventi", response.data.data);
+            const decodedHeader = jwtDecode(response.data.data);
+            localStorage.setItem(
+              "eventi-user",
+              JSON.stringify(decodedHeader?.user)
+            );
+            navigate("/");
+          })
+          .catch((err) => {
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: err.response.data.message,
+                color: "danger-alert",
+              }),
+            });
+          });
+      } catch (err) {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err.message,
+            color: "danger-alert",
+          }),
+        });
       }
     }
 
-    setValidated(true)
-  }
+    setValidated(true);
+  };
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -72,14 +94,29 @@ const navigate = useNavigate()
                     className="needs-validation"
                     noValidate
                     validated={validated}
-                    onSubmit={handleSubmit}>
+                    onSubmit={handleSubmit}
+                  >
                     <h1>Login</h1>
-                    <p className={`text-medium-emphasis ${errors ? "text-danger" :""}` }>{errors ? errors : "Sign In to your account"}</p>
+                    <p
+                      className={`text-medium-emphasis ${
+                        errors ? "text-danger" : ""
+                      }`}
+                    >
+                      {errors ? errors : "Sign In to your account"}
+                    </p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Email" autoComplete="email" type='email' value={email} onChange={(e) => setEmail(e.target.value)} id="validationEmail" required/>
+                      <CFormInput
+                        placeholder="Email"
+                        autoComplete="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        id="validationEmail"
+                        required
+                      />
                       <CFormFeedback invalid>Please enter email.</CFormFeedback>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -95,7 +132,9 @@ const navigate = useNavigate()
                         onChange={(e) => setPassword(e.target.value)}
                         required
                       />
-                      <CFormFeedback invalid>Please enter password.</CFormFeedback>
+                      <CFormFeedback invalid>
+                        Please enter password.
+                      </CFormFeedback>
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
@@ -104,21 +143,37 @@ const navigate = useNavigate()
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CFormSwitch label={userType ? "Customer" : "Vendor"} id="userType" size="lg" className="px-5" checked={userType} onChange={() => setUserType(!userType)} />
+                        <CFormSwitch
+                          label={userType ? "Customer" : "Vendor"}
+                          id="userType"
+                          size="lg"
+                          className="px-5"
+                          checked={userType}
+                          onChange={() => setUserType(!userType)}
+                        />
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard
+                className="text-white bg-primary py-5"
+                style={{ width: "44%" }}
+              >
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      Do you want to sign up as a {userType ? "Customer" : "Vendor"} ?
+                      Do you want to sign up as a{" "}
+                      {userType ? "Customer" : "Vendor"} ?
                     </p>
                     <Link to={`/register/${userType ? "customer" : "vendor"}`}>
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
+                      <CButton
+                        color="primary"
+                        className="mt-3"
+                        active
+                        tabIndex={-1}
+                      >
                         Register Now!
                       </CButton>
                     </Link>
@@ -130,7 +185,7 @@ const navigate = useNavigate()
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
