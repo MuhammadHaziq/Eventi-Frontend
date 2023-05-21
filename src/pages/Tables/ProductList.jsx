@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -7,7 +7,6 @@ import {
   CRow,
   CTable,
   CTableBody,
-  // CTableCaption,
   CForm,
   CFormCheck,
   CFormInput,
@@ -22,41 +21,75 @@ import {
   CModalFooter,
   CModalHeader,
   CModalTitle,
-  // CCardFooter,
-  // CProgress,
-  // CDropdown,
-  // CDropdownMenu,
-  // CDropdownItem,
-  // CDropdownToggle,
   CWidgetStatsA,
 } from '@coreui/react'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import {
   getStyle,
-  // hexToRgba
 } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
 import {
   cilCloudDownload,
   // cilArrowBottom, cilArrowTop, cilOptions
 } from '@coreui/icons'
-
+import { addProduct, getProducts } from 'src/context/ProductContext/service'
+import { useProductAppState, useProductAppDispatch } from 'src/context/ProductContext'
 // import WidgetsDropdown from '../../views/widgets/WidgetsDropdown'
 
 const ProductList = () => {
-  const random2 = () => Math.round(Math.random() * 100)
-
+  const {products} = useProductAppState();
+  const dispatch = useProductAppDispatch()
+  const [state, setState] = useState({
+    product_name:"",
+    product_quantity:0,
+    product_price:0
+  })
   const [visible, setVisible] = useState(false)
-
   const [validated, setValidated] = useState(false)
+
+  const handleOnChange = (e) => {
+    const {name, value} = e.target;
+    setState({...state, [name]:value})
+  }
+
   const handleSubmit = (event) => {
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.preventDefault()
       event.stopPropagation()
+    }else{
+      event.preventDefault()
+      event.stopPropagation()
+      try{
+        addProduct({product_name:state.product_name, product_price:state.product_price, product_quantity:state.product_quantity}).then(response=> {
+          dispatch({type:"ADD_PRODUCT", product:response.data.data})
+          setVisible(false)
+        }).catch(err=> {
+          console.log(err)
+        })
+      }catch(err){
+        console.error(err.message)
+      }
     }
     setValidated(true)
   }
+
+  const getAllProducts = () => {
+  try{
+        getProducts().then(response=> {
+          dispatch({type:"GET_PRODUCTS", products:response.data.data})
+        }).catch(err=> {
+          console.log(err)
+        })
+      }catch(err){
+        console.error(err.message)
+      }
+  }
+
+  useEffect(()=> {
+    getAllProducts()
+  },[])
+
   return (
     <>
       <CButton onClick={() => setVisible(!visible)}>Add Product</CButton>
@@ -73,37 +106,62 @@ const ProductList = () => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <CCol md={6}>
+            <CRow>
+            <CCol md={4}>
               <CFormInput
                 type="text"
                 id="floatingInputValid"
                 floatingClassName="mb-3"
                 floatingLabel="Product Name"
                 placeholder="Product Name"
-                defaultValue=""
+                name="product_name"
+                defaultValue={state.product_name}
+                onChange={handleOnChange}
                 required
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={6}>
+            <CCol md={4}>
               <CFormInput
                 type="number"
                 id="floatingInputValid2"
                 floatingClassName="mb-3"
                 floatingLabel="Price"
                 placeholder="Price"
-                defaultValue=""
+                name="product_price"
+                defaultValue={state.product_price}
+                onChange={handleOnChange}
                 required
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
+            <CCol md={4}>
+              <CFormInput
+                type="number"
+                id="floatingInputValid2"
+                floatingClassName="mb-3"
+                floatingLabel="Quantity"
+                placeholder="Quantity"
+                name="product_quantity"
+                defaultValue={state.product_quantity}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback valid>Looks good!</CFormFeedback>
+            </CCol>
+            </CRow>
+            <CRow>
+            <CButton color="primary" type='submit'>Save changes</CButton>
+            </CRow>
+            
+
           </CForm>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          
         </CModalFooter>
       </CModal>
       <CRow>
@@ -119,34 +177,18 @@ const ProductList = () => {
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Product Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>Bottle</CTableDataCell>
-                    <CTableDataCell>$ 5</CTableDataCell>
+                  {(products || [])?.map((item, index)=> (
+                    <CTableRow key={item._id}>
+                    <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
+                    <CTableDataCell>{item.product_name}</CTableDataCell>
+                    <CTableDataCell>$ {item.product_price}</CTableDataCell>
+                    <CTableDataCell>{item.product_quantity}</CTableDataCell>
                   </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                    <CTableDataCell>Tea</CTableDataCell>
-                    <CTableDataCell>$ 10</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                    <CTableDataCell>Coffee</CTableDataCell>
-                    <CTableDataCell>$ 24</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">4</CTableHeaderCell>
-                    <CTableDataCell>Bottle</CTableDataCell>
-                    <CTableDataCell>$ 5</CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">5</CTableHeaderCell>
-                    <CTableDataCell>Bottle</CTableDataCell>
-                    <CTableDataCell>$ 5</CTableDataCell>
-                  </CTableRow>
+                  ))}
                 </CTableBody>
               </CTable>
             </CCardBody>

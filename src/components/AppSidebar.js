@@ -22,11 +22,11 @@ import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
-
+import { useAppDispatch, useAppState } from 'src/context/AppContext'
 const AppSidebar = () => {
-  const dispatch = useDispatch()
-  const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const dispatch = useAppDispatch()
+  const {sidebarShow, unfoldable} = useAppState()
+  // useSelector((state) => state.sidebarShow)
   return (
     <CSidebar
       position="fixed"

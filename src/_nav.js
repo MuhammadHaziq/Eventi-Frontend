@@ -1,396 +1,129 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  // cilBell,
-  // cilCalculator,
-  cilChartPie,
-  // cilCursor,
-  // cilDescription,
-  // cilDrop,
-  cilNotes,
-  // cilPencil,
-  // cilPuzzle,
-  cilSpeedometer,
-  // cilStar,
-  // CNavTitle,
-} from '@coreui/icons'
+import { cilChartPie, cilNotes, cilSpeedometer } from '@coreui/icons'
 import { CNavGroup, CNavItem } from '@coreui/react'
 
-const _nav = [
+let _nav = [
   {
     component: CNavItem,
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
   },
   // {
-  //   component: CNavTitle,
-  //   name: 'Theme',
+  //   component: CNavGroup,
+  //   name: 'Registration Forms',
+  //   to: '/customer-registration',
+  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Customer Registration',
+  //       to: '/customer-registration',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Vendar Registration',
+  //       to: '/vendar-registration',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Event Registration',
+  //       to: '/event-registration',
+  //     },
+  //   ],
   // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Colors',
-  //   to: '/theme/colors',
-  //   icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Typography',
-  //   to: '/theme/typography',
-  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Components',
-  // },
-  {
-    component: CNavGroup,
-    name: 'Registration Forms',
-    to: '/CustomerRegistration',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Customer Registration',
-        to: '/CustomerRegistration',
-      },
-      {
-        component: CNavItem,
-        name: 'Vendar Registration',
-        to: '/VendarRegistration',
-      },
-      {
-        component: CNavItem,
-        name: 'Event Registration',
-        to: '/EventRegistration',
-      },
-    ],
-  },
   {
     component: CNavItem,
     name: 'Products',
-    to: '/ProductList',
+    to: '/product-list',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
+
   {
     component: CNavGroup,
-    name: 'List',
-    to: '/CustomerList',
+    name: 'Customer',
+    to: '/customer-list',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Customer List',
-        to: '/CustomerList',
-      },
-      {
-        component: CNavItem,
-        name: 'Vendar List',
-        to: '/VendarList',
-      },
-      {
-        component: CNavItem,
-        name: 'Event List',
-        to: '/CustomerList',
+        to: '/customer-list',
       },
     ],
   },
   {
     component: CNavGroup,
-    name: 'Reports',
-    to: '/CustomerReports',
+    name: 'Vendor',
+    to: '/vendor-list',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Customer Point Reports',
-        to: '/CustomerPointReports',
-      },
-      {
-        component: CNavItem,
-        name: 'Vendar Point Reports',
-        to: '/VendarPointReports',
-      },
-      {
-        component: CNavItem,
-        name: 'Event Point Reports',
-        to: '/CustomerPointReports',
-      },
-      {
-        component: CNavItem,
-        name: 'Point Summary Reports',
-        to: '/PointSummaryReports',
-      },
-      {
-        component: CNavItem,
-        name: 'Customer Payment Reports',
-        to: '/CustomerPaymentReports',
-      },
-      {
-        component: CNavItem,
-        name: 'Vendar Payment Reports',
-        to: '/VenderPaymentReports',
+        name: 'Vendor List',
+        to: '/vendor-list',
       },
     ],
   },
   // {
   //   component: CNavGroup,
-  //   name: 'Base',
-  //   to: '/base',
-  //   icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Accordion',
-  //       to: '/base/accordion',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Breadcrumb',
-  //       to: '/base/breadcrumbs',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Cards',
-  //       to: '/base/cards',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Carousel',
-  //       to: '/base/carousels',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Collapse',
-  //       to: '/base/collapses',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'List group',
-  //       to: '/base/list-groups',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Navs & Tabs',
-  //       to: '/base/navs',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Pagination',
-  //       to: '/base/paginations',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Placeholders',
-  //       to: '/base/placeholders',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Popovers',
-  //       to: '/base/popovers',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Progress',
-  //       to: '/base/progress',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Spinners',
-  //       to: '/base/spinners',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Tables',
-  //       to: '/base/tables',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Tooltips',
-  //       to: '/base/tooltips',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Buttons',
-  //   to: '/buttons',
-  //   icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Buttons',
-  //       to: '/buttons/buttons',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Buttons groups',
-  //       to: '/buttons/button-groups',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Dropdowns',
-  //       to: '/buttons/dropdowns',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Forms',
+  //   name: 'Reports',
+  //   to: '/customer-reports',
   //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   //   items: [
   //     {
   //       component: CNavItem,
-  //       name: 'Form Control',
-  //       to: '/forms/form-control',
+  //       name: 'Customer Point Reports',
+  //       to: '/customer-point-reports',
   //     },
   //     {
   //       component: CNavItem,
-  //       name: 'Select',
-  //       to: '/forms/select',
+  //       name: 'Vendar Point Reports',
+  //       to: '/vendar-point-reports',
   //     },
   //     {
   //       component: CNavItem,
-  //       name: 'Checks & Radios',
-  //       to: '/forms/checks-radios',
+  //       name: 'Event Point Reports',
+  //       to: '/customer-point-reports',
   //     },
   //     {
   //       component: CNavItem,
-  //       name: 'Range',
-  //       to: '/forms/range',
+  //       name: 'Point Summary Reports',
+  //       to: '/point-summary-reports',
   //     },
   //     {
   //       component: CNavItem,
-  //       name: 'Input Group',
-  //       to: '/forms/input-group',
+  //       name: 'Customer Payment Reports',
+  //       to: '/customer-payment-reports',
   //     },
   //     {
   //       component: CNavItem,
-  //       name: 'Floating Labels',
-  //       to: '/forms/floating-labels',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Layout',
-  //       to: '/forms/layout',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Validation',
-  //       to: '/forms/validation',
+  //       name: 'Vendar Payment Reports',
+  //       to: '/vender-payment-reports',
   //     },
   //   ],
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Products List',
-  //   to: '/ProductList',
-  //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Icons',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'CoreUI Free',
-  //       to: '/icons/coreui-icons',
-  //       badge: {
-  //         color: 'success',
-  //         text: 'NEW',
-  //       },
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'CoreUI Flags',
-  //       to: '/icons/flags',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'CoreUI Brands',
-  //       to: '/icons/brands',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Notifications',
-  //   icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Alerts',
-  //       to: '/notifications/alerts',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Badges',
-  //       to: '/notifications/badges',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Modal',
-  //       to: '/notifications/modals',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Toasts',
-  //       to: '/notifications/toasts',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Widgets',
-  //   to: '/widgets',
-  //   icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //     text: 'NEW',
-  //   },
-  // },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Extras',
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Pages',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Login',
-  //       to: '/login',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Register',
-  //       to: '/register',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Error 404',
-  //       to: '/404',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Error 500',
-  //       to: '/500',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Docs',
-  //   href: 'https://coreui.io/react/docs/templates/installation/',
-  //   icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
   // },
 ]
-
+JSON.parse(localStorage.getItem('eventi-user'))?.user_type === "vendor" && (
+  _nav = [..._nav, 
+    {
+    component: CNavGroup,
+    name: 'Events',
+    to: '/event-list',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Event List',
+        to: '/event-list',
+      },
+      {
+        component: CNavItem,
+        name: 'Event Registration',
+        to: '/event-registration',
+      },
+    ],
+  }]
+  )
 export default _nav
