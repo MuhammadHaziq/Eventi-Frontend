@@ -13,7 +13,7 @@ import {
   CInputGroup,
   CRow,
 } from "@coreui/react";
-import { PhoneInput } from "src/components/Inputs/PhoneInput";
+import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { addEvent } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
 export const EventRegistration = () => {
@@ -167,7 +167,7 @@ export const EventRegistration = () => {
                   </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
-                  <PhoneInput
+                  <PhoneNumberInput
                     phone_number={state.phone_number}
                     handleOnChange={handleOnChange}
                   />

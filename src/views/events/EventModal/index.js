@@ -19,7 +19,7 @@ import { useAppDispatch } from "src/context/AppContext";
 import { useProductAppDispatch } from "src/context/ProductContext";
 import { AppToast } from "src/components/AppToast";
 import { getEvent, updateEvent } from "src/context/EventContext/service";
-import { PhoneInput } from "src/components/Inputs/PhoneInput";
+import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { useNavigate } from "react-router-dom";
 const EventModal = ({ eventId, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
@@ -257,7 +257,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               </CFormFeedback>
             </CCol>
             <CCol md={6}>
-              <PhoneInput
+              <PhoneNumberInput
                 phone_number={state.phone_number}
                 handleOnChange={handleOnChange}
               />

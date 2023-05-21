@@ -14,6 +14,7 @@ import { AppToast } from "src/components/AppToast";
 import EventTable from "../EventTable";
 import { getEvents } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
+import AppProgress from "src/components/AppProgress";
 const EventList = () => {
   const app_dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
@@ -59,7 +60,7 @@ const EventList = () => {
   console.log(data, "DATA");
   return (
     <>
-      {/* {isError ? "" : <Progress loading={isFetching} />} */}
+      {isError ? "" : <AppProgress loading={isFetching} />}
       <CButton onClick={() => navigate("/event-registration")}>
         Add Event
       </CButton>

@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import ProductTable from "../ProductTable";
+import AppProgress from "src/components/AppProgress";
 
 export const ProductList = () => {
   const app_dispatch = useAppDispatch();
@@ -58,7 +59,7 @@ export const ProductList = () => {
 
   return (
     <>
-      {/* {isError ? "" : <Progress loading={isFetching} />} */}
+      {isError ? "" : <AppProgress loading={isFetching} />}
       <CButton onClick={() => setVisible(!visible)}>Add Product</CButton>
       <br></br>
       <br></br>
