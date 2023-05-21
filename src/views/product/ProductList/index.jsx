@@ -43,7 +43,6 @@ export const ProductList = () => {
   );
 
   const useGetData = (filterDatas) => {
-    console.log(filterDatas);
     setFilters({ ...filters, ...filterDatas });
   };
 
@@ -55,6 +54,7 @@ export const ProductList = () => {
   const clickHideModal = () => {
     setSelectedProduct("");
     setVisible(false);
+    setFilters({ ...filters, update: !filters?.update });
   };
 
   return (

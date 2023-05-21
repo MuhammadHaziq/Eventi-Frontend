@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState } from "react";
 import {
   CCard,
   CCardBody,
@@ -11,31 +11,63 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react'
-import { useVendorAppDispatch, useVendorAppState } from 'src/context/VendorContext'
-import { getVendors } from 'src/context/VendorContext/service'
+  CButton,
+} from "@coreui/react";
+import { getVendors } from "src/context/VendorContext/service";
+import { useAppDispatch } from "src/context/AppContext";
+import AppProgress from "src/components/AppProgress";
+import VendorTable from "../../VendorTable";
+import VendorModal from "../../VendorModal";
+import { useQuery } from "@tanstack/react-query";
+
 export const VendorList = () => {
-  const {vendors} = useVendorAppState();
-  const dispatch = useVendorAppDispatch()
+  const app_dispatch = useAppDispatch();
+  const [selectVendor, setSelectedVendor] = useState("");
+  const [filters, setFilters] = useState();
+  const [visible, setVisible] = useState(false);
 
-  const getAllVendors = () => {
-  try{
-        getVendors().then(response=> {
-          dispatch({type:"GET_VENDORS", vendors:response.data.data})
-        }).catch(err=> {
-          console.log(err)
-        })
-      }catch(err){
-        console.error(err.message)
-      }
-  }
+  const { data, error, isFetching, isLoading, isError } = useQuery(
+    ["Vendor", filters],
+    () => getVendors(filters),
+    {
+      onError: (error) => {
+        app_dispatch({
+          type: "SHOW_MESSAGE",
+          toast: AppToast({
+            message: error.response.data.message,
+            color: "dangar-alert",
+          }),
+        });
+      },
+      keepPreviousData: false,
+      staleTime: 5000,
+      retryOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
 
-  useEffect(()=> {
-    getAllVendors()
-  },[])
+  const useGetData = (filterDatas) => {
+    setFilters({ ...filters, ...filterDatas });
+  };
+
+  const clickOnEdit = (id) => {
+    setSelectedVendor(id);
+    setVisible(true);
+  };
+
+  const clickHideModal = () => {
+    setSelectedVendor("");
+    setVisible(false);
+    setFilters({ ...filters, update: !filters?.update });
+  };
 
   return (
     <>
+      {isError ? "" : <AppProgress loading={isFetching} />}
+      <CButton onClick={() => setVisible(!visible)}>Add Vendor</CButton>
+      <br></br>
+      <br></br>
       <CRow>
         <CCol>
           <CCard className="mb-4">
@@ -43,38 +75,24 @@ export const VendorList = () => {
               <strong>Vendor List</strong>
             </CCardHeader>
             <CCardBody>
-              <CTable hover>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">email</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Business Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Address</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Date of Birth</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {(vendors || [])?.map((item)=> (
-                    <CTableRow key={item._id}>
-                    <CTableDataCell>{item.first_name}</CTableDataCell>
-                    <CTableDataCell>{item.last_name}</CTableDataCell>
-                    <CTableDataCell>{item.email}</CTableDataCell>
-                    <CTableDataCell>{item.business_name}</CTableDataCell>
-                    <CTableDataCell>{item.address}</CTableDataCell>
-                    <CTableDataCell>{item.date_of_birth}</CTableDataCell>
-                    <CTableDataCell>{item.gender}</CTableDataCell>
-                    <CTableDataCell>{item.phone_number}</CTableDataCell>
-                  </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
+              <VendorTable
+                vendors={data?.data?.data?.data || []}
+                isLoading={isLoading}
+                tableMeta={data?.data?.data?.meta || null}
+                updateFilter={useGetData}
+                clickOnEdit={clickOnEdit}
+              />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
+      {visible && (
+        <VendorModal
+          setVisible={clickHideModal}
+          visible={visible}
+          vendor_id={selectVendor}
+        />
+      )}
     </>
-  )
-}
+  );
+};

@@ -56,8 +56,8 @@ const EventList = () => {
   const clickHideModal = () => {
     setSelectedProduct("");
     setVisible(false);
+    setFilters({ ...filters, update: !filters?.update });
   };
-  console.log(data, "DATA");
   return (
     <>
       {isError ? "" : <AppProgress loading={isFetching} />}

@@ -1,41 +1,67 @@
-import React, { useEffect } from 'react'
+import React, { useState } from "react";
 import {
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from '@coreui/react'
-import { getCustomers } from 'src/context/CustomerContext/service'
-import { useCustomerAppDispatch, useCustomerAppState } from 'src/context/CustomerContext'
+  CButton,
+} from "@coreui/react";
+import { getCustomers } from "src/context/CustomerContext/service";
+import CustomerTable from "../../CustomerTable";
+import AppProgress from "src/components/AppProgress";
+import { useAppDispatch } from "src/context/AppContext";
+import { useQuery } from "@tanstack/react-query";
+import CustomerModal from "../../CustomerModal";
+
 export const CustomerList = () => {
-  const {customers} = useCustomerAppState();
-  const dispatch = useCustomerAppDispatch()
+  const app_dispatch = useAppDispatch();
+  const [selectCustomer, setSelectedCustomer] = useState("");
+  const [filters, setFilters] = useState();
+  const [visible, setVisible] = useState(false);
 
-  const getAllCustomers = () => {
-  try{
-        getCustomers().then(response=> {
-          dispatch({type:"GET_CUSTOMERS", customers:response.data.data})
-        }).catch(err=> {
-          console.log(err)
-        })
-      }catch(err){
-        console.error(err.message)
-      }
-  }
+  const { data, error, isFetching, isLoading, isError } = useQuery(
+    ["Customers", filters],
+    () => getCustomers(filters),
+    {
+      onError: (error) => {
+        app_dispatch({
+          type: "SHOW_MESSAGE",
+          toast: AppToast({
+            message: error.response.data.message,
+            color: "dangar-alert",
+          }),
+        });
+      },
+      keepPreviousData: false,
+      staleTime: 5000,
+      retryOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
 
-  useEffect(()=> {
-    getAllCustomers()
-  },[])
+  const useGetData = (filterDatas) => {
+    setFilters({ ...filters, ...filterDatas });
+  };
+
+  const clickOnEdit = (id) => {
+    setSelectedCustomer(id);
+    setVisible(true);
+  };
+
+  const clickHideModal = () => {
+    setSelectedCustomer("");
+    setVisible(false);
+    setFilters({ ...filters, update: !filters?.update });
+  };
 
   return (
     <>
+      {isError ? "" : <AppProgress loading={isFetching} />}
+      <CButton onClick={() => setVisible(!visible)}>Add Customer</CButton>
+      <br></br>
+      <br></br>
       <CRow>
         <CCol>
           <CCard className="mb-4">
@@ -43,38 +69,24 @@ export const CustomerList = () => {
               <strong>Customer List</strong>
             </CCardHeader>
             <CCardBody>
-              <CTable hover>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">email</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Business Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Address</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Date of Birth</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Phone Number</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {(customers || [])?.map((item)=> (
-                    <CTableRow key={item._id}>
-                    <CTableDataCell>{item.first_name}</CTableDataCell>
-                    <CTableDataCell>{item.last_name}</CTableDataCell>
-                    <CTableDataCell>{item.email}</CTableDataCell>
-                    <CTableDataCell>{item.business_name}</CTableDataCell>
-                    <CTableDataCell>{item.address}</CTableDataCell>
-                    <CTableDataCell>{item.date_of_birth}</CTableDataCell>
-                    <CTableDataCell>{item.gender}</CTableDataCell>
-                    <CTableDataCell>{item.phone_number}</CTableDataCell>
-                  </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
+              <CustomerTable
+                customers={data?.data?.data?.data || []}
+                isLoading={isLoading}
+                tableMeta={data?.data?.data?.meta || null}
+                updateFilter={useGetData}
+                clickOnEdit={clickOnEdit}
+              />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
+      {visible && (
+        <CustomerModal
+          setVisible={clickHideModal}
+          visible={visible}
+          customer_id={selectCustomer}
+        />
+      )}
     </>
-  )
-}
+  );
+};
