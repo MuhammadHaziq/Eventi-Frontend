@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   CButton,
   CCard,
@@ -12,12 +12,13 @@ import {
   CFormTextarea,
   CInputGroup,
   CRow,
-} from '@coreui/react'
-import { PhoneInput } from 'src/components/Inputs/PhoneInput'
-import { addEvent } from 'src/context/EventContext/service'
-
+} from "@coreui/react";
+import { PhoneInput } from "src/components/Inputs/PhoneInput";
+import { addEvent } from "src/context/EventContext/service";
+import { useNavigate } from "react-router-dom";
 export const EventRegistration = () => {
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
   const [state, setState] = useState({
     event_name: "",
     event_date: null,
@@ -28,40 +29,47 @@ export const EventRegistration = () => {
     phone_number: "",
     equipments: "",
     security: "",
-    special_request: ""
+    special_request: "",
   });
   const [agree, setAgree] = useState(false);
-  const [errors, setErrors] = useState("")
+  const [errors, setErrors] = useState("");
+
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
-    }else{
-      event.preventDefault()
-      event.stopPropagation()
-      try{
-        setErrors("")
-        addEvent({...state,security:state.security === "yes" ? true : false, vendor_id:JSON.parse(localStorage.getItem("eventi-user"))?.vendor_id}).then(response=> {
-          if(response.data.statusCode === 200){
-            navigate("/event-list");
-          }
-        }).catch(err=> {
-          setErrors(err.response.data.message)
-          console.log(err)
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      try {
+        setErrors("");
+        addEvent({
+          ...state,
+          security: ["Yes", "yes"].includes(state.security) ? true : false,
+          vendor_id: JSON.parse(localStorage.getItem("eventi-user"))?.vendor_id,
         })
-      }catch(err){
-        setErrors(err.message)
-        console.error(err.message)
+          .then((response) => {
+            if (response.data.statusCode === 200) {
+              navigate("/event-list");
+            }
+          })
+          .catch((err) => {
+            setErrors(err.response.data.message);
+            console.log(err);
+          });
+      } catch (err) {
+        setErrors(err.message);
+        console.error(err.message);
       }
     }
-    setValidated(true)
-  }
+    setValidated(true);
+  };
 
   const handleOnChange = (e) => {
-    const {name, value} = e.target;
-    setState({...state, [name]:value})
-  }
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
   return (
     <>
       <CRow>
@@ -105,7 +113,9 @@ export const EventRegistration = () => {
                       onChange={handleOnChange}
                       required
                     />
-                    <CFormFeedback invalid>Please enter event birth.</CFormFeedback>
+                    <CFormFeedback invalid>
+                      Please enter event birth.
+                    </CFormFeedback>
                   </CInputGroup>
                 </CCol>
                 <CCol md={6}>
@@ -120,7 +130,9 @@ export const EventRegistration = () => {
                     onChange={handleOnChange}
                     required
                   />
-                  <CFormFeedback invalid>Please provide a Venue/location Name.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a Venue/location Name.
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
@@ -134,7 +146,9 @@ export const EventRegistration = () => {
                     onChange={handleOnChange}
                     required
                   />
-                  <CFormFeedback invalid>Please provide a Type of event</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a Type of event
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
@@ -153,7 +167,10 @@ export const EventRegistration = () => {
                   </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
-                  <PhoneInput phone_number={state.phone_number} handleOnChange={handleOnChange}/>
+                  <PhoneInput
+                    phone_number={state.phone_number}
+                    handleOnChange={handleOnChange}
+                  />
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
@@ -183,7 +200,9 @@ export const EventRegistration = () => {
                     onChange={handleOnChange}
                     required
                   />
-                  <CFormFeedback invalid>Please provide a Security needs</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a Security needs
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={12}>
                   <CFormTextarea
@@ -208,9 +227,11 @@ export const EventRegistration = () => {
                     label="Agree to terms and conditions"
                     required
                     checked={agree}
-                    onChange={()=>setAgree(!agree)}
+                    onChange={() => setAgree(!agree)}
                   />
-                  <CFormFeedback invalid>You must agree before submitting.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    You must agree before submitting.
+                  </CFormFeedback>
                 </CCol>
                 <CCol xs={12}>
                   <CButton color="primary" type="submit">
@@ -224,5 +245,5 @@ export const EventRegistration = () => {
         <CCol xs={2}></CCol>
       </CRow>
     </>
-  )
-}
+  );
+};
