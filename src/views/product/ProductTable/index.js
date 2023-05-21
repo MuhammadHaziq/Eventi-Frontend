@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
-// import { CDataTable, CPagination } from "@coreui/react";
 import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
-
-const ProductTable = ({ isLoading, products, tableMeta }) => {
+import AppDeleteButton from "src/components/AppDeleteButton";
+import AppEditButton from "src/components/AppEditButton";
+import { deleteProduct } from "src/context/ProductContext/service";
+import useDebounce from "src/hooks/useDebounce";
+const ProductTable = ({
+  isLoading,
+  products,
+  tableMeta,
+  updateFilter,
+  clickOnEdit,
+  clickHideModal,
+}) => {
   const [fields, setFields] = useState([]);
+  const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
+  const [tableFilters, setTableFilter] = useState(null);
+  const tableFilterDebounce = useDebounce(tableFilters, 300);
+
+  useEffect(() => {
+    if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
+      const tableFilter = JSON.stringify(tableFilters);
+      updateFilter({ tableFilters: tableFilter });
+    }
+  }, [tableFilterDebounce]);
+
   const [columns] = useState([
     {
-      key: "_id",
-      label: "#",
-      filter: true,
+      key: "Action",
+      label: "Action",
+      filter: false,
       isShow: true,
       disabled: false,
     },
@@ -39,7 +59,7 @@ const ProductTable = ({ isLoading, products, tableMeta }) => {
       setFields(columns.filter((itm) => itm.isShow));
     }
   }, [columns]);
-  console.log(tableMeta, "tableMeta");
+
   return (
     <>
       <CSmartTable
@@ -47,48 +67,57 @@ const ProductTable = ({ isLoading, products, tableMeta }) => {
         loading={isLoading}
         items={products}
         fields={fields}
-        itemsPerPage={tableMeta?.take || 10}
-        sorter
-        hover
-        outlined
+        itemsPerPage={tableMeta?.take}
+        itemsPerPageSelect
+        sorter={"true"}
+        hover={"true"}
+        outlined={"true"}
         tableProps={{
           hover: true,
           responsive: true,
         }}
-        pagination={{
-          external: true,
-        }}
-        // paginationProps={{
-        //   activePage: activePage,
-        //   pages: Math.ceil(records / itemsPerPage) || 1,
-        // }}
         columnFilter={{
           external: true,
         }}
         columnSorter={{
           external: true,
         }}
-        // onActivePageChange={(activePage) => setActivePage(activePage)}
-        // onColumnFilterChange={(filter) => {
-        //   setActivePage(1)
-        //   setColumnFilter(filter)
-        // }}
+        onColumnFilterChange={(e) => {
+          Object.keys(e)?.length > 0 && setTableFilter(e);
+        }}
         // onItemsPerPageChange={(itemsPerPage) => {
-        //     setActivePage(1)
-        //     setItemsPerPage(itemsPerPage)
-        //   }}
-        //   onSorterChange={(sorter) => setColumnSorter(sorter)}
+        //   //   setActivePage(1);
+        //   updateFilter({ perPage: itemsPerPage });
+        // }}
+        onSorterChange={(sorter) => {
+          updateFilter({ sort: JSON.stringify(sorter) });
+        }}
+        scopedColumns={{
+          Action: (item) => (
+            <td>
+              <div className="d-flex gap-2">
+                <AppDeleteButton
+                  title="Delete Product"
+                  message="Do you really want to delete this product?"
+                  delete_id={item._id}
+                  apiUrl={deleteProduct}
+                />
+                <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+              </div>
+            </td>
+          ),
+        }}
       />
       {+tableMeta?.pageCount > 1 && (
         <div className={"mt-2"}>
           <CSmartPagination
-            align="end"
-            activePage={1}
+            align="start"
+            activePage={currentPage}
             pages={tableMeta?.pageCount}
-            // onActivePageChange={(i) => {
-            //   setActivePage(i);
-            //   updateFilter({ page: i });
-            // }}
+            onActivePageChange={(i) => {
+              setActivePage(i);
+              updateFilter({ page: i });
+            }}
           />
         </div>
       )}

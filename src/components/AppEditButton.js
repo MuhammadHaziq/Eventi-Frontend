@@ -6,7 +6,7 @@ import CIcon from "@coreui/icons-react";
 const AppEditButton = ({ onClick, className = "bt btn-warning", edit_id }) => {
   return (
     <>
-      <CButton className={className} onClick={() => onClick(edit_id)}>
+      <CButton className={className} onClick={() => onClick(edit_id)} size="sm">
         <CIcon icon={cilPencil} className="text-white" />
       </CButton>
     </>

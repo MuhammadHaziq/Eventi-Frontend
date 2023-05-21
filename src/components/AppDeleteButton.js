@@ -54,7 +54,7 @@ const AppDeleteButton = ({
 
   return (
     <>
-      <CButton className={className} onClick={() => setVisible(true)}>
+      <CButton className={className} onClick={() => setVisible(true)} size="sm">
         <CIcon icon={cilTrash} className="text-white" />
       </CButton>
 
