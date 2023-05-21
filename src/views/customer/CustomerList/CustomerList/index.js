@@ -13,7 +13,7 @@ import AppProgress from "src/components/AppProgress";
 import { useAppDispatch } from "src/context/AppContext";
 import { useQuery } from "@tanstack/react-query";
 import CustomerModal from "../../CustomerModal";
-
+import { AppToast } from "src/components/AppToast";
 export const CustomerList = () => {
   const app_dispatch = useAppDispatch();
   const [selectCustomer, setSelectedCustomer] = useState("");

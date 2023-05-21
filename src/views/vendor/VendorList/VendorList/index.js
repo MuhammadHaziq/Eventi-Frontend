@@ -5,12 +5,6 @@ import {
   CCardHeader,
   CCol,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
   CButton,
 } from "@coreui/react";
 import { getVendors } from "src/context/VendorContext/service";
@@ -19,7 +13,7 @@ import AppProgress from "src/components/AppProgress";
 import VendorTable from "../../VendorTable";
 import VendorModal from "../../VendorModal";
 import { useQuery } from "@tanstack/react-query";
-
+import { AppToast } from "src/components/AppToast";
 export const VendorList = () => {
   const app_dispatch = useAppDispatch();
   const [selectVendor, setSelectedVendor] = useState("");
@@ -61,7 +55,7 @@ export const VendorList = () => {
     setVisible(false);
     setFilters({ ...filters, update: !filters?.update });
   };
-
+  console.log(isError, error);
   return (
     <>
       {isError ? "" : <AppProgress loading={isFetching} />}

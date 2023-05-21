@@ -18,18 +18,17 @@ import {
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
 import { login } from "src/context/AuthContext/service";
-import useToastContext from "src/context/ToastContext";
 import jwtDecode from "jwt-decode";
 import authAxios from "src/utils/axios";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+
 const Login = () => {
   const [userType, setUserType] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState("");
-  const addToast = useToastContext();
   const navigate = useNavigate();
   const app_dispatch = useAppDispatch();
 

@@ -1,7 +1,7 @@
 import authAxios from "src/utils/axios";
 
-export const getVendors = () => {
-  return authAxios.get("/api/vendor");
+export const getVendors = (filters) => {
+  return authAxios.get("/api/vendor", { params: filters });
 };
 
 export const deleteVendor = (id) => {

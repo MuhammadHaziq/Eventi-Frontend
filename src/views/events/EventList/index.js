@@ -23,7 +23,7 @@ const EventList = () => {
   const navigate = useNavigate();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
-    ["Porudcts", filters],
+    ["Events", filters],
     () => getEvents(filters),
     {
       onError: (error) => {

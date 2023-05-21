@@ -15,7 +15,8 @@ import {
 import { GenderSelection } from "src/components/Inputs/GenderSelection";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { signUp } from "src/context/AuthContext/service";
-
+import { useAppDispatch } from "src/context/AppContext";
+import { AppToast } from "src/components/AppToast";
 const CustomerRegister = () => {
   const [validated, setValidated] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -32,6 +33,7 @@ const CustomerRegister = () => {
     age_verification: false,
     user_type: "customer",
   });
+  const app_dispatch = useAppDispatch();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -50,12 +52,31 @@ const CustomerRegister = () => {
         signUp(state)
           .then((response) => {
             console.log(response);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
+                color: "success-alert",
+              }),
+            });
           })
           .catch((err) => {
-            console.log(err);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: err.response.data.message,
+                color: "danger-alert",
+              }),
+            });
           });
       } catch (err) {
-        console.log("CATCH ERROR", err);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err.message,
+            color: "danger-alert",
+          }),
+        });
       }
       console.log(state, event, "state");
     }

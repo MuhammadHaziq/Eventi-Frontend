@@ -4,11 +4,9 @@ import { AuthAppProvider } from "./AuthContext";
 import { ProductAppProvider } from "./ProductContext";
 import { VendorAppProvider } from "./VendorContext";
 import { CustomerAppProvider } from "./CustomerContext";
-import { ToastContextProvider } from "./ToastContext/ToastContext";
 import App from "src/App";
 function MainContext() {
   return (
-    // <ToastContextProvider>
     <AppProvider>
       <AuthAppProvider>
         <ProductAppProvider>
@@ -20,7 +18,6 @@ function MainContext() {
         </ProductAppProvider>
       </AuthAppProvider>
     </AppProvider>
-    // </ToastContextProvider>
   );
 }
 export default MainContext;
