@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CCard,
   CCardBody,
@@ -22,30 +22,38 @@ import ProductModal from "../ProductModal";
 import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import { deleteProduct } from "src/context/ProductContext/service";
-
+import { useQuery } from "@tanstack/react-query";
+import { useAppDispatch } from "src/context/AppContext";
+import { AppToast } from "src/components/AppToast";
+import ProductTable from "../ProductTable";
 export const ProductList = () => {
   const { products } = useProductAppState();
   const dispatch = useProductAppDispatch();
+  const app_dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
   const [selectProduct, setSelectedProduct] = useState("");
+  const [filters, setFilters] = useState({ page: 1, perPage: 10 });
 
-  const getAllProducts = () => {
-    try {
-      getProducts()
-        .then((response) => {
-          dispatch({ type: "GET_PRODUCTS", products: response.data.data });
-        })
-        .catch((err) => {
-          console.log(err);
+  const { data, error, isFetching, isLoading, isError } = useQuery(
+    ["Porudcts", filters],
+    () => filters && getProducts(filters),
+    {
+      onError: (error) => {
+        app_dispatch({
+          type: "SHOW_MESSAGE",
+          toast: AppToast({
+            message: error.response.data.message,
+            color: "dangar-alert",
+          }),
         });
-    } catch (err) {
-      console.error(err.message);
+      },
+      keepPreviousData: false,
+      staleTime: 5000,
+      retryOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
-  };
-
-  useEffect(() => {
-    getAllProducts();
-  }, []);
+  );
 
   const clickOnEdit = (id) => {
     setSelectedProduct(id);
@@ -69,7 +77,7 @@ export const ProductList = () => {
               <strong>Product List</strong>
             </CCardHeader>
             <CCardBody>
-              <CTable hover>
+              {/* <CTable hover>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -82,7 +90,7 @@ export const ProductList = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {(products || [])?.map((item, index) => (
+                  {(data?.data?.data?.data || [])?.map((item, index) => (
                     <CTableRow key={item._id}>
                       <CTableHeaderCell scope="row">
                         {index + 1}
@@ -107,7 +115,12 @@ export const ProductList = () => {
                     </CTableRow>
                   ))}
                 </CTableBody>
-              </CTable>
+              </CTable> */}
+              <ProductTable
+                products={data?.data?.data?.data || []}
+                isLoading={isLoading}
+                tableMeta={data?.data?.data?.meta || []}
+              />
             </CCardBody>
           </CCard>
         </CCol>

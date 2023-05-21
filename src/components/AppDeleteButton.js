@@ -62,7 +62,7 @@ const AppDeleteButton = ({
         backdrop="static"
         visible={visible}
         onClose={() => setVisible(false)}
-        size="md"
+        size="lg"
       >
         <CModalHeader>
           <CModalTitle>{title || "DELETE"}</CModalTitle>

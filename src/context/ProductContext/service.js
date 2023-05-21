@@ -1,7 +1,7 @@
 import authAxios from "src/utils/axios";
 
-export const getProducts = () => {
-  return authAxios.get("/api/product");
+export const getProducts = (filters) => {
+  return authAxios.get("/api/product", { params: filters });
 };
 
 export const addProduct = (data) => {
