@@ -169,7 +169,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
         size="lg"
       >
         <CModalHeader>
-          <CModalTitle>{eventId ? "Edit" : "Add"} Product</CModalTitle>
+          <CModalTitle>{eventId ? "Edit" : "Add"} Event</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm
@@ -315,14 +315,15 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 <CButton color="primary" type="submit" disabled={isLoading}>
                   {isLoading ? <CSpinner /> : "Update"}
                 </CButton>
+                <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
+                Close
+              </CButton>
               </CCol>
             </CRow>
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={setVisible} disabled={isLoading}>
-            Close
-          </CButton>
+
         </CModalFooter>
       </CModal>
     </>
