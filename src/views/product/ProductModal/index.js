@@ -159,7 +159,7 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
         backdrop="static"
         visible={visible}
         onClose={setVisible}
-        size="lg"
+        size="md"
       >
         <CModalHeader>
           <CModalTitle>{product_id ? "Edit" : "Add"} Product</CModalTitle>
@@ -220,14 +220,16 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
                 <CButton color="primary" type="submit" disabled={isLoading}>
                   {isLoading ? <CSpinner /> : "Save"}
                 </CButton>
+
+                <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
+                Close
+              </CButton>
               </CCol>
             </CRow>
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={setVisible} disabled={isLoading}>
-            Close
-          </CButton>
+
         </CModalFooter>
       </CModal>
     </>

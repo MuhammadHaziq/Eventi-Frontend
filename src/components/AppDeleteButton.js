@@ -83,7 +83,7 @@ const AppDeleteButton = ({
             onClick={() => onDelete()}
             disabled={isLoading}
           >
-            {isLoading ? "Deleting..." : "yes"}
+            {isLoading ? "Deleting..." : "Yes"}
           </CButton>
         </CModalFooter>
       </CModal>
