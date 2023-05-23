@@ -12,12 +12,12 @@ export const PhoneNumberInput = ({
     const val = { target: { name: "phone_number", value: e } };
     handleOnChange(val);
   };
-  //   console.log(phone_number);
   return (
     <>
       {/* <CInputGroup> */}
       <PhoneInput
         id="validationContactNumber"
+        defaultCountry="US"
         floatingClassName="mb-3 form-control"
         className="form-control"
         floatingLabel={placeHolder}

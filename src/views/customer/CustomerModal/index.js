@@ -180,7 +180,8 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <h1>{customer_id ? "Edit" : "Add"} Customer</h1>
+            {/*<h1>{customer_id ? "Edit" : "Add"} Customer</h1>*/}
+
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -218,7 +219,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
                 placeholder="Email Address"
                 name="email"
                 value={state.email}
-                autoComplete={""}
+                autoComplete="false"
                 onChange={handleOnChange}
                 required
               />
@@ -231,8 +232,8 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
                   id="validationPassword"
                   floatingClassName="mb-3"
                   floatingLabel="Password"
-                  placeholder="Passwors"
-                  autoComplete=""
+                  placeholder="Password"
+                  autoComplete="false"
                   name="password"
                   defaultValue={state.password}
                   onChange={handleOnChange}
@@ -318,13 +319,14 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               <CButton color="primary" type="submit" disabled={isLoading}>
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
+              <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
+              Close
+            </CButton>
             </CCol>
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={setVisible} disabled={isLoading}>
-            Close
-          </CButton>
+
         </CModalFooter>
       </CModal>
     </>

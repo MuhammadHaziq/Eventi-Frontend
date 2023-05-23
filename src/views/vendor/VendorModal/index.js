@@ -172,7 +172,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <h1>{vendor_id ? "Edit" : "Add"} Vendor</h1>
+           { /*<h1>{vendor_id ? "Edit" : "Add"} Vendor</h1>*/}
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -296,13 +296,14 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               <CButton color="primary" type="submit" disabled={isLoading}>
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
+              <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
+              Close
+            </CButton>
             </CCol>
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={setVisible} disabled={isLoading}>
-            Close
-          </CButton>
+
         </CModalFooter>
       </CModal>
     </>
