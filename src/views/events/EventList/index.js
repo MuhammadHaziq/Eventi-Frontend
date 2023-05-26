@@ -8,6 +8,7 @@ import {
   CButton,
 } from "@coreui/react";
 import EventModal from "../EventModal";
+import ReqEventModal from "../ReqEventModal";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
@@ -19,6 +20,7 @@ const EventList = () => {
   const app_dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
   const [selectProduct, setSelectedProduct] = useState("");
+  const [reqModelID, setreqModelID] = useState("");
   const [filters, setFilters] = useState();
   const navigate = useNavigate();
 
@@ -53,6 +55,12 @@ const EventList = () => {
     setVisible(true);
   };
 
+  const clickOnReqForm = (id, req_data) => {
+    console.log("req_id----", req_data);
+    setreqModelID(req_data);
+    setVisible(true);
+  };
+
   const clickHideModal = () => {
     setSelectedProduct("");
     setVisible(false);
@@ -79,17 +87,30 @@ const EventList = () => {
                 tableMeta={data?.data?.data?.meta || null}
                 updateFilter={useGetData}
                 clickOnEdit={clickOnEdit}
+                clickOnReqForm={clickOnReqForm}
               />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
       {visible && (
-        <EventModal
-          setVisible={clickHideModal}
-          visible={visible}
-          eventId={selectProduct}
-        />
+        <>
+          {visible && (
+            <EventModal
+              setVisible={clickHideModal}
+              visible={visible}
+              eventId={selectProduct}
+            />
+          )}
+
+          {reqModelID === "reqIDForm" && (
+            <ReqEventModal
+              setVisible={clickHideModal}
+              visible={visible}
+              reqModelID={reqModelID}
+            />
+          )}
+        </>
       )}
     </>
   );

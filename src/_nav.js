@@ -66,6 +66,24 @@ let _nav = [
       },
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Users',
+    to: '/myTeam-list',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'User List',
+        to: '/myTeam-list',
+      },
+      {
+        component: CNavItem,
+        name: 'Access Right',
+        to: '/accessRight',
+      },
+    ],
+  },
   // {
   //   component: CNavGroup,
   //   name: 'Reports',
@@ -106,7 +124,7 @@ let _nav = [
   // },
 ]
 JSON.parse(localStorage.getItem('eventi-user'))?.user_type === "vendor" && (
-  _nav = [..._nav, 
+  _nav = [..._nav,
     {
     component: CNavGroup,
     name: 'Events',
