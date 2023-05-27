@@ -22,7 +22,7 @@ import jwtDecode from "jwt-decode";
 import authAxios from "src/utils/axios";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
-
+import { useAuthAppDispatch } from "src/context/AuthContext";
 const Login = () => {
   const [userType, setUserType] = useState(true);
   const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ const Login = () => {
   const [errors, setErrors] = useState("");
   const navigate = useNavigate();
   const app_dispatch = useAppDispatch();
-
+  const auth_dispatch = useAuthAppDispatch();
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -52,10 +52,16 @@ const Login = () => {
               response.data.data;
             localStorage.setItem("eventi", response.data.data);
             const decodedHeader = jwtDecode(response.data.data);
+            delete decodedHeader?.user?.permissions;
             localStorage.setItem(
               "eventi-user",
               JSON.stringify(decodedHeader?.user)
             );
+            auth_dispatch({
+              type: "USER_LOGIN",
+              user: decodedHeader?.user,
+              permissions: jwtDecode(response.data.data)?.permissions,
+            });
             navigate("/");
           })
           .catch((err) => {
