@@ -10,7 +10,6 @@ const ProductTable = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
-  clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);

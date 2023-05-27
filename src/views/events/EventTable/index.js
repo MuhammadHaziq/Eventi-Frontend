@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
 import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
+import AppReqFormButton from "src/components/AppReqFormButton";
 import useDebounce from "src/hooks/useDebounce";
 import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
@@ -12,6 +13,7 @@ const EventTable = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
+  clickOnReqForm,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -150,6 +152,10 @@ const EventTable = ({
                   apiUrl={deleteEvent}
                 />
                 <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+                <AppReqFormButton
+                  onClick={clickOnReqForm}
+                  req_data ={{ req_id: item._id, reqIDForm: "reqIDForm" }}
+                />
               </div>
             </td>
           ),

@@ -13,6 +13,7 @@ import {
   CModalTitle,
   CSpinner,
   CFormTextarea,
+  CFormCheck,
   CInputGroup,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
@@ -20,9 +21,11 @@ import { AppToast } from "src/components/AppToast";
 import { getEvent, updateEvent } from "src/context/EventContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { useNavigate } from "react-router-dom";
-const EventModal = ({ eventId, visible, setVisible }) => {
+const EventModal = ({ reqModelID, visible, setVisible }) => {
+  console.log(reqModelID);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [agree, setAgree] = useState(false);
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     event_name: "",
@@ -41,7 +44,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   const getEventById = useCallback(() => {
     try {
       setIsLoading(true);
-      getEvent(eventId)
+      getEvent(reqModelID)
         .then((response) => {
           if (response.data.data) {
             setState({
@@ -88,7 +91,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
     }
-  }, [eventId]);
+  }, [reqModelID]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -101,7 +104,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       try {
         updateEvent({
           ...state,
-          eventId: eventId,
+          reqModelID: reqModelID,
           security: ["Yes", "yes"].includes(state.security) ? true : false,
         })
           .then((response) => {
@@ -153,10 +156,10 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   };
 
   useEffect(() => {
-    if (eventId) {
-      getEventById();
+    if (reqModelID) {
+      // getEventById();
     }
-  }, [eventId]);
+  }, [reqModelID]);
 
   return (
     <>
@@ -167,7 +170,9 @@ const EventModal = ({ eventId, visible, setVisible }) => {
         size="lg"
       >
         <CModalHeader>
-          <CModalTitle>{eventId ? "Edit" : "Add"} Event</CModalTitle>
+          <CModalTitle>
+            <strong>Join Event Request</strong>{" "}
+          </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm
@@ -308,10 +313,48 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 Please provide a Special requests or accommodations.
               </CFormFeedback>
             </CCol>
+            <CCol md={12}>
+              <CFormTextarea
+                rows={2}
+                id="eventDescription"
+                floatingClassName="mb-3"
+                floatingLabel="Event Description"
+                placeholder="Event Description"
+                name="event_description"
+                value={state.special_request}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>
+                Please provide a Special requests event description.
+              </CFormFeedback>
+            </CCol>
+            <CCol xs={12}>
+              <p>I agree with</p>
+              <CFormCheck
+                type="checkbox"
+                id="invalidCheck"
+                label="Through the submission of this request form, I understand and
+                agree that ALL requests must go through the approval process.
+                This process includes but is not limited to the approval of the
+                following: dates, times, event purpose, set up and equipment
+                needs, childcare availability, etc. You will be contacted after
+                this request is submitted either for further questions about
+                event or outcome of the approval process."
+                required
+                checked={agree}
+                onChange={() => setAgree(!agree)}
+              />
+
+              <CFormFeedback invalid>
+                You must agree before submitting.
+              </CFormFeedback>
+              <br></br>
+            </CCol>
             <CRow>
               <CCol className="text-end">
                 <CButton color="primary" type="submit" disabled={isLoading}>
-                  {isLoading ? <CSpinner /> : "Update"}
+                  {isLoading ? <CSpinner /> : "Add"}
                 </CButton>
                 <CButton
                   style={{ marginLeft: "10px" }}
