@@ -10,29 +10,6 @@ let _nav = [
     to: "/dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Registration Forms',
-  //   to: '/customer-registration',
-  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Customer Registration',
-  //       to: '/customer-registration',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Vendar Registration',
-  //       to: '/vendar-registration',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Event Registration',
-  //       to: '/event-registration',
-  //     },
-  //   ],
-  // },
   {
     component: CNavItem,
     name: "Products",
@@ -66,44 +43,6 @@ let _nav = [
       },
     ],
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Reports',
-  //   to: '/customer-reports',
-  //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Customer Point Reports',
-  //       to: '/customer-point-reports',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Vendar Point Reports',
-  //       to: '/vendar-point-reports',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Event Point Reports',
-  //       to: '/customer-point-reports',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Point Summary Reports',
-  //       to: '/point-summary-reports',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Customer Payment Reports',
-  //       to: '/customer-payment-reports',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Vendar Payment Reports',
-  //       to: '/vender-payment-reports',
-  //     },
-  //   ],
-  // },
 ];
 JSON.parse(localStorage.getItem("eventi-user"))?.user_type === "vendor" &&
   (_nav = [
