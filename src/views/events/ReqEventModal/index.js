@@ -17,7 +17,6 @@ import {
   CInputGroup,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
-import { useProductAppDispatch } from "src/context/ProductContext";
 import { AppToast } from "src/components/AppToast";
 import { getEvent, updateEvent } from "src/context/EventContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
@@ -27,7 +26,6 @@ const EventModal = ({ reqModelID, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agree, setAgree] = useState(false);
-  const dispatch = useProductAppDispatch();
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     event_name: "",
@@ -61,7 +59,7 @@ const EventModal = ({ reqModelID, visible, setVisible }) => {
               security: response.data.data.security === true ? "Yes" : "No",
               special_request: response.data.data.special_request,
             });
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -69,7 +67,7 @@ const EventModal = ({ reqModelID, visible, setVisible }) => {
               }),
             });
           } else {
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -81,14 +79,14 @@ const EventModal = ({ reqModelID, visible, setVisible }) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          dispatch({
+          app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({ message: err.message, color: "danger-alert" }),
           });
         });
     } catch (err) {
       setIsLoading(false);
-      dispatch({
+      app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
@@ -332,9 +330,7 @@ const EventModal = ({ reqModelID, visible, setVisible }) => {
               </CFormFeedback>
             </CCol>
             <CCol xs={12}>
-            <p>
-            I agree with
-            </p>
+              <p>I agree with</p>
               <CFormCheck
                 type="checkbox"
                 id="invalidCheck"

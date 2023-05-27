@@ -19,13 +19,11 @@ import {
   updateProduct,
 } from "src/context/ProductContext/service";
 import { useAppDispatch } from "src/context/AppContext";
-import { useProductAppDispatch } from "src/context/ProductContext";
 import { AppToast } from "src/components/AppToast";
 
 const ProductModal = ({ product_id, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useProductAppDispatch();
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     product_name: "",
@@ -44,7 +42,7 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
               product_quantity: response.data.data.product_quantity,
               product_price: response.data.data.product_price,
             });
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -52,7 +50,7 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
               }),
             });
           } else {
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -64,14 +62,14 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          dispatch({
+          app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({ message: err.message, color: "danger-alert" }),
           });
         });
     } catch (err) {
       setIsLoading(false);
-      dispatch({
+      app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
@@ -103,12 +101,6 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
         )
           .then((response) => {
             setIsLoading(false);
-            if (!product_id) {
-              dispatch({ type: "ADD_PRODUCT", product: response.data.data });
-            } else {
-              dispatch({ type: "EDIT_PRODUCT", product: response.data.data });
-            }
-
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -221,16 +213,19 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
                   {isLoading ? <CSpinner /> : "Save"}
                 </CButton>
 
-                <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
-                Close
-              </CButton>
+                <CButton
+                  style={{ marginLeft: "10px" }}
+                  color="secondary"
+                  onClick={setVisible}
+                  disabled={isLoading}
+                >
+                  Close
+                </CButton>
               </CCol>
             </CRow>
           </CForm>
         </CModalBody>
-        <CModalFooter>
-
-        </CModalFooter>
+        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

@@ -55,7 +55,7 @@ export const VendorList = () => {
     setVisible(false);
     setFilters({ ...filters, update: !filters?.update });
   };
-  console.log(isError, error);
+
   return (
     <>
       {isError ? "" : <AppProgress loading={isFetching} />}

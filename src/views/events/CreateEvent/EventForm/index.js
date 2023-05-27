@@ -16,6 +16,8 @@ import {
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { addEvent } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "src/context/AppContext";
+
 export const EventRegistration = () => {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ export const EventRegistration = () => {
     special_request: "",
   });
   const [agree, setAgree] = useState(false);
-  const [errors, setErrors] = useState("");
+  const app_dispatch = useAppDispatch();
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -43,7 +45,6 @@ export const EventRegistration = () => {
       event.preventDefault();
       event.stopPropagation();
       try {
-        setErrors("");
         addEvent({
           ...state,
           security: ["Yes", "yes"].includes(state.security) ? true : false,
@@ -52,14 +53,33 @@ export const EventRegistration = () => {
           .then((response) => {
             if (response.data.statusCode === 200) {
               navigate("/event-list");
+              app_dispatch({
+                type: "SHOW_RESPONSE",
+                toast: AppToast({
+                  message: response.data.message,
+                  color: "success-alert",
+                }),
+              });
             }
           })
           .catch((err) => {
-            setErrors(err.response.data.message);
             console.log(err);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: err.message,
+                color: "danger-alert",
+              }),
+            });
           });
       } catch (err) {
-        setErrors(err.message);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err.message,
+            color: "danger-alert",
+          }),
+        });
         console.error(err.message);
       }
     }

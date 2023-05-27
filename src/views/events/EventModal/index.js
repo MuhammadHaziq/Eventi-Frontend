@@ -16,7 +16,6 @@ import {
   CInputGroup,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
-import { useProductAppDispatch } from "src/context/ProductContext";
 import { AppToast } from "src/components/AppToast";
 import { getEvent, updateEvent } from "src/context/EventContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
@@ -24,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 const EventModal = ({ eventId, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useProductAppDispatch();
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     event_name: "",
@@ -58,7 +56,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               security: response.data.data.security === true ? "Yes" : "No",
               special_request: response.data.data.special_request,
             });
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -66,7 +64,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               }),
             });
           } else {
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -78,14 +76,14 @@ const EventModal = ({ eventId, visible, setVisible }) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          dispatch({
+          app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({ message: err.message, color: "danger-alert" }),
           });
         });
     } catch (err) {
       setIsLoading(false);
-      dispatch({
+      app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
@@ -315,16 +313,19 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 <CButton color="primary" type="submit" disabled={isLoading}>
                   {isLoading ? <CSpinner /> : "Update"}
                 </CButton>
-                <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
-                Close
-              </CButton>
+                <CButton
+                  style={{ marginLeft: "10px" }}
+                  color="secondary"
+                  onClick={setVisible}
+                  disabled={isLoading}
+                >
+                  Close
+                </CButton>
               </CCol>
             </CRow>
           </CForm>
         </CModalBody>
-        <CModalFooter>
-
-        </CModalFooter>
+        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

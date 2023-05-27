@@ -17,7 +17,6 @@ import {
   CFormSwitch,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
-import { useProductAppDispatch } from "src/context/ProductContext";
 import { AppToast } from "src/components/AppToast";
 import {
   getCustomer,
@@ -29,7 +28,6 @@ import { GenderSelection } from "src/components/Inputs/GenderSelection";
 const CustomerModal = ({ customer_id, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useProductAppDispatch();
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     first_name: "",
@@ -62,7 +60,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               phone_number: response.data.data.phone_number,
               age_verification: response.data.data.age_verification,
             });
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -70,7 +68,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               }),
             });
           } else {
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -82,14 +80,14 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          dispatch({
+          app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({ message: err.message, color: "danger-alert" }),
           });
         });
     } catch (err) {
       setIsLoading(false);
-      dispatch({
+      app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
@@ -319,15 +317,18 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               <CButton color="primary" type="submit" disabled={isLoading}>
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
-              <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
-              Close
-            </CButton>
+              <CButton
+                style={{ marginLeft: "10px" }}
+                color="secondary"
+                onClick={setVisible}
+                disabled={isLoading}
+              >
+                Close
+              </CButton>
             </CCol>
           </CForm>
         </CModalBody>
-        <CModalFooter>
-
-        </CModalFooter>
+        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

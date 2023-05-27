@@ -14,7 +14,6 @@ import {
   CInputGroup,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
-import { useProductAppDispatch } from "src/context/ProductContext";
 import { AppToast } from "src/components/AppToast";
 import { signUp } from "src/context/AuthContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
@@ -23,7 +22,6 @@ import { getVendor, updateVendor } from "src/context/VendorContext/service";
 const VendorModal = ({ vendor_id, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useProductAppDispatch();
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     first_name: "",
@@ -54,7 +52,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               gender: response.data.data.gender,
               phone_number: response.data.data.phone_number,
             });
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -62,7 +60,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               }),
             });
           } else {
-            dispatch({
+            app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
                 message: response.data.message,
@@ -74,14 +72,14 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          dispatch({
+          app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({ message: err.message, color: "danger-alert" }),
           });
         });
     } catch (err) {
       setIsLoading(false);
-      dispatch({
+      app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
@@ -172,7 +170,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-           { /*<h1>{vendor_id ? "Edit" : "Add"} Vendor</h1>*/}
+            {/*<h1>{vendor_id ? "Edit" : "Add"} Vendor</h1>*/}
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -296,15 +294,18 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               <CButton color="primary" type="submit" disabled={isLoading}>
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
-              <CButton style={{marginLeft:"10px"}} color="secondary" onClick={setVisible} disabled={isLoading}>
-              Close
-            </CButton>
+              <CButton
+                style={{ marginLeft: "10px" }}
+                color="secondary"
+                onClick={setVisible}
+                disabled={isLoading}
+              >
+                Close
+              </CButton>
             </CCol>
           </CForm>
         </CModalBody>
-        <CModalFooter>
-
-        </CModalFooter>
+        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );
