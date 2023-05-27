@@ -8,7 +8,7 @@ let _nav = [
     component: CNavItem,
     name: "Dashboard",
     to: "/dashboard",
-    allowAll: true,
+    permission: "dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {

@@ -1,7 +1,7 @@
+import jwtDecode from "jwt-decode";
 const permissionGuard = (permissionCode) => {
-  console.log(permissionCode);
-  const currentUser = window.localStorage.getItem("eventi")?.user;
-  if (currentUser !== null) {
+  const currentUser = jwtDecode(window.localStorage.getItem("eventi"))?.user;
+  if (currentUser) {
     const userPermission =
       currentUser &&
       (currentUser.permissions || []).findIndex(

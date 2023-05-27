@@ -16,7 +16,7 @@ const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  { path: "/dashboard", name: "Dashboard", element: Dashboard },
+  // { path: "/dashboard", name: "Dashboard", element: Dashboard },
   {
     path: "/customer-registration",
     name: "Customer Registration",

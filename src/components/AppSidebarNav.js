@@ -63,7 +63,7 @@ export const AppSidebarNav = ({ items }) => {
         items.map((item, index) => {
           return (
             (permissions || []).filter(
-              (ite) => ite.permission === item?.permission || item?.allowAll
+              (ite) => ite.permission === item?.permission
             )?.length > 0 &&
             (item.items ? navGroup(item, index) : navItem(item, index))
           );
