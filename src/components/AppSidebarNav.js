@@ -6,8 +6,11 @@ import { CBadge } from "@coreui/react";
 
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation();
-  const permissions = jwtDecode(localStorage.getItem("eventi"))?.user
-    ?.permissions;
+  let permissions = [];
+  if (localStorage.getItem("eventi")) {
+    permissions = jwtDecode(localStorage.getItem("eventi"))?.user?.permissions;
+  }
+
   const navLink = (name, icon, badge) => {
     return (
       <>
