@@ -10,13 +10,19 @@ const VendarRegistration = React.lazy(() =>
 const EventRegistration = React.lazy(() =>
   import("./views/events/CreateEvent")
 );
-const CustomerList = React.lazy(() => import("./views/customer/CustomerList"));
-const VendorList = React.lazy(() => import("./views/vendor/VendorList"));
+const CustomerList = React.lazy(() => import("./views/customer"));
+const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
+
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  // { path: "/dashboard", name: "Dashboard", element: Dashboard },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    permission: "dashboard",
+    element: Dashboard,
+  },
   {
     path: "/customer-registration",
     name: "Customer Registration",
