@@ -20,6 +20,7 @@ import { AppToast } from "src/components/AppToast";
 import { getEvent, updateEvent } from "src/context/EventContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { useNavigate } from "react-router-dom";
+import ReactSelect from "src/components/Inputs/ReactSelect";
 const EventModal = ({ eventId, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -277,7 +278,20 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               </CFormFeedback>
             </CCol>
             <CCol md={6}>
-              <CFormInput
+              <ReactSelect
+                id="validationSecurityNeeds"
+                floatinglabel="Security needs"
+                options={[
+                  { value: "Yes", label: "Yes" },
+                  { value: "No", label: "No" },
+                ]}
+                isRequired={true}
+                handleChange={handleOnChange}
+                name="security"
+                placeholder="Security needs"
+                value={state.security}
+              />
+              {/* <CFormInput
                 type="text"
                 id="validationSecurityNeeds"
                 floatingclassname="mb-3"
@@ -287,7 +301,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 value={state.security}
                 onChange={handleOnChange}
                 required
-              />
+              /> */}
               <CFormFeedback invalid>
                 Please provide a Security needs
               </CFormFeedback>

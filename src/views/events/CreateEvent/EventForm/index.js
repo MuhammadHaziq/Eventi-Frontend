@@ -18,6 +18,7 @@ import { addEvent } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+import ReactSelect from "src/components/Inputs/ReactSelect";
 
 export const EventRegistration = () => {
   const [validated, setValidated] = useState(false);
@@ -230,17 +231,30 @@ export const EventRegistration = () => {
                   </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
-                  <CFormInput
-                    type="text"
+                  <ReactSelect
                     id="validationSecurityNeeds"
-                    floatingclassname="mb-3"
                     floatinglabel="Security needs"
-                    placeholder="Security needs"
+                    options={[
+                      { value: "Yes", label: "Yes" },
+                      { value: "No", label: "No" },
+                    ]}
+                    isRequired={true}
+                    handleChange={handleOnChange}
                     name="security"
-                    defaultValue={state.security}
-                    onChange={handleOnChange}
-                    required
+                    placeholder="Security needs"
+                    value={state.security}
                   />
+                  {/* // <CFormInput
+                  //   type="text"
+                  //   id="validationSecurityNeeds"
+                  //   floatingclassname="mb-3"
+                  //   floatinglabel="Security needs"
+                  //   placeholder="Security needs"
+                  //   name="security"
+                  //   defaultValue={state.security}
+                  //   onChange={handleOnChange}
+                  //   required
+                  // /> */}
                   <CFormFeedback invalid>
                     Please provide a Security needs
                   </CFormFeedback>
