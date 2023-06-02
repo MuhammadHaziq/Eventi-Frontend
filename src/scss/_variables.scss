@@ -3,6 +3,9 @@
 // If you want to customize your project please uncomment and update one of the following variables.
 
 // Color system
+$carousel-transition-duration:       .1s;
+$carousel-transition:                transform $carousel-transition-duration ease-in-out; // Define transform transition first if using multiple transitions (e.g., `transform 2s ease, opacity .5s ease-out`)
+
 
 // scss-docs-start gray-color-variables
 // $white:     #fff !default;
