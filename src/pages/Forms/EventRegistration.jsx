@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   CButton,
   CCard,
@@ -16,18 +16,18 @@ import {
   CInputGroup,
   // CInputGroupText,
   CRow,
-} from '@coreui/react'
+} from "@coreui/react";
 
 const EventRegistration = () => {
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(false);
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     }
-    setValidated(true)
-  }
+    setValidated(true);
+  };
   return (
     <>
       <CRow>
@@ -48,8 +48,8 @@ const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationEventName"
-                    floatingClassName="mb-3"
-                    floatingLabel="Name of the event"
+                    floatingclassname="mb-3"
+                    floatinglabel="Name of the event"
                     placeholder="Name of the event"
                     defaultValue=""
                     required
@@ -61,8 +61,8 @@ const EventRegistration = () => {
                     <CFormInput
                       type="date"
                       id="validationDate"
-                      floatingClassName="mb-3"
-                      floatingLabel="Event Date"
+                      floatingclassname="mb-3"
+                      floatinglabel="Event Date"
                       placeholder="date"
                       defaultValue=""
                       required
@@ -74,32 +74,36 @@ const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationVenueLocation"
-                    floatingClassName="mb-3"
-                    floatingLabel="Venue/Location"
+                    floatingclassname="mb-3"
+                    floatinglabel="Venue/Location"
                     placeholder="Venue/Location"
                     defaultValue=""
                     required
                   />
-                  <CFormFeedback invalid>Please provide a Venue/location Name.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a Venue/location Name.
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
                     type="text"
                     id="validationtypeofEvent"
-                    floatingClassName="mb-3"
-                    floatingLabel="Type of event"
+                    floatingclassname="mb-3"
+                    floatinglabel="Type of event"
                     placeholder="Type of event"
                     defaultValue=""
                     required
                   />
-                  <CFormFeedback invalid>Please provide a Type of event</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a Type of event
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
                     type="number"
                     id="validationexpectedNumbers"
-                    floatingClassName="mb-3"
-                    floatingLabel="Expected number of attendees"
+                    floatingclassname="mb-3"
+                    floatinglabel="Expected number of attendees"
                     placeholder="Expected number of attendees"
                     defaultValue=""
                     required
@@ -112,8 +116,8 @@ const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationContactInfo"
-                    floatingClassName="mb-3"
-                    floatingLabel="Contact information for the event organizer"
+                    floatingclassname="mb-3"
+                    floatinglabel="Contact information for the event organizer"
                     placeholder="Contact information for the event organizer"
                     defaultValue=""
                     required
@@ -126,8 +130,8 @@ const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationAudioEquNeeds"
-                    floatingClassName="mb-3"
-                    floatingLabel="Audio/visual equipment needs"
+                    floatingclassname="mb-3"
+                    floatinglabel="Audio/visual equipment needs"
                     placeholder="Audio/visual equipment needs"
                     defaultValue=""
                     required
@@ -140,20 +144,22 @@ const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationSecurityNeeds"
-                    floatingClassName="mb-3"
-                    floatingLabel="Security needs"
+                    floatingclassname="mb-3"
+                    floatinglabel="Security needs"
                     placeholder="Security needs"
                     defaultValue=""
                     required
                   />
-                  <CFormFeedback invalid>Please provide a Security needs</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a Security needs
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={12}>
                   <CFormTextarea
                     rows={2}
                     id="validationRequest"
-                    floatingClassName="mb-3"
-                    floatingLabel="Special requests or accommodations."
+                    floatingclassname="mb-3"
+                    floatinglabel="Special requests or accommodations."
                     placeholder="Special requests or accommodations."
                     defaultValue=""
                     required
@@ -169,7 +175,9 @@ const EventRegistration = () => {
                     label="Agree to terms and conditions"
                     required
                   />
-                  <CFormFeedback invalid>You must agree before submitting.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    You must agree before submitting.
+                  </CFormFeedback>
                 </CCol>
                 <CCol xs={12}>
                   <CButton color="primary" type="submit">
@@ -183,6 +191,6 @@ const EventRegistration = () => {
         <CCol xs={2}></CCol>
       </CRow>
     </>
-  )
-}
-export default EventRegistration
+  );
+};
+export default EventRegistration;

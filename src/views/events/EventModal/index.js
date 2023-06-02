@@ -171,7 +171,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
         </CModalHeader>
         <CModalBody>
           <CForm
-            className="row g-2 needs-validation"
+            className="row g-3 needs-validation"
             noValidate
             validated={validated}
             onSubmit={handleSubmit}
@@ -180,8 +180,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationEventName"
-                floatingClassName="mb-3"
-                floatingLabel="Name of the event"
+                floatingclassname="mb-3"
+                floatinglabel="Name of the event"
                 placeholder="Name of the event"
                 name="event_name"
                 value={state.event_name}
@@ -195,8 +195,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 <CFormInput
                   type="date"
                   id="validationEventDate"
-                  floatingClassName="mb-3"
-                  floatingLabel="Event Date"
+                  floatingclassname="mb-3"
+                  floatinglabel="Event Date"
                   placeholder="Event Date"
                   name="event_date"
                   value={state.event_date}
@@ -210,8 +210,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationVenueLocation"
-                floatingClassName="mb-3"
-                floatingLabel="Venue/Location"
+                floatingclassname="mb-3"
+                floatinglabel="Venue/Location"
                 placeholder="Venue/Location"
                 name="event_location"
                 value={state.event_location}
@@ -226,8 +226,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationtypeofEvent"
-                floatingClassName="mb-3"
-                floatingLabel="Type of event"
+                floatingclassname="mb-3"
+                floatinglabel="Type of event"
                 placeholder="Type of event"
                 name="type_of_event"
                 value={state.type_of_event}
@@ -242,8 +242,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormInput
                 type="number"
                 id="validationexpectedNumbers"
-                floatingClassName="mb-3"
-                floatingLabel="Expected number of attendees"
+                floatingclassname="mb-3"
+                floatinglabel="Expected number of attendees"
                 placeholder="Expected number of attendees"
                 name="expected_attendence"
                 value={state.expected_attendence}
@@ -264,8 +264,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationAudioEquNeeds"
-                floatingClassName="mb-3"
-                floatingLabel="Audio/visual equipment needs"
+                floatingclassname="mb-3"
+                floatinglabel="Audio/visual equipment needs"
                 placeholder="Audio/visual equipment needs"
                 name="equipments"
                 value={state.equipments}
@@ -280,8 +280,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationSecurityNeeds"
-                floatingClassName="mb-3"
-                floatingLabel="Security needs"
+                floatingclassname="mb-3"
+                floatinglabel="Security needs"
                 placeholder="Security needs"
                 name="security"
                 value={state.security}
@@ -296,8 +296,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormTextarea
                 rows={2}
                 id="validationRequest"
-                floatingClassName="mb-3"
-                floatingLabel="Special requests or accommodations."
+                floatingclassname="mb-3"
+                floatinglabel="Special requests or accommodations."
                 placeholder="Special requests or accommodations."
                 name="special_request"
                 value={state.special_request}
@@ -308,7 +308,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 Please provide a Special requests or accommodations.
               </CFormFeedback>
             </CCol>
-            <CRow>
+            <CRow className="mt-2">
               <CCol className="text-end">
                 <CButton color="primary" type="submit" disabled={isLoading}>
                   {isLoading ? <CSpinner /> : "Update"}

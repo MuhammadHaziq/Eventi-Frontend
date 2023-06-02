@@ -17,6 +17,7 @@ import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { addEvent } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "src/context/AppContext";
+import { AppToast } from "src/components/AppToast";
 
 export const EventRegistration = () => {
   const [validated, setValidated] = useState(false);
@@ -25,7 +26,7 @@ export const EventRegistration = () => {
     event_name: "",
     event_date: null,
     event_location: "",
-    vendor_id: "",
+    banner_images: null,
     type_of_event: "",
     expected_attendence: "",
     phone_number: "",
@@ -45,11 +46,30 @@ export const EventRegistration = () => {
       event.preventDefault();
       event.stopPropagation();
       try {
-        addEvent({
-          ...state,
-          security: ["Yes", "yes"].includes(state.security) ? true : false,
-          vendor_id: JSON.parse(localStorage.getItem("eventi-user"))?.vendor_id,
-        })
+        console.log(state.banner_images, "state.banner_images");
+        const formData = new FormData();
+        formData.append("event_name", state.event_name);
+        formData.append("event_date", state.event_date);
+        formData.append("event_location", state.event_location);
+        formData.append("type_of_event", state.type_of_event);
+        formData.append("expected_attendence", state.expected_attendence);
+        formData.append("phone_number", state.phone_number);
+        formData.append("equipments", state.equipments);
+        formData.append(
+          "security",
+          ["Yes", "yes"].includes(state.security) ? true : false
+        );
+        formData.append("special_request", state.special_request);
+
+        if (state.banner_images) {
+          for (let x in state.banner_images) {
+            if (typeof state.banner_images[x] === "object") {
+              formData.append(`banner_images`, state.banner_images[x]);
+            }
+          }
+        }
+
+        addEvent(formData)
           .then((response) => {
             if (response.data.statusCode === 200) {
               navigate("/event-list");
@@ -93,15 +113,15 @@ export const EventRegistration = () => {
   return (
     <>
       <CRow>
-        <CCol xs={2}></CCol>
-        <CCol xs={8}>
+        <CCol xs={1}></CCol>
+        <CCol xs={10}>
           <CCard className="mb-4">
             <CCardHeader>
               <strong>Event Registration </strong>
             </CCardHeader>
             <CCardBody>
               <CForm
-                className="row g-2 needs-validation"
+                className="row g-3 needs-validation"
                 noValidate
                 validated={validated}
                 onSubmit={handleSubmit}
@@ -110,8 +130,8 @@ export const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationEventName"
-                    floatingClassName="mb-3"
-                    floatingLabel="Name of the event"
+                    floatingclassname="mb-3"
+                    floatinglabel="Name of the event"
                     placeholder="Name of the event"
                     name="event_name"
                     defaultValue={state.event_name}
@@ -125,10 +145,11 @@ export const EventRegistration = () => {
                     <CFormInput
                       type="date"
                       id="validationEventDate"
-                      floatingClassName="mb-3"
-                      floatingLabel="Event Date"
+                      floatingclassname="mb-3"
+                      floatinglabel="Event Date"
                       placeholder="Event Date"
                       name="event_date"
+                      min={new Date()}
                       defaultValue={state.event_date}
                       onChange={handleOnChange}
                       required
@@ -142,8 +163,8 @@ export const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationVenueLocation"
-                    floatingClassName="mb-3"
-                    floatingLabel="Venue/Location"
+                    floatingclassname="mb-3"
+                    floatinglabel="Venue/Location"
                     placeholder="Venue/Location"
                     name="event_location"
                     defaultValue={state.event_location}
@@ -158,8 +179,8 @@ export const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationtypeofEvent"
-                    floatingClassName="mb-3"
-                    floatingLabel="Type of event"
+                    floatingclassname="mb-3"
+                    floatinglabel="Type of event"
                     placeholder="Type of event"
                     name="type_of_event"
                     defaultValue={state.type_of_event}
@@ -174,8 +195,8 @@ export const EventRegistration = () => {
                   <CFormInput
                     type="number"
                     id="validationexpectedNumbers"
-                    floatingClassName="mb-3"
-                    floatingLabel="Expected number of attendees"
+                    floatingclassname="mb-3"
+                    floatinglabel="Expected number of attendees"
                     placeholder="Expected number of attendees"
                     name="expected_attendence"
                     defaultValue={state.expected_attendence}
@@ -196,8 +217,8 @@ export const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationAudioEquNeeds"
-                    floatingClassName="mb-3"
-                    floatingLabel="Audio/visual equipment needs"
+                    floatingclassname="mb-3"
+                    floatinglabel="Audio/visual equipment needs"
                     placeholder="Audio/visual equipment needs"
                     name="equipments"
                     defaultValue={state.equipments}
@@ -212,8 +233,8 @@ export const EventRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationSecurityNeeds"
-                    floatingClassName="mb-3"
-                    floatingLabel="Security needs"
+                    floatingclassname="mb-3"
+                    floatinglabel="Security needs"
                     placeholder="Security needs"
                     name="security"
                     defaultValue={state.security}
@@ -228,8 +249,8 @@ export const EventRegistration = () => {
                   <CFormTextarea
                     rows={2}
                     id="validationRequest"
-                    floatingClassName="mb-3"
-                    floatingLabel="Special requests or accommodations."
+                    floatingclassname="mb-3"
+                    floatinglabel="Special requests or accommodations."
                     placeholder="Special requests or accommodations."
                     name="special_request"
                     defaultValue={state.special_request}
@@ -239,6 +260,18 @@ export const EventRegistration = () => {
                   <CFormFeedback invalid>
                     Please provide a Special requests or accommodations.
                   </CFormFeedback>
+                </CCol>
+                <CCol md={12}>
+                  <CFormInput
+                    type="file"
+                    id="formFileMultiple"
+                    label="Multiple files"
+                    multiple
+                    name="banner_images"
+                    onChange={(e) => {
+                      setState({ ...state, banner_images: e.target.files });
+                    }}
+                  />
                 </CCol>
                 <CCol xs={12}>
                   <CFormCheck
@@ -253,6 +286,7 @@ export const EventRegistration = () => {
                     You must agree before submitting.
                   </CFormFeedback>
                 </CCol>
+
                 <CCol xs={12}>
                   <CButton color="primary" type="submit">
                     Submit
@@ -262,7 +296,7 @@ export const EventRegistration = () => {
             </CCardBody>
           </CCard>
         </CCol>
-        <CCol xs={2}></CCol>
+        <CCol xs={1}></CCol>
       </CRow>
     </>
   );

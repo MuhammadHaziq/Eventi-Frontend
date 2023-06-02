@@ -175,8 +175,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationFirstName"
-                floatingClassName="mb-3"
-                floatingLabel="First Name"
+                floatingclassname="mb-3"
+                floatinglabel="First Name"
                 placeholder="First Name"
                 name="first_name"
                 value={state.first_name}
@@ -189,8 +189,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationLastName"
-                floatingClassName="mb-3"
-                floatingLabel="Last Name"
+                floatingclassname="mb-3"
+                floatinglabel="Last Name"
                 placeholder="Last Name"
                 name="last_name"
                 value={state.last_name}
@@ -203,8 +203,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               <CFormInput
                 type="email"
                 id="validationEmailAddress"
-                floatingClassName="mb-3"
-                floatingLabel="Email Address"
+                floatingclassname="mb-3"
+                floatinglabel="Email Address"
                 placeholder="Email Address"
                 name="email"
                 value={state.email}
@@ -219,8 +219,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
                 <CFormInput
                   type="password"
                   id="validationPassword"
-                  floatingClassName="mb-3"
-                  floatingLabel="Password"
+                  floatingclassname="mb-3"
+                  floatinglabel="Password"
                   placeholder="Passwors"
                   autoComplete=""
                   name="password"
@@ -235,8 +235,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="validationBusinessName"
-                floatingClassName="mb-3"
-                floatingLabel="Optional Business Name"
+                floatingclassname="mb-3"
+                floatinglabel="Optional Business Name"
                 placeholder="Optional Business Name"
                 name="business_name"
                 value={state.business_name}
@@ -255,8 +255,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
                 <CFormInput
                   type="string"
                   id="validationAddress"
-                  floatingClassName="mb-3"
-                  floatingLabel="Address"
+                  floatingclassname="mb-3"
+                  floatinglabel="Address"
                   placeholder="Address"
                   name="address"
                   value={state.address}
@@ -271,8 +271,8 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
                 <CFormInput
                   type="date"
                   id="validationDateOfBirth"
-                  floatingClassName="mb-3"
-                  floatingLabel="Date Of Birth"
+                  floatingclassname="mb-3"
+                  floatinglabel="Date Of Birth"
                   placeholder="Date Of Birth"
                   name="date_of_birth"
                   value={state.date_of_birth}

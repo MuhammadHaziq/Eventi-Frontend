@@ -168,8 +168,8 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
                 <CFormInput
                   type="text"
                   id="floatingInputValid"
-                  floatingClassName="mb-3"
-                  floatingLabel="Product Name"
+                  floatingclassname="mb-3"
+                  floatinglabel="Product Name"
                   placeholder="Product Name"
                   name="product_name"
                   value={state.product_name}
@@ -182,8 +182,8 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
                 <CFormInput
                   type="number"
                   id="floatingInputValid2"
-                  floatingClassName="mb-3"
-                  floatingLabel="Price"
+                  floatingclassname="mb-3"
+                  floatinglabel="Price"
                   placeholder="Price"
                   name="product_price"
                   value={state.product_price}
@@ -196,8 +196,8 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
                 <CFormInput
                   type="number"
                   id="floatingInputValid2"
-                  floatingClassName="mb-3"
-                  floatingLabel="Quantity"
+                  floatingclassname="mb-3"
+                  floatinglabel="Quantity"
                   placeholder="Quantity"
                   name="product_quantity"
                   value={state.product_quantity}
