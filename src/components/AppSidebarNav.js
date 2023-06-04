@@ -52,9 +52,14 @@ export const AppSidebarNav = ({ items }) => {
         visible={location.pathname.startsWith(to)}
         {...rest}
       >
-        {item.items?.map((item, index) =>
-          item.items ? navGroup(item, index) : navItem(item, index)
-        )}
+        {item.items?.map((item, index) => {
+          return (
+            (permissions || []).filter(
+              (ite) => ite.permission === item?.permission
+            )?.length > 0 &&
+            (item.items ? navGroup(item, index) : navItem(item, index))
+          );
+        })}
       </Component>
     );
   };
