@@ -13,7 +13,7 @@ import "../scss/style.scss";
 // import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper";
 
-export default function AppSwiper() {
+export default function AppSwiper({ images, accountId }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -30,36 +30,19 @@ export default function AppSwiper() {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2"
       >
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-        </SwiperSlide>
+        {(images || [])?.length > 0 ? (
+          (images || [])?.map((item) => (
+            <SwiperSlide>
+              <img
+                src={`${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${accountId}/${item}`}
+              />
+            </SwiperSlide>
+          ))
+        ) : (
+          <SwiperSlide>
+            <img src="./images/no_image_found.png" />
+          </SwiperSlide>
+        )}
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -70,8 +53,22 @@ export default function AppSwiper() {
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
+        style={{ marginTop: "5px" }}
       >
-        <SwiperSlide>
+        {(images || [])?.length > 0 ? (
+          (images || [])?.map((item) => (
+            <SwiperSlide>
+              <img
+                src={`${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${accountId}/${item}`}
+              />
+            </SwiperSlide>
+          ))
+        ) : (
+          <SwiperSlide>
+            <img src="./images/no_image_found.png" />
+          </SwiperSlide>
+        )}
+        {/* <SwiperSlide>
           <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
         </SwiperSlide>
         <SwiperSlide>
@@ -100,9 +97,8 @@ export default function AppSwiper() {
         </SwiperSlide>
         <SwiperSlide>
           <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-        </SwiperSlide>
+        </SwiperSlide> */}
       </Swiper>
-
     </>
   );
 }

@@ -17,6 +17,7 @@ import EventTable from "../EventTable";
 import { getEvents } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
 import AppProgress from "src/components/AppProgress";
+import GridView from "../EventGrid";
 const EventList = () => {
   const app_dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
@@ -96,15 +97,27 @@ const EventList = () => {
               </span>
             </CCardHeader>
             <CCardBody>
-              <EventTable
-                events={data?.data?.data?.data || []}
-                isLoading={isLoading}
-                tableMeta={data?.data?.data?.meta || null}
-                updateFilter={useGetData}
-                clickOnEdit={clickOnEdit}
-                clickOnReqForm={clickOnReqForm}
-                clickHideModal={clickHideModal}
-              />
+              {gridView ? (
+                <GridView
+                  data={data?.data?.data?.data || []}
+                  isLoading={isLoading}
+                  tableMeta={data?.data?.data?.meta || null}
+                  updateFilter={useGetData}
+                  clickOnEdit={clickOnEdit}
+                  clickOnReqForm={clickOnReqForm}
+                  clickHideModal={clickHideModal}
+                />
+              ) : (
+                <EventTable
+                  events={data?.data?.data?.data || []}
+                  isLoading={isLoading}
+                  tableMeta={data?.data?.data?.meta || null}
+                  updateFilter={useGetData}
+                  clickOnEdit={clickOnEdit}
+                  clickOnReqForm={clickOnReqForm}
+                  clickHideModal={clickHideModal}
+                />
+              )}
             </CCardBody>
           </CCard>
         </CCol>
