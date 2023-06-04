@@ -32,12 +32,6 @@ let _nav = [
         permission: "customer-list",
         to: "/customer-list",
       },
-      {
-        component: CNavItem,
-        name: "Event Join",
-        permission: "customer-list",
-        to: "/grid-view",
-      },
     ],
   },
   {
@@ -52,12 +46,6 @@ let _nav = [
         name: "Vendor List",
         permission: "vendor-list",
         to: "/vendor-list",
-      },
-      {
-        component: CNavItem,
-        name: "Event Join",
-        permission: "grid-view",
-        to: "/grid-view",
       },
     ],
   },
