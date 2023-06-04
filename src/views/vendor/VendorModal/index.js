@@ -19,7 +19,7 @@ import { signUp } from "src/context/AuthContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { GenderSelection } from "src/components/Inputs/GenderSelection";
 import { getVendor, updateVendor } from "src/context/VendorContext/service";
-const VendorModal = ({ vendor_id, visible, setVisible }) => {
+const VendorModal = ({ account_id, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const app_dispatch = useAppDispatch();
@@ -39,7 +39,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
   const getVendorById = useCallback(() => {
     try {
       setIsLoading(true);
-      getVendor(vendor_id)
+      getVendor(account_id)
         .then((response) => {
           if (response.data.data) {
             setState({
@@ -84,7 +84,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
         toast: AppToast({ message: err.message, color: "danger-alert" }),
       });
     }
-  }, [vendor_id]);
+  }, [account_id]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -96,9 +96,9 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
       event.stopPropagation();
       setIsLoading(true);
       try {
-        (vendor_id
+        (account_id
           ? updateVendor({
-              vendorId: vendor_id,
+              account_id: account_id,
               ...state,
             })
           : signUp({
@@ -147,10 +147,10 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
   };
 
   useEffect(() => {
-    if (vendor_id) {
+    if (account_id) {
       getVendorById();
     }
-  }, [vendor_id]);
+  }, [account_id]);
 
   return (
     <>
@@ -161,7 +161,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
         size="lg"
       >
         <CModalHeader>
-          <CModalTitle>{vendor_id ? "Edit" : "Add"} Vendor</CModalTitle>
+          <CModalTitle>{account_id ? "Edit" : "Add"} Vendor</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm
@@ -170,7 +170,6 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            {/*<h1>{vendor_id ? "Edit" : "Add"} Vendor</h1>*/}
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -214,7 +213,7 @@ const VendorModal = ({ vendor_id, visible, setVisible }) => {
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            {!vendor_id && (
+            {!account_id && (
               <CCol md={6}>
                 <CFormInput
                   type="password"

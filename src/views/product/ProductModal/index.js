@@ -27,8 +27,8 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     product_name: "",
-    product_quantity: 0,
-    product_price: 0,
+    product_quantity: null,
+    product_price: null,
   });
 
   const getProductById = useCallback(() => {
@@ -158,74 +158,69 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
         </CModalHeader>
         <CModalBody>
           <CForm
-            className="row g-2 needs-validation"
+            className="row g-3 needs-validation"
             noValidate
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <CRow>
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="floatingInputValid"
-                  floatingclassname="mb-3"
-                  floatinglabel="Product Name"
-                  placeholder="Product Name"
-                  name="product_name"
-                  value={state.product_name}
-                  onChange={handleOnChange}
-                  required
-                />
-                <CFormFeedback valid>Looks good!</CFormFeedback>
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="number"
-                  id="floatingInputValid2"
-                  floatingclassname="mb-3"
-                  floatinglabel="Price"
-                  placeholder="Price"
-                  name="product_price"
-                  value={state.product_price}
-                  onChange={handleOnChange}
-                  required
-                />
-                <CFormFeedback valid>Looks good!</CFormFeedback>
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="number"
-                  id="floatingInputValid2"
-                  floatingclassname="mb-3"
-                  floatinglabel="Quantity"
-                  placeholder="Quantity"
-                  name="product_quantity"
-                  value={state.product_quantity}
-                  onChange={handleOnChange}
-                  required
-                />
-                <CFormFeedback valid>Looks good!</CFormFeedback>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="text-end">
-                <CButton color="primary" type="submit" disabled={isLoading}>
-                  {isLoading ? <CSpinner /> : "Save"}
-                </CButton>
+            <CCol md={4}>
+              <CFormInput
+                type="text"
+                id="floatingInputValid"
+                floatingclassname="mb-3"
+                floatinglabel="Product Name"
+                placeholder="Product Name"
+                name="product_name"
+                value={state.product_name}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback valid>Looks good!</CFormFeedback>
+            </CCol>
+            <CCol md={4}>
+              <CFormInput
+                type="number"
+                id="floatingInputValid2"
+                floatingclassname="mb-3"
+                floatinglabel="Price"
+                placeholder="Price"
+                name="product_price"
+                value={state.product_price}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback valid>Looks good!</CFormFeedback>
+            </CCol>
+            <CCol md={4}>
+              <CFormInput
+                type="number"
+                id="floatingInputValid2"
+                floatingclassname="mb-3"
+                floatinglabel="Quantity"
+                placeholder="Quantity"
+                name="product_quantity"
+                value={state.product_quantity}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback valid>Looks good!</CFormFeedback>
+            </CCol>
+            <CCol className="text-end">
+              <CButton color="primary" type="submit" disabled={isLoading}>
+                {isLoading ? <CSpinner /> : "Save"}
+              </CButton>
 
-                <CButton
-                  style={{ marginLeft: "10px" }}
-                  color="secondary"
-                  onClick={setVisible}
-                  disabled={isLoading}
-                >
-                  Close
-                </CButton>
-              </CCol>
-            </CRow>
+              <CButton
+                style={{ marginLeft: "10px" }}
+                color="secondary"
+                onClick={setVisible}
+                disabled={isLoading}
+              >
+                Close
+              </CButton>
+            </CCol>
           </CForm>
         </CModalBody>
-        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

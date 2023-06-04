@@ -59,7 +59,6 @@ export const AppSidebarNav = ({ items }) => {
     );
   };
 
-  console.log(permissions, "permissions");
   return (
     <React.Fragment>
       {items &&

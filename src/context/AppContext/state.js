@@ -3,4 +3,5 @@ export default {
   unfoldable: false,
   toast: 0,
   currentUser: null,
+  permissions: [],
 };

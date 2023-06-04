@@ -5,7 +5,6 @@ function authReducer(state, action) {
         ...state,
         auth: true,
         user: action.user,
-        permissions: action.permissions,
         user_id: action.user?._id,
       };
     }

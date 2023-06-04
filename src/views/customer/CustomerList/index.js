@@ -10,7 +10,7 @@ import {
 import { getCustomers } from "src/context/CustomerContext/service";
 import CustomerTable from "../CustomerTable";
 import AppProgress from "src/components/AppProgress";
-import { useAppDispatch } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { useQuery } from "@tanstack/react-query";
 import CustomerModal from "../CustomerModal";
 import { AppToast } from "src/components/AppToast";
@@ -19,6 +19,7 @@ export const CustomerList = () => {
   const [selectCustomer, setSelectedCustomer] = useState("");
   const [filters, setFilters] = useState();
   const [visible, setVisible] = useState(false);
+  const { permissions } = useAppState();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
     ["Customers", filters],
@@ -59,9 +60,13 @@ export const CustomerList = () => {
   return (
     <>
       {isError ? "" : <AppProgress loading={isFetching} />}
-      <CButton onClick={() => setVisible(!visible)}>Add Customer</CButton>
-      <br></br>
-      <br></br>
+      {permissions.find((item) => item.permission === "customer-add") && (
+        <>
+          <CButton onClick={() => setVisible(!visible)}>Add Customer</CButton>
+          <br></br>
+          <br></br>
+        </>
+      )}
       <CRow>
         <CCol>
           <CCard className="mb-4">
@@ -75,6 +80,7 @@ export const CustomerList = () => {
                 tableMeta={data?.data?.data?.meta || null}
                 updateFilter={useGetData}
                 clickOnEdit={clickOnEdit}
+                clickHideModal={clickHideModal}
               />
             </CCardBody>
           </CCard>
