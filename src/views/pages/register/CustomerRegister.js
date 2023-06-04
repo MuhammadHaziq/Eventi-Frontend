@@ -11,11 +11,15 @@ import {
   CFormLabel,
   CFormSwitch,
 } from "@coreui/react";
+import jwtDecode from "jwt-decode";
 import { GenderSelection } from "src/components/Inputs/GenderSelection";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { signUp } from "src/context/AuthContext/service";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+import { useNavigate } from "react-router-dom";
+import { useAuthAppDispatch } from "src/context/AuthContext";
+import authAxios from "src/utils/axios";
 const CustomerRegister = () => {
   const [validated, setValidated] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -33,7 +37,8 @@ const CustomerRegister = () => {
     user_type: "customer",
   });
   const app_dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
+  const auth_dispatch = useAuthAppDispatch();
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -50,20 +55,15 @@ const CustomerRegister = () => {
       try {
         signUp(state)
           .then((response) => {
-            console.log(response);
-            setState({
-              first_name: "",
-              last_name: "",
-              email: "",
-              password: "",
-              business_name: "",
-              address: "",
-              date_of_birth: "",
-              gender: "",
-              phone_number: "",
-              age_verification: false,
-              user_type: "customer",
-            });
+            authAxios.defaults.headers.common["Authorization"] =
+              response.data.data?.token;
+            localStorage.setItem("eventi", response.data.data?.token);
+            const decodedHeader = jwtDecode(response.data.data?.token);
+            delete decodedHeader?.user?.permissions;
+            localStorage.setItem(
+              "eventi-user",
+              JSON.stringify(decodedHeader?.user)
+            );
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -71,6 +71,12 @@ const CustomerRegister = () => {
                 color: "success-alert",
               }),
             });
+            auth_dispatch({
+              type: "USER_LOGIN",
+              user: decodedHeader?.user,
+              permissions: jwtDecode(response.data.data?.token)?.permissions,
+            });
+            navigate("/");
           })
           .catch((err) => {
             app_dispatch({

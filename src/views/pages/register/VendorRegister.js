@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   CButton,
   CCardBody,
-  CFormSelect,
   CCol,
   CForm,
   CFormCheck,
@@ -10,11 +9,15 @@ import {
   CFormFeedback,
   CInputGroup,
 } from "@coreui/react";
+import jwtDecode from "jwt-decode";
 import { GenderSelection } from "src/components/Inputs/GenderSelection";
 import { signUp } from "src/context/AuthContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+import { useNavigate } from "react-router-dom";
+import { useAuthAppDispatch } from "src/context/AuthContext";
+import authAxios from "src/utils/axios";
 const VendorRegister = () => {
   const [validated, setValidated] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -31,6 +34,9 @@ const VendorRegister = () => {
     user_type: "vendor",
   });
   const app_dispatch = useAppDispatch();
+  const auth_dispatch = useAuthAppDispatch();
+  const navigate = useNavigate();
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -47,19 +53,15 @@ const VendorRegister = () => {
       try {
         signUp(state)
           .then((response) => {
-            console.log(response);
-            setState({
-              first_name: "",
-              last_name: "",
-              email: "",
-              password: "",
-              business_name: "",
-              address: "",
-              date_of_birth: "",
-              gender: "",
-              phone_number: "",
-              user_type: "vendor",
-            });
+            authAxios.defaults.headers.common["Authorization"] =
+              response.data.data?.token;
+            localStorage.setItem("eventi", response.data.data?.token);
+            const decodedHeader = jwtDecode(response.data.data?.token);
+            delete decodedHeader?.user?.permissions;
+            localStorage.setItem(
+              "eventi-user",
+              JSON.stringify(decodedHeader?.user)
+            );
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -67,9 +69,16 @@ const VendorRegister = () => {
                 color: "success-alert",
               }),
             });
+
+            auth_dispatch({
+              type: "USER_LOGIN",
+              user: decodedHeader?.user,
+              permissions: jwtDecode(response.data.data?.token)?.permissions,
+            });
+
+            navigate("/");
           })
           .catch((err) => {
-            console.log(err);
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -79,7 +88,6 @@ const VendorRegister = () => {
             });
           });
       } catch (err) {
-        console.log("CATCH ERROR", err);
         app_dispatch({
           type: "SHOW_RESPONSE",
           toast: AppToast({
@@ -88,11 +96,11 @@ const VendorRegister = () => {
           }),
         });
       }
-      console.log(state, event, "state");
     }
 
     setValidated(true);
   };
+
   return (
     <CCardBody className="p-4">
       <CForm
