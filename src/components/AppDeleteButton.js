@@ -17,6 +17,7 @@ const AppDeleteButton = ({
   title,
   apiUrl,
   className = "btn btn-danger",
+  clickOnDelete = () => {},
 }) => {
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,7 @@ const AppDeleteButton = ({
               color: "success-alert",
             }),
           });
+          clickOnDelete();
           setIsLoading(false);
           setVisible(false);
         })

@@ -12,19 +12,21 @@ const DefaultLayout = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getCurrentUserDetail(
-      JSON.parse(localStorage.getItem("eventi-user"))?._id,
-      JSON.parse(localStorage.getItem("eventi-user"))?.user_type
-    )
-      .then((response) => {
-        dispatch({ type: "SET_CURRENT_USER", currentUser: response.data.data });
-      })
-      .catch((err) => {
-        dispatch({
-          type: "SHOW_RESPONSE",
-          toast: AppToast({ message: err.message, color: "danger-alert" }),
+    if (localStorage.getItem("eventi-user")) {
+      getCurrentUserDetail(JSON.parse(localStorage.getItem("eventi-user"))?._id)
+        .then((response) => {
+          dispatch({
+            type: "SET_CURRENT_USER",
+            currentUser: response.data.data,
+          });
+        })
+        .catch((err) => {
+          dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({ message: err.message, color: "danger-alert" }),
+          });
         });
-      });
+    }
   }, []);
   return (
     <div>

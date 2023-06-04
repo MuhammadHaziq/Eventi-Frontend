@@ -18,9 +18,9 @@ export const PhoneNumberInput = ({
       <PhoneInput
         id="validationContactNumber"
         defaultCountry="US"
-        floatingClassName="mb-3 form-control"
+        floatingclassname="mb-3 form-control"
         className="form-control"
-        floatingLabel={placeHolder}
+        floatinglabel={placeHolder}
         placeholder={placeHolder}
         value={phone_number}
         name="phone_number"
@@ -30,8 +30,8 @@ export const PhoneNumberInput = ({
       {/* <CFormInput
           type="number"
           id="validationContactNumber"
-          floatingClassName="mb-3"
-          floatingLabel={placeHolder}
+          floatingclassname="mb-3"
+          floatinglabel={placeHolder}
           placeholder={placeHolder}
           defaultValue={phone_number}
           name="phone_number"

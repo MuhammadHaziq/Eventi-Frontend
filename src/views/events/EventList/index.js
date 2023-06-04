@@ -10,7 +10,7 @@ import {
 import EventModal from "../EventModal";
 import ReqEventModal from "../ReqEventModal";
 import { useQuery } from "@tanstack/react-query";
-import { useAppDispatch } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import EventTable from "../EventTable";
 import { getEvents } from "src/context/EventContext/service";
@@ -22,6 +22,7 @@ const EventList = () => {
   const [selectProduct, setSelectedProduct] = useState("");
   const [reqModelID, setreqModelID] = useState("");
   const [filters, setFilters] = useState();
+  const { permissions } = useAppState();
   const navigate = useNavigate();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -69,11 +70,15 @@ const EventList = () => {
   return (
     <>
       {isError ? "" : <AppProgress loading={isFetching} />}
-      <CButton onClick={() => navigate("/event-registration")}>
-        Add Event
-      </CButton>
-      <br></br>
-      <br></br>
+      {permissions.find((item) => item.permission === "event-add") && (
+        <>
+          <CButton onClick={() => navigate("/event-registration")}>
+            Add Event
+          </CButton>
+          <br></br>
+          <br></br>
+        </>
+      )}
       <CRow>
         <CCol>
           <CCard className="mb-4">
@@ -88,6 +93,7 @@ const EventList = () => {
                 updateFilter={useGetData}
                 clickOnEdit={clickOnEdit}
                 clickOnReqForm={clickOnReqForm}
+                clickHideModal={clickHideModal}
               />
             </CCardBody>
           </CCard>

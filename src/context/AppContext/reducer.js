@@ -14,7 +14,11 @@ function appReducer(state, action) {
       };
     }
     case "SET_CURRENT_USER": {
-      return { ...state, currentUser: action.currentUser };
+      return {
+        ...state,
+        currentUser: action.currentUser,
+        permissions: action.currentUser?.permissions || [],
+      };
     }
     default: {
       return { ...state };

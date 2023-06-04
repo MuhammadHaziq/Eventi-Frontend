@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   CButton,
   CCard,
@@ -16,18 +16,18 @@ import {
   CInputGroup,
   // CInputGroupText,
   CRow,
-} from '@coreui/react'
+} from "@coreui/react";
 
 const VendarRegistration = () => {
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(false);
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     }
-    setValidated(true)
-  }
+    setValidated(true);
+  };
   return (
     <>
       <CRow>
@@ -35,7 +35,8 @@ const VendarRegistration = () => {
         <CCol xs={8}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>VENDAR REGISTERATION </strong> <small>Form Details </small>
+              <strong>VENDAR REGISTERATION </strong>{" "}
+              <small>Form Details </small>
             </CCardHeader>
             <CCardBody>
               <CForm
@@ -48,8 +49,8 @@ const VendarRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationBusinessName"
-                    floatingClassName="mb-3"
-                    floatingLabel="Business Name"
+                    floatingclassname="mb-3"
+                    floatinglabel="Business Name"
                     placeholder="Business Name"
                     defaultValue=""
                     required
@@ -61,8 +62,8 @@ const VendarRegistration = () => {
                     <CFormInput
                       type="number"
                       id="validationContactPerson"
-                      floatingClassName="mb-3"
-                      floatingLabel="Contact Person"
+                      floatingclassname="mb-3"
+                      floatinglabel="Contact Person"
                       placeholder="Contact Person"
                       defaultValue=""
                       required
@@ -75,8 +76,8 @@ const VendarRegistration = () => {
                     <CFormInput
                       type="number"
                       id="validationemail"
-                      floatingClassName="mb-3"
-                      floatingLabel="Email Address"
+                      floatingclassname="mb-3"
+                      floatinglabel="Email Address"
                       placeholder="Email Address"
                       defaultValue=""
                       required
@@ -89,8 +90,8 @@ const VendarRegistration = () => {
                     <CFormInput
                       type="number"
                       id="validationAddress"
-                      floatingClassName="mb-3"
-                      floatingLabel="Address"
+                      floatingclassname="mb-3"
+                      floatinglabel="Address"
                       placeholder="Address"
                       defaultValue=""
                       required
@@ -105,7 +106,9 @@ const VendarRegistration = () => {
                     label="Agree to terms and conditions"
                     required
                   />
-                  <CFormFeedback invalid>You must agree before submitting.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    You must agree before submitting.
+                  </CFormFeedback>
                 </CCol>
                 <CCol xs={12}>
                   <CButton color="primary" type="submit">
@@ -119,6 +122,6 @@ const VendarRegistration = () => {
         <CCol xs={2}></CCol>
       </CRow>
     </>
-  )
-}
-export default VendarRegistration
+  );
+};
+export default VendarRegistration;

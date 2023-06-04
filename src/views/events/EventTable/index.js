@@ -14,6 +14,7 @@ const EventTable = ({
   updateFilter,
   clickOnEdit,
   clickOnReqForm,
+  clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -150,11 +151,12 @@ const EventTable = ({
                   message="Do you really want to delete this event?"
                   delete_id={item._id}
                   apiUrl={deleteEvent}
+                  clickOnDelete={clickHideModal}
                 />
                 <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
                 <AppReqFormButton
                   onClick={clickOnReqForm}
-                  req_data ={{ req_id: item._id, reqIDForm: "reqIDForm" }}
+                  req_data={{ req_id: item._id, reqIDForm: "reqIDForm" }}
                 />
               </div>
             </td>

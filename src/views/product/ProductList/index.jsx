@@ -10,7 +10,7 @@ import {
 import { getProducts } from "src/context/ProductContext/service";
 import ProductModal from "../ProductModal";
 import { useQuery } from "@tanstack/react-query";
-import { useAppDispatch } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import ProductTable from "../ProductTable";
 import AppProgress from "src/components/AppProgress";
@@ -20,6 +20,7 @@ export const ProductList = () => {
   const [visible, setVisible] = useState(false);
   const [selectProduct, setSelectedProduct] = useState("");
   const [filters, setFilters] = useState();
+  const { permissions } = useAppState();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
     ["Porudcts", filters],
@@ -60,9 +61,13 @@ export const ProductList = () => {
   return (
     <>
       {isError ? "" : <AppProgress loading={isFetching} />}
-      <CButton onClick={() => setVisible(!visible)}>Add Product</CButton>
-      <br></br>
-      <br></br>
+      {permissions.find((item) => item.permission === "product-add") && (
+        <>
+          <CButton onClick={() => setVisible(!visible)}>Add Product</CButton>
+          <br></br>
+          <br></br>
+        </>
+      )}
       <CRow>
         <CCol>
           <CCard className="mb-4">
@@ -78,6 +83,7 @@ export const ProductList = () => {
                 tableMeta={data?.data?.data?.meta || null}
                 updateFilter={useGetData}
                 clickOnEdit={clickOnEdit}
+                clickHideModal={clickHideModal}
               />
             </CCardBody>
           </CCard>

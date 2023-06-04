@@ -10,6 +10,7 @@ const VendorTable = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
+  clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -135,10 +136,14 @@ const VendorTable = ({
                 <AppDeleteButton
                   title="Delete Vendor"
                   message="Do you really want to delete this vendor?"
-                  delete_id={item._id}
+                  delete_id={item.account_id}
                   apiUrl={deleteVendor}
+                  clickOnDelete={clickHideModal}
                 />
-                <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+                <AppEditButton
+                  onClick={clickOnEdit}
+                  edit_id={item.account_id}
+                />
               </div>
             </td>
           ),
