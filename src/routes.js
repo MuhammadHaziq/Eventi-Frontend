@@ -10,33 +10,62 @@ const VendarRegistration = React.lazy(() =>
 const EventRegistration = React.lazy(() =>
   import("./views/events/CreateEvent")
 );
-const CustomerList = React.lazy(() => import("./views/customer/CustomerList"));
-const VendorList = React.lazy(() => import("./views/vendor/VendorList"));
+const CustomerList = React.lazy(() => import("./views/customer"));
+const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
+
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  { path: "/dashboard", name: "Dashboard", element: Dashboard },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    permission: "dashboard",
+    element: Dashboard,
+  },
   {
     path: "/customer-registration",
     name: "Customer Registration",
+    permission: "customer-add",
     element: CustomerRegistration,
   },
-  { path: "/customer-list", name: "Customer List", element: CustomerList },
+  {
+    path: "/customer-list",
+    name: "Customer List",
+    permission: "customer-list",
+    element: CustomerList,
+  },
 
   {
     path: "/vendar-registration",
     name: "Vendar Registration",
+    permission: "vendor-add",
     element: VendarRegistration,
   },
-  { path: "/vendor-list", name: "Vendar List", element: VendorList },
+  {
+    path: "/vendor-list",
+    name: "Vendar List",
+    permission: "vendor-list",
+    element: VendorList,
+  },
   {
     path: "/event-registration",
     name: "Event Registration",
+    permission: "event-add",
     element: EventRegistration,
   },
-  { path: "/event-list", name: "Event List", element: EventList },
-  { path: "/product-list", name: "Products  List", element: ProductList },
+  {
+    path: "/event-list",
+    name: "Event List",
+    permission: "event-list",
+    element: EventList,
+  },
+  {
+    path: "/product-list",
+    name: "Products  List",
+    permission: "product-list",
+    element: ProductList,
+  },
 ];
 
 export default routes;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   CButton,
   CCard,
@@ -17,18 +17,18 @@ import {
   CInputGroup,
   // CInputGroupText,
   CRow,
-} from '@coreui/react'
+} from "@coreui/react";
 
 const CustomerRegistration = () => {
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(false);
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     }
-    setValidated(true)
-  }
+    setValidated(true);
+  };
   return (
     <>
       <CRow>
@@ -36,7 +36,8 @@ const CustomerRegistration = () => {
         <CCol xs={8}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>CUSTOMER REGISTERATION </strong> <small>Form Details </small>
+              <strong>CUSTOMER REGISTERATION </strong>{" "}
+              <small>Form Details </small>
             </CCardHeader>
             <CCardBody>
               <CForm
@@ -49,8 +50,8 @@ const CustomerRegistration = () => {
                   <CFormInput
                     type="text"
                     id="floatingInputValid"
-                    floatingClassName="mb-3"
-                    floatingLabel="First Name"
+                    floatingclassname="mb-3"
+                    floatinglabel="First Name"
                     placeholder="First Name"
                     defaultValue=""
                     required
@@ -61,8 +62,8 @@ const CustomerRegistration = () => {
                   <CFormInput
                     type="text"
                     id="floatingInputValid2"
-                    floatingClassName="mb-3"
-                    floatingLabel="Last Name"
+                    floatingclassname="mb-3"
+                    floatinglabel="Last Name"
                     placeholder="Last Name"
                     defaultValue=""
                     required
@@ -73,8 +74,8 @@ const CustomerRegistration = () => {
                   <CFormInput
                     type="text"
                     id="validationBusinessName"
-                    floatingClassName="mb-3"
-                    floatingLabel="Optional Business Name"
+                    floatingclassname="mb-3"
+                    floatinglabel="Optional Business Name"
                     placeholder="Optional Business Name"
                     defaultValue=""
                     required
@@ -86,26 +87,30 @@ const CustomerRegistration = () => {
                     <CFormInput
                       type="text"
                       id="validationCustomUsername"
-                      floatingClassName="mb-3"
-                      floatingLabel="Email Address"
+                      floatingclassname="mb-3"
+                      floatinglabel="Email Address"
                       placeholder="Email Address"
                       defaultValue=""
                       required
                     />
-                    <CFormFeedback invalid>Please choose a username.</CFormFeedback>
+                    <CFormFeedback invalid>
+                      Please choose a username.
+                    </CFormFeedback>
                   </CInputGroup>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
                     type="number"
                     id="validationPhoneNumber"
-                    floatingClassName="mb-3"
-                    floatingLabel="Phone Number"
+                    floatingclassname="mb-3"
+                    floatinglabel="Phone Number"
                     placeholder="--- -------"
                     defaultValue=""
                     required
                   />
-                  <CFormFeedback invalid>Please provide a phone number.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    Please provide a phone number.
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel htmlFor="validationCustom04">Gender</CFormLabel>
@@ -139,7 +144,10 @@ const CustomerRegistration = () => {
                 </CCol>
                 <CCol xs={12}>
                   <CFormLabel>Age Verification</CFormLabel>
-                  <CFormSwitch label="Are you over 18+ years old?" id="maxage" />
+                  <CFormSwitch
+                    label="Are you over 18+ years old?"
+                    id="maxage"
+                  />
                 </CCol>
                 <CCol xs={12}>
                   <CFormCheck
@@ -148,7 +156,9 @@ const CustomerRegistration = () => {
                     label="Agree to terms and conditions"
                     required
                   />
-                  <CFormFeedback invalid>You must agree before submitting.</CFormFeedback>
+                  <CFormFeedback invalid>
+                    You must agree before submitting.
+                  </CFormFeedback>
                 </CCol>
                 <CCol xs={12}>
                   <CButton color="primary" type="submit">
@@ -162,6 +172,6 @@ const CustomerRegistration = () => {
         <CCol xs={2}></CCol>
       </CRow>
     </>
-  )
-}
-export default CustomerRegistration
+  );
+};
+export default CustomerRegistration;

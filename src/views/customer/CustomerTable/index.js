@@ -10,6 +10,7 @@ const CustomerTable = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
+  clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -144,6 +145,7 @@ const CustomerTable = ({
                   message="Do you really want to delete this customer?"
                   delete_id={item._id}
                   apiUrl={deleteCustomer}
+                  clickOnDelete={clickHideModal}
                 />
                 <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
               </div>

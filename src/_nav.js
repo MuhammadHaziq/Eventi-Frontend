@@ -8,11 +8,13 @@ let _nav = [
     component: CNavItem,
     name: "Dashboard",
     to: "/dashboard",
+    permission: "dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Products",
+    permission: "product-list",
     to: "/product-list",
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
@@ -20,12 +22,14 @@ let _nav = [
   {
     component: CNavGroup,
     name: "Customer",
+    permission: "customer-list",
     to: "/customer-list",
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: "Customer List",
+        permission: "customer-list",
         to: "/customer-list",
       },
     ],
@@ -33,37 +37,38 @@ let _nav = [
   {
     component: CNavGroup,
     name: "Vendor",
+    permission: "vendor-list",
     to: "/vendor-list",
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: "Vendor List",
+        permission: "vendor-list",
         to: "/vendor-list",
       },
     ],
   },
+  {
+    component: CNavGroup,
+    name: "Events",
+    to: "/event-list",
+    permission: "event-list",
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: "Event List",
+        permission: "event-list",
+        to: "/event-list",
+      },
+      {
+        component: CNavItem,
+        name: "Event Registration",
+        permission: "event-add",
+        to: "/event-registration",
+      },
+    ],
+  },
 ];
-JSON.parse(localStorage.getItem("eventi-user"))?.user_type === "vendor" &&
-  (_nav = [
-    ..._nav,
-    {
-      component: CNavGroup,
-      name: "Events",
-      to: "/event-list",
-      icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-      items: [
-        {
-          component: CNavItem,
-          name: "Event List",
-          to: "/event-list",
-        },
-        {
-          component: CNavItem,
-          name: "Event Registration",
-          to: "/event-registration",
-        },
-      ],
-    },
-  ]);
 export default _nav;

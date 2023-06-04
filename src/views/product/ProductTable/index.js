@@ -10,6 +10,7 @@ const ProductTable = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
+  clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -100,6 +101,7 @@ const ProductTable = ({
                   message="Do you really want to delete this product?"
                   delete_id={item._id}
                   apiUrl={deleteProduct}
+                  clickOnDelete={clickHideModal}
                 />
                 <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
               </div>

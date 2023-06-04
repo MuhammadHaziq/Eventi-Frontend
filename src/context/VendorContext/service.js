@@ -4,15 +4,15 @@ export const getVendors = (filters) => {
   return authAxios.get("/api/vendor", { params: filters });
 };
 
-export const deleteVendor = (id) => {
-  return authAxios.delete(`/api/vendor/${id}`);
+export const deleteVendor = (account_id) => {
+  return authAxios.delete(`/api/vendor/${account_id}`);
 };
 
-export const getVendor = (id) => {
-  return authAxios.get(`/api/vendor/${id}`);
+export const getVendor = (account_id) => {
+  return authAxios.get(`/api/vendor/${account_id}`);
 };
 
 export const updateVendor = (data) => {
   delete data.password;
-  return authAxios.put(`/api/vendor/${data.vendorId}`, data);
+  return authAxios.put(`/api/vendor/${data.account_id}`, data);
 };
