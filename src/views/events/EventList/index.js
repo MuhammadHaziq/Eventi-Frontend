@@ -6,6 +6,7 @@ import {
   CCol,
   CRow,
   CButton,
+  CFormSwitch,
 } from "@coreui/react";
 import EventModal from "../EventModal";
 import ReqEventModal from "../ReqEventModal";
@@ -20,6 +21,7 @@ const EventList = () => {
   const app_dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
   const [selectProduct, setSelectedProduct] = useState("");
+  const [gridView, setGridView] = useState(false);
   const [reqModelID, setreqModelID] = useState("");
   const [filters, setFilters] = useState();
   const { permissions } = useAppState();
@@ -82,8 +84,16 @@ const EventList = () => {
       <CRow>
         <CCol>
           <CCard className="mb-4">
-            <CCardHeader>
+            <CCardHeader className="d-flex justify-content-between">
               <strong>Event List ({data?.data?.data?.meta?.itemCount})</strong>
+              <span>
+                <CFormSwitch
+                  label="Grid View"
+                  id="gridView"
+                  checked={gridView}
+                  onChange={() => setGridView(!gridView)}
+                />
+              </span>
             </CCardHeader>
             <CCardBody>
               <EventTable

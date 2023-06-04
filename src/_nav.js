@@ -35,7 +35,7 @@ let _nav = [
       {
         component: CNavItem,
         name: "Event Join",
-        permission: "grid-view",
+        permission: "customer-list",
         to: "/grid-view",
       },
     ],
