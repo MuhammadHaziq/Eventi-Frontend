@@ -20,7 +20,7 @@ const ReactSelect = ({
   const [state, setState] = useState(null);
 
   useEffect(() => {
-    setState(options.filter((item) => item.value === value)?.[0]);
+    setState(options.filter((item) => item.value === value)?.[0] || null);
   }, [value, options]);
 
   const handleOnChange = (selectedValue) => {

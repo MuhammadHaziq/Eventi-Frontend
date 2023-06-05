@@ -17,16 +17,13 @@ const GridView = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
-  clickOnReqForm,
   clickHideModal,
 }) => {
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const navigate = useNavigate();
 
-
-
   const clickOnReqEventJoin = (id, req_data) => {
-    navigate("/reqEventJoin")
+    navigate("/reqEventJoin");
     // console.log("req_id----", req_data);
     // setreqModelID(req_data);
     // setVisible(true);
@@ -59,7 +56,9 @@ const GridView = ({
                 </h6>
                 <p>{item.special_request}</p>
               </div>
-              <CButton   onClick={clickOnReqEventJoin}>Request to join Event</CButton>
+              <CButton onClick={clickOnReqEventJoin}>
+                Request to join Event
+              </CButton>
             </CCol>
           </CRow>
         </CContainer>

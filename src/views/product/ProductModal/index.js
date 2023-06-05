@@ -21,7 +21,12 @@ import {
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 
-const ProductModal = ({ product_id, visible, setVisible }) => {
+const ProductModal = ({
+  product_id,
+  visible,
+  setVisible,
+  addNewProduct = () => {},
+}) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const app_dispatch = useAppDispatch();
@@ -101,6 +106,9 @@ const ProductModal = ({ product_id, visible, setVisible }) => {
         )
           .then((response) => {
             setIsLoading(false);
+            if (response?.data?.data) {
+              addNewProduct(response?.data?.data);
+            }
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
