@@ -69,7 +69,7 @@ const ProductDetail = () => {
           product_id: product?._id,
           product_name: product?.product_name,
           product_description: product?.product_description,
-          product_qty: product?.product_quantity || 1,
+          product_quantity: product?.product_quantity || 1,
           product_rate: product?.product_price || 1,
           product_amount:
             (product?.product_quantity || 1) * (product?.product_price || 1),
@@ -225,13 +225,13 @@ const ProductDetail = () => {
                           type="number"
                           id="qty"
                           text="Unit"
-                          name="product_qty"
-                          value={item?.product_qty}
+                          name="product_quantity"
+                          value={item?.product_quantity}
                           onChange={(event) =>
                             handleOnChangeProduct(
                               {
                                 target: {
-                                  name: "product_qty",
+                                  name: "product_quantity",
                                   value: event.target.value,
                                 },
                               },
