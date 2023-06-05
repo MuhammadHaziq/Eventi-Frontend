@@ -60,9 +60,10 @@ const EventList = () => {
   };
 
   const clickOnReqForm = (id, req_data) => {
-    console.log("req_id----", req_data);
-    setreqModelID(req_data);
-    setVisible(true);
+    navigate("/reqEventJoin")
+    // console.log("req_id----", req_data);
+    // setreqModelID(req_data);
+    // setVisible(true);
   };
 
   const clickHideModal = () => {

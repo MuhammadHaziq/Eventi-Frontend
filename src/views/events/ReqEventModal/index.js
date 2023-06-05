@@ -4,18 +4,21 @@ import {
   CRow,
   CForm,
   CFormInput,
+  CFormLabel,
   CFormFeedback,
   CButton,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
+  CCard,
+  CCardBody,
+  CCardHeader,
   CSpinner,
   CFormTextarea,
   CFormCheck,
   CInputGroup,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilSettings,cilInfo,cilLibraryAdd } from "@coreui/icons";
+import CreatableSelect from 'react-select/creatable';
+import "./style.scss";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import { getEvent, updateEvent } from "src/context/EventContext/service";
@@ -163,213 +166,104 @@ const EventModal = ({ reqModelID, visible, setVisible }) => {
 
   return (
     <>
-      <CModal
-        backdrop="static"
-        visible={visible}
-        onClose={setVisible}
-        size="lg"
-      >
-        <CModalHeader>
-          <CModalTitle>
-            <strong>Join Event Request</strong>{" "}
-          </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CForm
-            className="row g-2 needs-validation"
-            noValidate
-            validated={validated}
-            onSubmit={handleSubmit}
-          >
-            <CCol md={6}>
-              <CFormInput
-                type="text"
-                id="validationEventName"
-                floatingclassname="mb-3"
-                floatinglabel="Name of the event"
-                placeholder="Name of the event"
-                name="event_name"
-                value={state.event_name}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>Looks good!</CFormFeedback>
-            </CCol>
-            <CCol md={6}>
-              <CInputGroup>
-                <CFormInput
-                  type="date"
-                  id="validationEventDate"
-                  floatingclassname="mb-3"
-                  floatinglabel="Event Date"
-                  placeholder="Event Date"
-                  name="event_date"
-                  value={state.event_date}
-                  onChange={handleOnChange}
-                  required
-                />
-                <CFormFeedback invalid>Please enter event birth.</CFormFeedback>
-              </CInputGroup>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                type="text"
-                id="validationVenueLocation"
-                floatingclassname="mb-3"
-                floatinglabel="Venue/Location"
-                placeholder="Venue/Location"
-                name="event_location"
-                value={state.event_location}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Venue/location Name.
-              </CFormFeedback>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                type="text"
-                id="validationtypeofEvent"
-                floatingclassname="mb-3"
-                floatinglabel="Type of event"
-                placeholder="Type of event"
-                name="type_of_event"
-                value={state.type_of_event}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Type of event
-              </CFormFeedback>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                type="number"
-                id="validationexpectedNumbers"
-                floatingclassname="mb-3"
-                floatinglabel="Expected number of attendees"
-                placeholder="Expected number of attendees"
-                name="expected_attendence"
-                value={state.expected_attendence}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Expected number of attendees
-              </CFormFeedback>
-            </CCol>
-            <CCol md={6}>
-              <PhoneNumberInput
-                phone_number={state.phone_number}
-                handleOnChange={handleOnChange}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                type="text"
-                id="validationAudioEquNeeds"
-                floatingclassname="mb-3"
-                floatinglabel="Audio/visual equipment needs"
-                placeholder="Audio/visual equipment needs"
-                name="equipments"
-                value={state.equipments}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Audio/visual equipment needs
-              </CFormFeedback>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                type="text"
-                id="validationSecurityNeeds"
-                floatingclassname="mb-3"
-                floatinglabel="Security needs"
-                placeholder="Security needs"
-                name="security"
-                value={state.security}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Security needs
-              </CFormFeedback>
-            </CCol>
-            <CCol md={12}>
-              <CFormTextarea
-                rows={2}
-                id="validationRequest"
-                floatingclassname="mb-3"
-                floatinglabel="Special requests or accommodations."
-                placeholder="Special requests or accommodations."
-                name="special_request"
-                value={state.special_request}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Special requests or accommodations.
-              </CFormFeedback>
-            </CCol>
-            <CCol md={12}>
-              <CFormTextarea
-                rows={2}
-                id="eventDescription"
-                floatingclassname="mb-3"
-                floatinglabel="Event Description"
-                placeholder="Event Description"
-                name="event_description"
-                value={state.special_request}
-                onChange={handleOnChange}
-                required
-              />
-              <CFormFeedback invalid>
-                Please provide a Special requests event description.
-              </CFormFeedback>
-            </CCol>
-            <CCol xs={12}>
-              <p>I agree with</p>
-              <CFormCheck
-                type="checkbox"
-                id="invalidCheck"
-                label="Through the submission of this request form, I understand and
-                agree that ALL requests must go through the approval process.
-                This process includes but is not limited to the approval of the
-                following: dates, times, event purpose, set up and equipment
-                needs, childcare availability, etc. You will be contacted after
-                this request is submitted either for further questions about
-                event or outcome of the approval process."
-                required
-                checked={agree}
-                onChange={() => setAgree(!agree)}
-              />
-
-              <CFormFeedback invalid>
-                You must agree before submitting.
-              </CFormFeedback>
-              <br></br>
-            </CCol>
-            <CRow>
-              <CCol className="text-end">
-                <CButton color="primary" type="submit" disabled={isLoading}>
-                  {isLoading ? <CSpinner /> : "Add"}
-                </CButton>
-                <CButton
-                  style={{ marginLeft: "10px" }}
-                  color="secondary"
-                  onClick={setVisible}
-                  disabled={isLoading}
-                >
-                  Close
-                </CButton>
+      <CRow>
+        <CCol>
+          <CCard className="mb-4">
+            <CCardHeader className="d-flex justify-content-between">
+              <strong>Vendor Request Join Event</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CCol md={6}>
+                <CCard>
+                  <CCardHeader className="d-flex justify-content-between">
+                    <strong>Vendor Information</strong>
+                  </CCardHeader>
+                  <div>
+                    <h6 className="vendarH6Info">Name:</h6><span className="vendarSpanInfo">Haseeb</span>
+                  </div>
+                  <div>
+                    <h6 className="vendarH6Info">Business Name:</h6><span className="vendarSpanInfo">POS food</span>
+                  </div>
+                  <div>
+                    <h6 className="vendarH6Info">Email:</h6><span className="vendarSpanInfo">vhaseeb@gmail.com</span>
+                  </div>
+                  <div>
+                    <h6 className="vendarH6Info">Phone:</h6><span className="vendarSpanInfo">+92 312 4299849</span>
+                  </div>
+                  <div>
+                    <h6 className="vendarH6Info">Status:</h6><span className="vendarSpanInfo">Vendar</span>
+                  </div>
+                </CCard>
               </CCol>
-            </CRow>
-          </CForm>
-        </CModalBody>
-        <CModalFooter></CModalFooter>
-      </CModal>
+              <br></br>
+              <CCard className="mb-4 p-2">
+              <CForm
+              className="row g-2 needs-validation"
+              noValidate
+              validated={validated}
+              onSubmit={handleSubmit}
+            >
+            </CForm>
+            <br></br>
+            <CCol md={4}>
+            <CreatableSelect style={{display: "inline"}} isClearable /><CButton  color="info" shape="rounded-0">Add Product</CButton>
+            </CCol>
+            <div class="table-responsive s_table">
+            <table class="table invoice-items-table items table-main-invoice-edit has-calculations no-mtop">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th width="30%" align="left">Item</th>
+                        <th width="25%" align="left">Description</th>
+                        <th width="15%" align="right" class="qty">Qty</th>
+                        <th width="15%" align="right">Rate</th>
+                        <th width="10%" align="right">Amount</th>
+                        <th align="center"> <CIcon icon={cilSettings} /></th>
+                    </tr> 
+                </thead>
+                <tbody class="ui-sortable">
+                    <tr class="main">
+                        <td></td>
+                        <td>
+                            <textarea name="description" class="form-control" rows="4" placeholder="Description"></textarea>
+                        </td>
+                        <td>
+                            <textarea name="long_description" rows="4" class="form-control" placeholder="Long description"></textarea>
+                        </td>
+                                                <td>
+                                                <CFormInput
+                                                type="number"
+                                                id="qty"
+                                                placeholder=""
+                                                text="Unit"
+                                               
+                                              />
+                                            </td>
+                        <td>
+                        <CFormInput
+                        type="number"
+                        id="rate"
+                        placeholder=""
+                         
+                         placeholder='Rate'
+                      />
+                        </td>
+                       
+                        <td>0.00</td>
+                        <td>
+                     <button type="button" onclick="add_item_to_table('undefined','undefined',undefined); return false;" class="btn pull-right btn-primary"> <CIcon icon={cilLibraryAdd}/> </button>
+                        </td>
+                    </tr>
+                                    </tbody>
+            </table>
+   
+            
+            </div>
+              </CCard>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
     </>
   );
 };

@@ -10,7 +10,7 @@ import {
 import { CSmartPagination } from "@coreui/react-pro";
 import AppSwiperthumbs from "src/components/AppSwiperthumbs";
 import "./style.scss";
-
+import { useNavigate } from "react-router-dom";
 const GridView = ({
   isLoading,
   data,
@@ -21,6 +21,16 @@ const GridView = ({
   clickHideModal,
 }) => {
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
+  const navigate = useNavigate();
+
+
+
+  const clickOnReqEventJoin = (id, req_data) => {
+    navigate("/reqEventJoin")
+    // console.log("req_id----", req_data);
+    // setreqModelID(req_data);
+    // setVisible(true);
+  };
   return (
     <>
       {(data || [])?.map((item, index) => (
@@ -49,7 +59,7 @@ const GridView = ({
                 </h6>
                 <p>{item.special_request}</p>
               </div>
-              <CButton href="#">Request to join Event</CButton>
+              <CButton   onClick={clickOnReqEventJoin}>Request to join Event</CButton>
             </CCol>
           </CRow>
         </CContainer>

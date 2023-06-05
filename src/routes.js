@@ -15,6 +15,7 @@ const GridView = React.lazy(() => import("./views/customer/GridView"));
 const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
+const ReqEventJoin = React.lazy(() => import("./views/events/ReqEventModal"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -66,6 +67,12 @@ const routes = [
     name: "Event List",
     permission: "event-list",
     element: EventList,
+  },
+  {
+    path: "/reqEventJoin",
+    name: "Request Event Join Form",
+    permission: "event-list",
+    element: ReqEventJoin,
   },
   {
     path: "/product-list",
