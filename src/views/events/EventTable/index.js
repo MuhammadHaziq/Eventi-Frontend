@@ -6,7 +6,7 @@ import AppReqFormButton from "src/components/AppReqFormButton";
 import useDebounce from "src/hooks/useDebounce";
 import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
-
+import { useAppState } from "src/context/AppContext";
 const EventTable = ({
   isLoading,
   events,
@@ -20,7 +20,7 @@ const EventTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-
+  const { permissions } = useAppState();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
       const tableFilter = JSON.stringify(tableFilters);
@@ -146,14 +146,20 @@ const EventTable = ({
           Action: (item) => (
             <td>
               <div className="d-flex gap-2">
-                <AppDeleteButton
-                  title="Delete Event"
-                  message="Do you really want to delete this event?"
-                  delete_id={item._id}
-                  apiUrl={deleteEvent}
-                  clickOnDelete={clickHideModal}
-                />
-                <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+                {permissions?.find(
+                  (item) => item.permission === "event-delete"
+                ) && (
+                  <AppDeleteButton
+                    title="Delete Event"
+                    message="Do you really want to delete this event?"
+                    delete_id={item._id}
+                    apiUrl={deleteEvent}
+                    clickOnDelete={clickHideModal}
+                  />
+                )}
+                {permissions?.find(
+                  (item) => item.permission === "event-edit"
+                ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
                 <AppReqFormButton
                   onClick={clickOnReqForm}
                   req_data={{ req_id: item._id, reqIDForm: "reqIDForm" }}
