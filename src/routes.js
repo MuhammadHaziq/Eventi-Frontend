@@ -77,6 +77,12 @@ const routes = [
     element: VendorRequestEventJoin,
   },
   {
+    path: "/vendor-update-event/:account_id/:event_id",
+    name: "Vendor Request Update Event",
+    permission: "event-join",
+    element: VendorRequestEventJoin,
+  },
+  {
     path: "/product-list",
     name: "Products  List",
     permission: "product-list",

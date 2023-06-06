@@ -5,12 +5,19 @@ import CIcon from "@coreui/icons-react";
 
 const AppReqFormButton = ({
   onClick,
-  className = "bt btn-info",
+  className = "",
   title = "",
+  update_event,
 }) => {
   return (
     <>
-      <CButton className={className} onClick={onClick} size="sm" title={title}>
+      <CButton
+        className={className}
+        onClick={onClick}
+        size="sm"
+        title={title}
+        color={update_event ? "warning" : "primary"}
+      >
         <CIcon icon={cilPlaylistAdd} className="text-white" />
       </CButton>
     </>

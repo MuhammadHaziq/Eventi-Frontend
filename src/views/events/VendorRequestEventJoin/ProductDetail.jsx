@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   CCol,
   CRow,
@@ -20,20 +20,28 @@ import ReactSelect from "src/components/Inputs/ReactSelect";
 import CIcon from "@coreui/icons-react";
 import { cilSettings, cilMinus, cilPlus } from "@coreui/icons";
 import { getProducts } from "src/context/ProductContext/service";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductModal from "../../product/ProductModal";
-import { useAppState } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
+import {
+  getJoinedVendor,
+  updateJoinedEvent,
+  vendorJoinedEvent,
+} from "src/context/EventContext/service";
+import { AppToast } from "src/components/AppToast";
 
 const ProductDetail = () => {
-  const { event_id } = useParams();
+  const { event_id, account_id } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [dropDownProducts, setDropDownProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [joined_event_id, setJoinedEventId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const { currentUser } = useAppState();
-
+  const app_dispatch = useAppDispatch();
   const getVendorProducts = React.useCallback(() => {
     getProducts({ no_limit: true })
       .then((response) => {
@@ -56,9 +64,70 @@ const ProductDetail = () => {
       });
   }, []);
 
+  const getJoinedEventDetail = useCallback(() => {
+    try {
+      setIsLoading(true);
+      getJoinedVendor(account_id, event_id)
+        .then((response) => {
+          if (response.data.data) {
+            setJoinedEventId(response?.data?.data?._id);
+            setSelectedProducts(
+              response.data.data?.products?.map((item) => {
+                return {
+                  product_id: item?.product_id,
+                  product_name: item?.product_name,
+                  product_description: item?.product_description,
+                  product_quantity: item?.product_quantity || 1,
+                  product_rate: item?.product_price || 1,
+                  product_amount: item?.product_amount,
+                };
+              })
+            );
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
+                color: "success-alert",
+              }),
+            });
+          } else {
+            setSelectedProducts([]);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
+                color: "danger-alert",
+              }),
+            });
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setSelectedProducts([]);
+          setIsLoading(false);
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({ message: err.message, color: "danger-alert" }),
+          });
+        });
+    } catch (err) {
+      setIsLoading(false);
+      app_dispatch({
+        type: "SHOW_RESPONSE",
+        toast: AppToast({ message: err.message, color: "danger-alert" }),
+      });
+    }
+  }, [account_id]);
+
   useEffect(() => {
     getVendorProducts();
   }, []);
+
+  useEffect(() => {
+    if (account_id) {
+      getJoinedEventDetail(account_id);
+    }
+  }, [account_id]);
 
   const addProduct = () => {
     if (selectedProduct) {
@@ -111,13 +180,48 @@ const ProductDetail = () => {
   };
 
   const saveProduct = () => {
+    setIsLoading(true);
     const data = {
       event_id: event_id,
-      vendor_id: currentUser?.data?.user_detail?._id,
       account_id: currentUser?.data?._id,
       products: selectedProducts,
     };
-    console.log(data);
+    if (account_id) {
+      data.joined_event_id = joined_event_id;
+    }
+    (account_id ? updateJoinedEvent(data) : vendorJoinedEvent(data))
+      .then((response) => {
+        setIsLoading(false);
+        if (response.data.data) {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+          navigate("/event-list");
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err.response.data.message || err.message,
+            color: "danger-alert",
+          }),
+        });
+      });
   };
 
   return (
@@ -167,7 +271,13 @@ const ProductDetail = () => {
                   disabled={selectedProducts?.length === 0 || isLoading}
                   style={{ float: "right" }}
                 >
-                  {isLoading ? <CSpinner /> : "Save Product"}
+                  {isLoading ? (
+                    <CSpinner />
+                  ) : account_id ? (
+                    "Update Product"
+                  ) : (
+                    "Save Product"
+                  )}
                 </CButton>
               </div>
             </CCol>
@@ -189,7 +299,7 @@ const ProductDetail = () => {
                 </CTableHead>
                 <CTableBody>
                   {(selectedProducts || [])?.map((item, index) => (
-                    <CTableRow key={item?._id}>
+                    <CTableRow key={index}>
                       <CTableDataCell>
                         <CFormInput
                           name="product_name"
@@ -287,11 +397,7 @@ const ProductDetail = () => {
                           className="btn btn-warning"
                           onClick={() => removeProduct(index)}
                         >
-                          {/* {index === 0 ? (
-                          <CIcon icon={cilPlus} className="text-white" />
-                        ) : ( */}
                           <CIcon icon={cilMinus} className="text-white" />
-                          {/* )} */}
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>

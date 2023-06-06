@@ -20,7 +20,7 @@ const EventTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-  const { permissions } = useAppState();
+  const { permissions, currentUser } = useAppState();
   const navigate = useNavigate();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
@@ -161,10 +161,28 @@ const EventTable = ({
                 {permissions?.find(
                   (item) => item.permission === "event-edit"
                 ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
-                <AppReqFormButton
-                  onClick={() => navigate(`/vendor-join-event/${item?._id}`)}
-                  title="Vendor Request To Join Event"
-                />
+
+                {permissions?.find(
+                  (item) => item.permission === "event-join"
+                ) && (
+                  <AppReqFormButton
+                    onClick={() =>
+                      navigate(
+                        item.joined_vendors.includes(currentUser?.data?._id)
+                          ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
+                          : `/vendor-join-event/${item?._id}`
+                      )
+                    }
+                    title={
+                      item.joined_vendors.includes(currentUser?.data?._id)
+                        ? "Update Event"
+                        : "Vendor Request To Join Event"
+                    }
+                    update_event={item.joined_vendors.includes(
+                      currentUser?.data?._id
+                    )}
+                  />
+                )}
               </div>
             </td>
           ),

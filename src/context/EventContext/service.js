@@ -19,3 +19,15 @@ export const getEvent = (id) => {
 export const updateEvent = (data) => {
   return authAxios.put(`/api/event/${data.eventId}`, data);
 };
+
+export const vendorJoinedEvent = (data) => {
+  return authAxios.post("/api/join-event", data);
+};
+
+export const getJoinedVendor = (id, event_id) => {
+  return authAxios.get(`/api/join-event/${id}/${event_id}`);
+};
+
+export const updateJoinedEvent = (data) => {
+  return authAxios.put("/api/join-event", data);
+};
