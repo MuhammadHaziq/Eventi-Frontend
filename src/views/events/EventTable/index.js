@@ -7,13 +7,13 @@ import useDebounce from "src/hooks/useDebounce";
 import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
 import { useAppState } from "src/context/AppContext";
+import { useNavigate } from "react-router-dom";
 const EventTable = ({
   isLoading,
   events,
   tableMeta,
   updateFilter,
   clickOnEdit,
-  clickOnReqForm,
   clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
@@ -21,6 +21,7 @@ const EventTable = ({
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const { permissions } = useAppState();
+  const navigate = useNavigate();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
       const tableFilter = JSON.stringify(tableFilters);
@@ -161,8 +162,8 @@ const EventTable = ({
                   (item) => item.permission === "event-edit"
                 ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
                 <AppReqFormButton
-                  onClick={clickOnReqForm}
-                  req_data={{ req_id: item._id, reqIDForm: "reqIDForm" }}
+                  onClick={() => navigate(`/vendor-join-event/${item?._id}`)}
+                  title="Vendor Request To Join Event"
                 />
               </div>
             </td>

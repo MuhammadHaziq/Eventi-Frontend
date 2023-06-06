@@ -9,7 +9,7 @@ import {
   CFormSwitch,
 } from "@coreui/react";
 import EventModal from "../EventModal";
-import ReqEventModal from "../ReqEventModal";
+import VendorRequestEventJoin from "../VendorRequestEventJoin";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
@@ -59,13 +59,6 @@ const EventList = () => {
     setVisible(true);
   };
 
-  const clickOnReqForm = (id, req_data) => {
-    navigate("/reqEventJoin")
-    // console.log("req_id----", req_data);
-    // setreqModelID(req_data);
-    // setVisible(true);
-  };
-
   const clickHideModal = () => {
     setSelectedProduct("");
     setVisible(false);
@@ -105,7 +98,6 @@ const EventList = () => {
                   tableMeta={data?.data?.data?.meta || null}
                   updateFilter={useGetData}
                   clickOnEdit={clickOnEdit}
-                  clickOnReqForm={clickOnReqForm}
                   clickHideModal={clickHideModal}
                 />
               ) : (
@@ -115,7 +107,6 @@ const EventList = () => {
                   tableMeta={data?.data?.data?.meta || null}
                   updateFilter={useGetData}
                   clickOnEdit={clickOnEdit}
-                  clickOnReqForm={clickOnReqForm}
                   clickHideModal={clickHideModal}
                 />
               )}
@@ -130,14 +121,6 @@ const EventList = () => {
               setVisible={clickHideModal}
               visible={visible}
               eventId={selectProduct}
-            />
-          )}
-
-          {reqModelID === "reqIDForm" && (
-            <ReqEventModal
-              setVisible={clickHideModal}
-              visible={visible}
-              reqModelID={reqModelID}
             />
           )}
         </>

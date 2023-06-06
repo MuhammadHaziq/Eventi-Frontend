@@ -3,15 +3,14 @@ import { cilPlaylistAdd } from "@coreui/icons";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
-const AppReqFormButton = ({ onClick, className = "bt btn-info", req_data }) => {
-  const { req_id, reqIDForm } = req_data;
+const AppReqFormButton = ({
+  onClick,
+  className = "bt btn-info",
+  title = "",
+}) => {
   return (
     <>
-      <CButton
-        className={className}
-        onClick={() => onClick(req_id, reqIDForm)}
-        size="sm"
-      >
+      <CButton className={className} onClick={onClick} size="sm" title={title}>
         <CIcon icon={cilPlaylistAdd} className="text-white" />
       </CButton>
     </>
