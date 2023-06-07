@@ -24,21 +24,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import ProductModal from "../../product/ProductModal";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import {
-  getJoinedVendor,
   updateJoinedEvent,
   vendorJoinedEvent,
 } from "src/context/EventContext/service";
 import { AppToast } from "src/components/AppToast";
 
-const ProductDetail = () => {
+const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
   const { event_id, account_id } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [dropDownProducts, setDropDownProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [joined_event_id, setJoinedEventId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(showLoading);
   const [visible, setVisible] = useState(false);
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
@@ -64,70 +62,9 @@ const ProductDetail = () => {
       });
   }, []);
 
-  const getJoinedEventDetail = useCallback(() => {
-    try {
-      setIsLoading(true);
-      getJoinedVendor(account_id, event_id)
-        .then((response) => {
-          if (response.data.data) {
-            setJoinedEventId(response?.data?.data?._id);
-            setSelectedProducts(
-              response.data.data?.products?.map((item) => {
-                return {
-                  product_id: item?.product_id,
-                  product_name: item?.product_name,
-                  product_description: item?.product_description,
-                  product_quantity: item?.product_quantity || 1,
-                  product_rate: item?.product_price || 1,
-                  product_amount: item?.product_amount,
-                };
-              })
-            );
-            app_dispatch({
-              type: "SHOW_RESPONSE",
-              toast: AppToast({
-                message: response.data.message,
-                color: "success-alert",
-              }),
-            });
-          } else {
-            setSelectedProducts([]);
-            app_dispatch({
-              type: "SHOW_RESPONSE",
-              toast: AppToast({
-                message: response.data.message,
-                color: "danger-alert",
-              }),
-            });
-          }
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          setSelectedProducts([]);
-          setIsLoading(false);
-          app_dispatch({
-            type: "SHOW_RESPONSE",
-            toast: AppToast({ message: err.message, color: "danger-alert" }),
-          });
-        });
-    } catch (err) {
-      setIsLoading(false);
-      app_dispatch({
-        type: "SHOW_RESPONSE",
-        toast: AppToast({ message: err.message, color: "danger-alert" }),
-      });
-    }
-  }, [account_id]);
-
   useEffect(() => {
     getVendorProducts();
   }, []);
-
-  useEffect(() => {
-    if (account_id) {
-      getJoinedEventDetail(account_id);
-    }
-  }, [account_id]);
 
   const addProduct = () => {
     if (selectedProduct) {
@@ -223,6 +160,12 @@ const ProductDetail = () => {
         });
       });
   };
+
+  useEffect(() => {
+    if (joined_event_id) {
+      setSelectedProducts(eventProducts);
+    }
+  }, [joined_event_id]);
 
   return (
     <>
