@@ -2,20 +2,22 @@ import { cilPlaylistAdd } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton } from "@coreui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppState } from "src/context/AppContext";
 
 const AppEventJoinButton = ({ item, icon = false }) => {
   const { currentUser } = useAppState();
+  const navigate = useNavigate();
   return (
     <CButton
       onClick={() =>
-        currentUser?.data?.user_type === "vendor"
-          ? navigate(
-              item.joined_vendors.includes(currentUser?.data?._id)
-                ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
-                : `/vendor-join-event/${item?._id}`
-            )
-          : null
+        navigate(
+          currentUser?.data?.user_type === "vendor"
+            ? item.joined_vendors.includes(currentUser?.data?._id)
+              ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
+              : `/vendor-join-event/${item?._id}`
+            : `/join-event/${item?._id}`
+        )
       }
       title={
         item[
