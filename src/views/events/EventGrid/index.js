@@ -12,6 +12,7 @@ import AppSwiperthumbs from "src/components/AppSwiperthumbs";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import { useAppState } from "src/context/AppContext";
+import AppEventJoinButton from "src/components/AppEventJoinButton";
 const GridView = ({ data, tableMeta, updateFilter }) => {
   const { currentUser } = useAppState();
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -53,7 +54,8 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
                 <h6 className="vendarH6Info">Event Type:</h6>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div>
-              <CButton
+              <AppEventJoinButton item={item} />
+              {/* <CButton
                 onClick={() =>
                   navigate(
                     item.joined_vendors.includes(currentUser?.data?._id)
@@ -77,7 +79,7 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
                 }
               >
                 Request to join Event
-              </CButton>
+              </CButton> */}
             </CCol>
           </CRow>
         </CContainer>

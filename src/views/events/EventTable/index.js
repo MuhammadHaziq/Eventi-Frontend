@@ -8,6 +8,7 @@ import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
 import { useAppState } from "src/context/AppContext";
 import { useNavigate } from "react-router-dom";
+import AppEventJoinButton from "src/components/AppEventJoinButton";
 const EventTable = ({
   isLoading,
   events,
@@ -165,23 +166,24 @@ const EventTable = ({
                 {permissions?.find(
                   (item) => item.permission === "event-join"
                 ) && (
-                  <AppReqFormButton
-                    onClick={() =>
-                      navigate(
-                        item.joined_vendors.includes(currentUser?.data?._id)
-                          ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
-                          : `/vendor-join-event/${item?._id}`
-                      )
-                    }
-                    title={
-                      item.joined_vendors.includes(currentUser?.data?._id)
-                        ? "Update Event"
-                        : "Vendor Request To Join Event"
-                    }
-                    update_event={item.joined_vendors.includes(
-                      currentUser?.data?._id
-                    )}
-                  />
+                  <AppEventJoinButton item={item} icon={true} />
+                  // <AppReqFormButton
+                  //   onClick={() =>
+                  //     navigate(
+                  //       item.joined_vendors.includes(currentUser?.data?._id)
+                  //         ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
+                  //         : `/vendor-join-event/${item?._id}`
+                  //     )
+                  //   }
+                  //   title={
+                  //     item.joined_vendors.includes(currentUser?.data?._id)
+                  //       ? "Update Event"
+                  //       : "Vendor Request To Join Event"
+                  //   }
+                  //   update_event={item.joined_vendors.includes(
+                  //     currentUser?.data?._id
+                  //   )}
+                  // />
                 )}
               </div>
             </td>
