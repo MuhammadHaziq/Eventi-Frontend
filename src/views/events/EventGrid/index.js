@@ -11,23 +11,11 @@ import { CSmartPagination } from "@coreui/react-pro";
 import AppSwiperthumbs from "src/components/AppSwiperthumbs";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
-const GridView = ({
-  isLoading,
-  data,
-  tableMeta,
-  updateFilter,
-  clickOnEdit,
-  clickHideModal,
-}) => {
+import { useAppState } from "src/context/AppContext";
+const GridView = ({ data, tableMeta, updateFilter }) => {
+  const { currentUser } = useAppState();
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const navigate = useNavigate();
-
-  const clickOnReqEventJoin = (id, req_data) => {
-    navigate("/reqEventJoin");
-    // console.log("req_id----", req_data);
-    // setreqModelID(req_data);
-    // setVisible(true);
-  };
   return (
     <>
       {(data || [])?.map((item, index) => (
@@ -49,14 +37,45 @@ const GridView = ({
               </CCard>
             </CCol>
             <CCol sm={8}>
-              <div className="d-flex flex-column">
-                <h4>{item?.event_name}</h4>
-                <h6>
-                  <u>Event Detail :</u>
-                </h6>
-                <p>{item.special_request}</p>
+              <div>
+                <h6 className="vendarH6Info">Event Name:</h6>
+                <span className="vendarSpanInfo">{item?.event_name}</span>
               </div>
-              <CButton onClick={clickOnReqEventJoin}>
+              <div>
+                <h6 className="vendarH6Info">Event Location:</h6>
+                <span className="vendarSpanInfo">{item?.event_location}</span>
+              </div>
+              <div>
+                <h6 className="vendarH6Info">Event Date:</h6>
+                <span className="vendarSpanInfo">{item?.event_date}</span>
+              </div>
+              <div>
+                <h6 className="vendarH6Info">Event Type:</h6>
+                <span className="vendarSpanInfo">{item?.type_of_event}</span>
+              </div>
+              <CButton
+                onClick={() =>
+                  navigate(
+                    item.joined_vendors.includes(currentUser?.data?._id)
+                      ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
+                      : `/vendor-join-event/${item?._id}`
+                  )
+                }
+                title={
+                  item.joined_vendors.includes(currentUser?.data?._id)
+                    ? "Update Event"
+                    : "Vendor Request To Join Event"
+                }
+                update_event={item.joined_vendors.includes(
+                  currentUser?.data?._id
+                )}
+                className="mt-3"
+                color={
+                  item.joined_vendors.includes(currentUser?.data?._id)
+                    ? "warning"
+                    : "primary"
+                }
+              >
                 Request to join Event
               </CButton>
             </CCol>

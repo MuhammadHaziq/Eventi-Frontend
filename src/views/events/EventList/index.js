@@ -23,7 +23,6 @@ const EventList = () => {
   const [visible, setVisible] = useState(false);
   const [selectProduct, setSelectedProduct] = useState("");
   const [gridView, setGridView] = useState(false);
-  const [reqModelID, setreqModelID] = useState("");
   const [filters, setFilters] = useState();
   const { permissions } = useAppState();
   const navigate = useNavigate();
