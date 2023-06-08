@@ -7,7 +7,7 @@ const AppReqFormButton = ({
   onClick,
   className = "",
   title = "",
-  update_event,
+  update_event = false,
 }) => {
   return (
     <>

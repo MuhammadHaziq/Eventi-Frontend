@@ -42,7 +42,7 @@ const routes = [
     element: CustomerList,
   },
   {
-    path: "/join-event/:event_id",
+    path: "/join-event/:account_id/:event_id",
     name: "Request Event Join Form",
     permission: "event-join",
     element: CustomerJoinEvent,

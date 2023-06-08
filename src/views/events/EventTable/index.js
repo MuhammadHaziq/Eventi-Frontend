@@ -165,26 +165,7 @@ const EventTable = ({
 
                 {permissions?.find(
                   (item) => item.permission === "event-join"
-                ) && (
-                  <AppEventJoinButton item={item} icon={true} />
-                  // <AppReqFormButton
-                  //   onClick={() =>
-                  //     navigate(
-                  //       item.joined_vendors.includes(currentUser?.data?._id)
-                  //         ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
-                  //         : `/vendor-join-event/${item?._id}`
-                  //     )
-                  //   }
-                  //   title={
-                  //     item.joined_vendors.includes(currentUser?.data?._id)
-                  //       ? "Update Event"
-                  //       : "Vendor Request To Join Event"
-                  //   }
-                  //   update_event={item.joined_vendors.includes(
-                  //     currentUser?.data?._id
-                  //   )}
-                  // />
-                )}
+                ) && <AppEventJoinButton item={item} icon={true} />}
               </div>
             </td>
           ),

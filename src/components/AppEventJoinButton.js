@@ -8,6 +8,13 @@ import { useAppState } from "src/context/AppContext";
 const AppEventJoinButton = ({ item, icon = false }) => {
   const { currentUser } = useAppState();
   const navigate = useNavigate();
+  console.log(
+    item[
+      currentUser?.data?.user_type === "vendor"
+        ? "joined_vendors"
+        : "joined_customers"
+    ].includes(currentUser?.data?._id)
+  );
   return (
     <CButton
       onClick={() =>
@@ -16,7 +23,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
             ? item.joined_vendors.includes(currentUser?.data?._id)
               ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
               : `/vendor-join-event/${item?._id}`
-            : `/join-event/${item?._id}`
+            : `/join-event/${currentUser?.data?._id}/${item?._id}`
         )
       }
       title={
@@ -30,11 +37,15 @@ const AppEventJoinButton = ({ item, icon = false }) => {
             : "Un Join Event"
           : "Request To Join Event"
       }
-      update_event={item[
-        currentUser?.data?.user_type === "vendor"
-          ? "joined_vendors"
-          : "joined_customers"
-      ].includes(currentUser?.data?._id)}
+      update_event={
+        item[
+          currentUser?.data?.user_type === "vendor"
+            ? "joined_vendors"
+            : "joined_customers"
+        ].includes(currentUser?.data?._id)
+          ? 1
+          : 0
+      }
       className="mt-3"
       color={
         item[
