@@ -104,7 +104,6 @@ const CustomerJoinEvent = () => {
         });
       });
   };
-  console.log(eventDetail, "eventDetail");
 
   return (
     <>
@@ -133,7 +132,7 @@ const CustomerJoinEvent = () => {
                           currentUser?.data?._id
                         )
                           ? null
-                          : () => joinEvent();
+                          : joinEvent();
                       }}
                       disabled={isLoading}
                     >

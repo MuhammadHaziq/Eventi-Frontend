@@ -12,8 +12,8 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-  CFormSwitch,
   CFormFeedback,
+  CFormCheck,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
@@ -24,7 +24,7 @@ import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import { useAuthAppDispatch } from "src/context/AuthContext";
 const Login = () => {
-  const [userType, setUserType] = useState(true);
+  const [userType, setUserType] = useState("admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
@@ -45,7 +45,7 @@ const Login = () => {
         login({
           email: email,
           password: password,
-          user_type: userType ? "customer" : "vendor",
+          user_type: userType ? userType : "admin",
         })
           .then((response) => {
             authAxios.defaults.headers.common["Authorization"] =
@@ -148,13 +148,23 @@ const Login = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CFormSwitch
-                          label={userType ? "Customer" : "Vendor"}
-                          id="userType"
-                          size="lg"
-                          className="px-5"
-                          checked={userType}
-                          onChange={() => setUserType(!userType)}
+                        <CFormCheck
+                          type="radio"
+                          name="vendor"
+                          id="flexRadioDefault1"
+                          value="vendor"
+                          label="Vendor"
+                          defaultChecked={userType === "vendor"}
+                          onChange={(e) => setUserType(e.target.value)}
+                        />
+                        <CFormCheck
+                          type="radio"
+                          name="userType"
+                          value="customer"
+                          id="flexRadioDefault2"
+                          label="Customer"
+                          defaultChecked={userType === "customer"}
+                          onChange={(e) => setUserType(e.target.value)}
                         />
                       </CCol>
                     </CRow>

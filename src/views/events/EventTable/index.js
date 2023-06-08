@@ -37,6 +37,7 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
+      _style: { minWidth: "200px" },
     },
     {
       key: "event_name",

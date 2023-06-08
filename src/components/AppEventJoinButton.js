@@ -56,6 +56,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
           ? "warning"
           : "primary"
       }
+      size={icon ? "sm" : "md"}
     >
       {icon ? (
         <CIcon icon={cilPlaylistAdd} className="text-white" />
