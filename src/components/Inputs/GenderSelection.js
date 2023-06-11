@@ -15,6 +15,7 @@ export const GenderSelection = ({
         floatingclassname="mb-3"
         floatinglabel="Gender"
         placeholder="Gender"
+        label="Gender"
         name="gender"
         value={gender}
         onChange={handleOnChange}

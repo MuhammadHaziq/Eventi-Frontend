@@ -122,7 +122,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
-                message: err.message,
+                message: err?.response?.data?.message || err.message,
                 color: "danger-alert",
               }),
             });
@@ -177,6 +177,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="First Name"
                 placeholder="First Name"
+                label="First Name"
                 name="first_name"
                 value={state.first_name}
                 onChange={handleOnChange}
@@ -191,6 +192,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Last Name"
                 placeholder="Last Name"
+                label="Last Name"
                 name="last_name"
                 value={state.last_name}
                 onChange={handleOnChange}
@@ -205,6 +207,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Email Address"
                 placeholder="Email Address"
+                label="Email"
                 name="email"
                 value={state.email}
                 autoComplete={""}
@@ -221,6 +224,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                   floatingclassname="mb-3"
                   floatinglabel="Password"
                   placeholder="Passwors"
+                  label="Password"
                   autoComplete=""
                   name="password"
                   defaultValue={state.password}
@@ -237,51 +241,48 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Optional Business Name"
                 placeholder="Optional Business Name"
+                label="Optional Business Name"
                 name="business_name"
                 value={state.business_name}
                 onChange={handleOnChange}
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={6}>
+            <CCol md={6} className="mt-4">
               <PhoneNumberInput
                 phone_number={state.phone_number}
                 handleOnChange={handleOnChange}
               />
             </CCol>
             <CCol md={6}>
-              <CInputGroup>
-                <CFormInput
-                  type="string"
-                  id="validationAddress"
-                  floatingclassname="mb-3"
-                  floatinglabel="Address"
-                  placeholder="Address"
-                  name="address"
-                  value={state.address}
-                  onChange={handleOnChange}
-                  required
-                />
-                <CFormFeedback invalid>Please enter address.</CFormFeedback>
-              </CInputGroup>
+              <CFormInput
+                type="string"
+                id="validationAddress"
+                floatingclassname="mb-3"
+                floatinglabel="Address"
+                placeholder="Address"
+                name="address"
+                label="Address"
+                value={state.address}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>Please enter address.</CFormFeedback>
             </CCol>
             <CCol md={6}>
-              <CInputGroup>
-                <CFormInput
-                  type="date"
-                  id="validationDateOfBirth"
-                  floatingclassname="mb-3"
-                  floatinglabel="Date Of Birth"
-                  placeholder="Date Of Birth"
-                  name="date_of_birth"
-                  value={state.date_of_birth}
-                  onChange={handleOnChange}
-                  required
-                />
-                <CFormFeedback invalid>
-                  Please enter date of birth.
-                </CFormFeedback>
-              </CInputGroup>
+              <CFormInput
+                type="date"
+                id="validationDateOfBirth"
+                floatingclassname="mb-3"
+                floatinglabel="Date Of Birth"
+                placeholder="Date Of Birth"
+                name="date_of_birth"
+                label="Date Of Birth"
+                value={state.date_of_birth}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>Please enter date of birth.</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <GenderSelection

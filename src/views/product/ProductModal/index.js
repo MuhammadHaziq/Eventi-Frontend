@@ -159,7 +159,7 @@ const ProductModal = ({
         backdrop="static"
         visible={visible}
         onClose={setVisible}
-        size="md"
+        size="lg"
       >
         <CModalHeader>
           <CModalTitle>{product_id ? "Edit" : "Add"} Product</CModalTitle>
@@ -178,6 +178,7 @@ const ProductModal = ({
                 floatingclassname="mb-3"
                 floatinglabel="Product Name"
                 placeholder="Product Name"
+                label="Product Name"
                 name="product_name"
                 value={state.product_name}
                 onChange={handleOnChange}
@@ -192,6 +193,7 @@ const ProductModal = ({
                 floatingclassname="mb-3"
                 floatinglabel="Price"
                 placeholder="Price"
+                label="Product Price"
                 name="product_price"
                 value={state.product_price}
                 onChange={handleOnChange}
@@ -205,6 +207,7 @@ const ProductModal = ({
                 id="floatingInputValid2"
                 floatingclassname="mb-3"
                 floatinglabel="Quantity"
+                label="Product Quantity"
                 placeholder="Quantity"
                 name="product_quantity"
                 value={state.product_quantity}

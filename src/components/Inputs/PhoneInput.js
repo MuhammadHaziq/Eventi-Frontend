@@ -22,6 +22,7 @@ export const PhoneNumberInput = ({
         className="form-control"
         floatinglabel={placeHolder}
         placeholder={placeHolder}
+        label="Phone Number"
         value={phone_number}
         name="phone_number"
         onChange={handleChange}

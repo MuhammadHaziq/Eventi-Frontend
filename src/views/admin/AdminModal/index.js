@@ -18,14 +18,11 @@ import {
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
-import {
-  getCustomer,
-  updateCustomer,
-} from "src/context/CustomerContext/service";
+import { getAdmin, updateAdmin } from "src/context/AdminContext/service";
 import { signUp } from "src/context/AuthContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { GenderSelection } from "src/components/Inputs/GenderSelection";
-const CustomerModal = ({ customer_id, visible, setVisible }) => {
+const AdminModal = ({ customer_id, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const app_dispatch = useAppDispatch();
@@ -39,14 +36,13 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
     date_of_birth: "",
     gender: "",
     phone_number: "",
-    age_verification: false,
-    user_type: "customer",
+    user_type: "admin",
   });
 
-  const getCustomerById = useCallback(() => {
+  const getAdminById = useCallback(() => {
     try {
       setIsLoading(true);
-      getCustomer(customer_id)
+      getAdmin(customer_id)
         .then((response) => {
           if (response.data.data) {
             setState({
@@ -58,7 +54,6 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               date_of_birth: response.data.data.date_of_birth || "",
               gender: response.data.data.gender || "",
               phone_number: response.data.data.phone_number || "",
-              age_verification: response.data.data.age_verification || false,
             });
             app_dispatch({
               type: "SHOW_RESPONSE",
@@ -105,13 +100,13 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
       setIsLoading(true);
       try {
         (customer_id
-          ? updateCustomer({
+          ? updateAdmin({
               customerId: customer_id,
               ...state,
             })
           : signUp({
               ...state,
-              user_type: "customer",
+              user_type: "admin",
             })
         )
           .then((response) => {
@@ -156,7 +151,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
 
   useEffect(() => {
     if (customer_id) {
-      getCustomerById();
+      getAdminById();
     }
   }, [customer_id]);
 
@@ -169,7 +164,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
         size="lg"
       >
         <CModalHeader>
-          <CModalTitle>{customer_id ? "Edit" : "Add"} Customer</CModalTitle>
+          <CModalTitle>{customer_id ? "Edit" : "Add"} Admin</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm
@@ -178,8 +173,6 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            {/*<h1>{customer_id ? "Edit" : "Add"} Customer</h1>*/}
-
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -187,8 +180,8 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="First Name"
                 placeholder="First Name"
-                name="first_name"
                 label="First Name"
+                name="first_name"
                 value={state.first_name}
                 onChange={handleOnChange}
                 required
@@ -258,12 +251,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={6} className="mt-4">
-              <PhoneNumberInput
-                phone_number={state.phone_number}
-                handleOnChange={handleOnChange}
-              />
-            </CCol>
+
             <CCol md={6}>
               <CFormInput
                 type="string"
@@ -300,33 +288,27 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
                 handleOnChange={handleOnChange}
               />
             </CCol>
-            <CCol xs={12}>
-              <CFormLabel>Age Verification</CFormLabel>
-              <CFormSwitch
-                label="Are you over 18+ years old?"
-                id="age_verification"
-                defaultChecked={state.age_verification}
-                onChange={(e) =>
-                  setState({
-                    ...state,
-                    age_verification: !state.age_verification,
-                  })
-                }
+            <CCol md={6} className="mt-3">
+              <PhoneNumberInput
+                phone_number={state.phone_number}
+                handleOnChange={handleOnChange}
               />
             </CCol>
-            <CCol className="text-end">
-              <CButton color="primary" type="submit" disabled={isLoading}>
-                {isLoading ? <CSpinner /> : "Save"}
-              </CButton>
-              <CButton
-                style={{ marginLeft: "10px" }}
-                color="secondary"
-                onClick={setVisible}
-                disabled={isLoading}
-              >
-                Close
-              </CButton>
-            </CCol>
+            <CRow>
+              <CCol className="text-end">
+                <CButton color="primary" type="submit" disabled={isLoading}>
+                  {isLoading ? <CSpinner /> : "Save"}
+                </CButton>
+                <CButton
+                  style={{ marginLeft: "10px" }}
+                  color="secondary"
+                  onClick={setVisible}
+                  disabled={isLoading}
+                >
+                  Close
+                </CButton>
+              </CCol>
+            </CRow>
           </CForm>
         </CModalBody>
         <CModalFooter></CModalFooter>
@@ -334,4 +316,4 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
     </>
   );
 };
-export default CustomerModal;
+export default AdminModal;

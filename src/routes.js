@@ -11,7 +11,7 @@ const EventRegistration = React.lazy(() =>
   import("./views/events/CreateEvent")
 );
 const CustomerList = React.lazy(() => import("./views/customer"));
-const GridView = React.lazy(() => import("./views/customer/GridView"));
+const AdminList = React.lazy(() => import("./views/admin"));
 const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
@@ -99,6 +99,13 @@ const routes = [
     name: "Products  List",
     permission: "product-list",
     element: ProductList,
+  },
+
+  {
+    path: "/admin-list",
+    name: "Admin List",
+    permission: "admin-list",
+    element: AdminList,
   },
 ];
 
