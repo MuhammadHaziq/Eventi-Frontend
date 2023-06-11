@@ -150,36 +150,38 @@ const CustomerJoinEvent = () => {
             </CCardHeader>
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
-              <CContainer>
-                <CRow>
-                  <CCol>
-                    <CButton
-                      className="join-event-customer"
-                      color={
-                        eventDetail?.joined_customers
+              {currentUser?.data?.user_type !== "admin" && (
+                <CContainer>
+                  <CRow>
+                    <CCol>
+                      <CButton
+                        className="join-event-customer"
+                        color={
+                          eventDetail?.joined_customers
+                            ?.map((item) => item?._id)
+                            .includes(currentUser?.data?._id)
+                            ? "warning"
+                            : "primary"
+                        }
+                        onClick={() => {
+                          eventDetail?.joined_customers
+                            ?.map((item) => item?._id)
+                            .includes(currentUser?.data?._id)
+                            ? unJoinEvent()
+                            : joinEvent();
+                        }}
+                        disabled={isLoading}
+                      >
+                        {eventDetail?.joined_customers
                           ?.map((item) => item?._id)
                           .includes(currentUser?.data?._id)
-                          ? "warning"
-                          : "primary"
-                      }
-                      onClick={() => {
-                        eventDetail?.joined_customers
-                          ?.map((item) => item?._id)
-                          .includes(currentUser?.data?._id)
-                          ? unJoinEvent()
-                          : joinEvent();
-                      }}
-                      disabled={isLoading}
-                    >
-                      {eventDetail?.joined_customers
-                        ?.map((item) => item?._id)
-                        .includes(currentUser?.data?._id)
-                        ? "Event Joined"
-                        : "Join Event"}
-                    </CButton>
-                  </CCol>
-                </CRow>
-              </CContainer>
+                          ? "Event Joined"
+                          : "Join Event"}
+                      </CButton>
+                    </CCol>
+                  </CRow>
+                </CContainer>
+              )}
             </CCardBody>
           </CCard>
           <CCard className="mb-2">

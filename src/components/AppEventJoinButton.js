@@ -20,15 +20,17 @@ const AppEventJoinButton = ({ item, icon = false }) => {
         )
       }
       title={
-        item[
-          currentUser?.data?.user_type === "vendor"
-            ? "joined_vendors"
-            : "joined_customers"
-        ].includes(currentUser?.data?._id)
-          ? currentUser?.data?.user_type === "vendor"
-            ? "Update Event"
-            : "Un Join Event"
-          : "Request To Join Event"
+        currentUser?.data?.user_type !== "admin"
+          ? item[
+              currentUser?.data?.user_type === "vendor"
+                ? "joined_vendors"
+                : "joined_customers"
+            ].includes(currentUser?.data?._id)
+            ? currentUser?.data?.user_type === "vendor"
+              ? "Update Event"
+              : "Un Join Event"
+            : "Request To Join Event"
+          : "View Detail"
       }
       update_event={
         item[
@@ -53,14 +55,18 @@ const AppEventJoinButton = ({ item, icon = false }) => {
     >
       {icon ? (
         <CIcon icon={cilPlaylistAdd} className="text-white" />
-      ) : item[
+      ) : currentUser?.data?.user_type !== "admin" ? (
+        item[
           currentUser?.data?.user_type === "vendor"
             ? "joined_vendors"
             : "joined_customers"
         ].includes(currentUser?.data?._id) ? (
-        "Event Joined"
+          "Event Joined"
+        ) : (
+          "Request to join Event"
+        )
       ) : (
-        "Request to join Event"
+        "View Detail"
       )}
     </CButton>
   );
