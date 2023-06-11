@@ -53,6 +53,12 @@ const AppEventJoinButton = ({ item, icon = false }) => {
     >
       {icon ? (
         <CIcon icon={cilPlaylistAdd} className="text-white" />
+      ) : item[
+          currentUser?.data?.user_type === "vendor"
+            ? "joined_vendors"
+            : "joined_customers"
+        ].includes(currentUser?.data?._id) ? (
+        "Event Joined"
       ) : (
         "Request to join Event"
       )}

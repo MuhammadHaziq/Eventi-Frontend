@@ -107,6 +107,39 @@ const CustomerJoinEvent = () => {
       });
   };
 
+  const unJoinEvent = () => {
+    setIsLoading(true);
+    customerJoinEvent(event_id, account_id, { status: "remove" })
+      .then((response) => {
+        if (response.data.data) {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+          navigate("/event-list");
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({ message: err.message, color: "danger-alert" }),
+        });
+      });
+  };
+
   return (
     <>
       <CRow>
@@ -123,25 +156,25 @@ const CustomerJoinEvent = () => {
                     <CButton
                       className="join-event-customer"
                       color={
-                        eventDetail?.joined_customers.includes(
-                          currentUser?.data?._id
-                        )
+                        eventDetail?.joined_customers
+                          ?.map((item) => item?._id)
+                          .includes(currentUser?.data?._id)
                           ? "warning"
                           : "primary"
                       }
                       onClick={() => {
-                        eventDetail?.joined_customers.includes(
-                          currentUser?.data?._id
-                        )
-                          ? null
+                        eventDetail?.joined_customers
+                          ?.map((item) => item?._id)
+                          .includes(currentUser?.data?._id)
+                          ? unJoinEvent()
                           : joinEvent();
                       }}
                       disabled={isLoading}
                     >
-                      {eventDetail?.joined_customers.includes(
-                        currentUser?.data?._id
-                      )
-                        ? "Joined Event"
+                      {eventDetail?.joined_customers
+                        ?.map((item) => item?._id)
+                        .includes(currentUser?.data?._id)
+                        ? "Event Joined"
                         : "Join Event"}
                     </CButton>
                   </CCol>
