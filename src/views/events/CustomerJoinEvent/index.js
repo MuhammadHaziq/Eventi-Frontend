@@ -14,6 +14,8 @@ import { AppToast } from "src/components/AppToast";
 import { customerJoinEvent, getEvent } from "src/context/EventContext/service";
 import AppEventDetail from "src/components/AppEventDetail";
 import "./style.scss";
+import JoinedCustomers from "./JoinedCustomer";
+import JoinedVendors from "./JoinedVendor";
 
 const CustomerJoinEvent = () => {
   const { currentUser } = useAppState();
@@ -109,7 +111,7 @@ const CustomerJoinEvent = () => {
     <>
       <CRow>
         <CCol>
-          <CCard className="mb-4">
+          <CCard className="mb-2">
             <CCardHeader className="d-flex justify-content-between">
               <strong>Join Event</strong>
             </CCardHeader>
@@ -145,6 +147,22 @@ const CustomerJoinEvent = () => {
                   </CCol>
                 </CRow>
               </CContainer>
+            </CCardBody>
+          </CCard>
+          <CCard className="mb-2">
+            <CCardHeader>Joined Customers</CCardHeader>
+            <CCardBody>
+              <JoinedCustomers
+                joinedCustomers={eventDetail?.joined_customers || []}
+              />
+            </CCardBody>
+          </CCard>
+          <CCard className="mb-4">
+            <CCardHeader>Joined Vendors</CCardHeader>
+            <CCardBody>
+              <JoinedVendors
+                joinedVendors={eventDetail?.joined_vendors || []}
+              />
             </CCardBody>
           </CCard>
         </CCol>

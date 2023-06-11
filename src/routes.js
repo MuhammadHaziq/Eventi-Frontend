@@ -18,6 +18,8 @@ const EventList = React.lazy(() => import("./views/events/EventList"));
 const VendorRequestEventJoin = React.lazy(() =>
   import("./views/events/VendorRequestEventJoin")
 );
+import JoinedVendorDetail from "./views/events/CustomerJoinEvent/JoinedVendorDetail";
+
 const CustomerJoinEvent = React.lazy(() =>
   import("./views/events/CustomerJoinEvent")
 );
@@ -46,6 +48,13 @@ const routes = [
     name: "Request Event Join Form",
     permission: "event-join",
     element: CustomerJoinEvent,
+  },
+
+  {
+    path: "/joined-vednor-detail/:account_id/:event_id",
+    name: "Joined Vendor Detail",
+    permission: "event-detail",
+    element: JoinedVendorDetail,
   },
 
   // {

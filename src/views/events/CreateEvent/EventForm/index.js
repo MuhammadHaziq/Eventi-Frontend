@@ -47,7 +47,6 @@ export const EventRegistration = () => {
       event.preventDefault();
       event.stopPropagation();
       try {
-        console.log(state.banner_images, "state.banner_images");
         const formData = new FormData();
         formData.append("event_name", state.event_name);
         formData.append("event_date", state.event_date);

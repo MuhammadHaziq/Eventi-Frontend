@@ -8,13 +8,6 @@ import { useAppState } from "src/context/AppContext";
 const AppEventJoinButton = ({ item, icon = false }) => {
   const { currentUser } = useAppState();
   const navigate = useNavigate();
-  console.log(
-    item[
-      currentUser?.data?.user_type === "vendor"
-        ? "joined_vendors"
-        : "joined_customers"
-    ].includes(currentUser?.data?._id)
-  );
   return (
     <CButton
       onClick={() =>
