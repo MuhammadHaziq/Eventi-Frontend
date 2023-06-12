@@ -14,6 +14,8 @@ import { AppToast } from "src/components/AppToast";
 import { customerJoinEvent, getEvent } from "src/context/EventContext/service";
 import AppEventDetail from "src/components/AppEventDetail";
 import "./style.scss";
+import JoinedCustomers from "./JoinedCustomer";
+import JoinedVendors from "./JoinedVendor";
 
 const CustomerJoinEvent = () => {
   const { currentUser } = useAppState();
@@ -105,46 +107,97 @@ const CustomerJoinEvent = () => {
       });
   };
 
+  const unJoinEvent = () => {
+    setIsLoading(true);
+    customerJoinEvent(event_id, account_id, { status: "remove" })
+      .then((response) => {
+        if (response.data.data) {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+          navigate("/event-list");
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({ message: err.message, color: "danger-alert" }),
+        });
+      });
+  };
+
   return (
     <>
       <CRow>
         <CCol>
-          <CCard className="mb-4">
+          <CCard className="mb-2">
             <CCardHeader className="d-flex justify-content-between">
               <strong>Join Event</strong>
             </CCardHeader>
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
-              <CContainer>
-                <CRow>
-                  <CCol>
-                    <CButton
-                      className="join-event-customer"
-                      color={
-                        eventDetail?.joined_customers?.includes(
-                          currentUser?.data?._id
-                        )
-                          ? "warning"
-                          : "primary"
-                      }
-                      onClick={() => {
-                        eventDetail?.joined_customers?.includes(
-                          currentUser?.data?._id
-                        )
-                          ? null
-                          : joinEvent();
-                      }}
-                      disabled={isLoading}
-                    >
-                      {eventDetail?.joined_customers?.includes(
-                        currentUser?.data?._id
-                      )
-                        ? "Joined Event"
-                        : "Join Event"}
-                    </CButton>
-                  </CCol>
-                </CRow>
-              </CContainer>
+              {currentUser?.data?.user_type !== "admin" && (
+                <CContainer>
+                  <CRow>
+                    <CCol>
+                      <CButton
+                        className="join-event-customer"
+                        color={
+                          eventDetail?.joined_customers
+                            ?.map((item) => item?._id)
+                            .includes(currentUser?.data?._id)
+                            ? "warning"
+                            : "primary"
+                        }
+                        onClick={() => {
+                          eventDetail?.joined_customers
+                            ?.map((item) => item?._id)
+                            .includes(currentUser?.data?._id)
+                            ? unJoinEvent()
+                            : joinEvent();
+                        }}
+                        disabled={isLoading}
+                      >
+                        {eventDetail?.joined_customers
+                          ?.map((item) => item?._id)
+                          .includes(currentUser?.data?._id)
+                          ? "Event Joined"
+                          : "Join Event"}
+                      </CButton>
+                    </CCol>
+                  </CRow>
+                </CContainer>
+              )}
+            </CCardBody>
+          </CCard>
+          <CCard className="mb-2">
+            <CCardHeader>Joined Customers</CCardHeader>
+            <CCardBody>
+              <JoinedCustomers
+                joinedCustomers={eventDetail?.joined_customers || []}
+              />
+            </CCardBody>
+          </CCard>
+          <CCard className="mb-4">
+            <CCardHeader>Joined Vendors</CCardHeader>
+            <CCardBody>
+              <JoinedVendors
+                joinedVendors={eventDetail?.joined_vendors || []}
+              />
             </CCardBody>
           </CCard>
         </CCol>

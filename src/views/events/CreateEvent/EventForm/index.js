@@ -47,7 +47,6 @@ export const EventRegistration = () => {
       event.preventDefault();
       event.stopPropagation();
       try {
-        console.log(state.banner_images, "state.banner_images");
         const formData = new FormData();
         formData.append("event_name", state.event_name);
         formData.append("event_date", state.event_date);
@@ -134,6 +133,7 @@ export const EventRegistration = () => {
                     floatingclassname="mb-3"
                     floatinglabel="Name of the event"
                     placeholder="Name of the event"
+                    label="Event Name"
                     name="event_name"
                     defaultValue={state.event_name}
                     onChange={handleOnChange}
@@ -141,7 +141,7 @@ export const EventRegistration = () => {
                   />
                   <CFormFeedback invalid>Looks good!</CFormFeedback>
                 </CCol>
-                <CCol md={6}>
+                <CCol md={6} className="mt-5">
                   <CInputGroup>
                     <CFormInput
                       type="date"
@@ -168,6 +168,7 @@ export const EventRegistration = () => {
                     floatinglabel="Venue/Location"
                     placeholder="Venue/Location"
                     name="event_location"
+                    label="Event Location"
                     defaultValue={state.event_location}
                     onChange={handleOnChange}
                     required
@@ -183,6 +184,7 @@ export const EventRegistration = () => {
                     floatingclassname="mb-3"
                     floatinglabel="Type of event"
                     placeholder="Type of event"
+                    label="Event Type"
                     name="type_of_event"
                     defaultValue={state.type_of_event}
                     onChange={handleOnChange}
@@ -199,6 +201,7 @@ export const EventRegistration = () => {
                     floatingclassname="mb-3"
                     floatinglabel="Expected number of attendees"
                     placeholder="Expected number of attendees"
+                    label="Expected number of attendees"
                     name="expected_attendence"
                     defaultValue={state.expected_attendence}
                     onChange={handleOnChange}
@@ -221,6 +224,7 @@ export const EventRegistration = () => {
                     floatingclassname="mb-3"
                     floatinglabel="Audio/visual equipment needs"
                     placeholder="Audio/visual equipment needs"
+                    label="Audio/visual equipment needs"
                     name="equipments"
                     defaultValue={state.equipments}
                     onChange={handleOnChange}
@@ -243,6 +247,7 @@ export const EventRegistration = () => {
                     name="security"
                     placeholder="Security needs"
                     value={state.security}
+                    label="Security"
                   />
                   {/* // <CFormInput
                   //   type="text"
@@ -267,6 +272,7 @@ export const EventRegistration = () => {
                     floatinglabel="Special requests or accommodations."
                     placeholder="Special requests or accommodations."
                     name="special_request"
+                    label="Note"
                     defaultValue={state.special_request}
                     onChange={handleOnChange}
                     required

@@ -55,31 +55,6 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div>
               <AppEventJoinButton item={item} />
-              {/* <CButton
-                onClick={() =>
-                  navigate(
-                    item.joined_vendors.includes(currentUser?.data?._id)
-                      ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
-                      : `/vendor-join-event/${item?._id}`
-                  )
-                }
-                title={
-                  item.joined_vendors.includes(currentUser?.data?._id)
-                    ? "Update Event"
-                    : "Vendor Request To Join Event"
-                }
-                update_event={item.joined_vendors.includes(
-                  currentUser?.data?._id
-                )}
-                className="mt-3"
-                color={
-                  item.joined_vendors.includes(currentUser?.data?._id)
-                    ? "warning"
-                    : "primary"
-                }
-              >
-                Request to join Event
-              </CButton> */}
             </CCol>
           </CRow>
         </CContainer>

@@ -180,9 +180,9 @@ const Login = () => {
                     <h2>Sign up</h2>
                     <p>
                       Do you want to sign up as a{" "}
-                      {userType ? "Customer" : "Vendor"} ?
+                      {userType === "vendor" ? "Vendor" : "Customer"} ?
                     </p>
-                    <Link to={`/register/${userType ? "customer" : "vendor"}`}>
+                    <Link to={`/register/${userType ? userType : "customer"}`}>
                       <CButton
                         color="primary"
                         className="mt-3"

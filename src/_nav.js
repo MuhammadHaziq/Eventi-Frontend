@@ -70,5 +70,20 @@ let _nav = [
       },
     ],
   },
+  {
+    component: CNavGroup,
+    name: "Admin",
+    permission: "admin-list",
+    to: "/admin-list",
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: "Admin List",
+        permission: "admin-list",
+        to: "/admin-list",
+      },
+    ],
+  },
 ];
 export default _nav;

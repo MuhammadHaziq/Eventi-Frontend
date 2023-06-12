@@ -32,6 +32,6 @@ export const updateJoinedEvent = (data) => {
   return authAxios.put("/api/join-event", data);
 };
 
-export const customerJoinEvent = (eventId, account_id) => {
-  return authAxios.put(`/api/event/${eventId}/${account_id}`);
+export const customerJoinEvent = (eventId, account_id, data) => {
+  return authAxios.put(`/api/event/${eventId}/${account_id}`, data);
 };

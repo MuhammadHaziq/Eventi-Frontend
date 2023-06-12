@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
 import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
-import AppReqFormButton from "src/components/AppReqFormButton";
 import useDebounce from "src/hooks/useDebounce";
 import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
@@ -21,7 +20,7 @@ const EventTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-  const { permissions, currentUser } = useAppState();
+  const { permissions } = useAppState();
   const navigate = useNavigate();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {

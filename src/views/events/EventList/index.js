@@ -49,7 +49,6 @@ const EventList = () => {
   );
 
   const useGetData = (filterDatas) => {
-    console.log(filterDatas);
     setFilters({ ...filters, ...filterDatas });
   };
 

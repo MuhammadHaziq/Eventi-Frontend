@@ -184,6 +184,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Name of the event"
                 placeholder="Name of the event"
+                label="Event Name"
                 name="event_name"
                 value={state.event_name}
                 onChange={handleOnChange}
@@ -191,7 +192,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               />
               <CFormFeedback invalid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={6}>
+            <CCol md={6} className="mt-5">
               <CInputGroup>
                 <CFormInput
                   type="date"
@@ -215,6 +216,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatinglabel="Venue/Location"
                 placeholder="Venue/Location"
                 name="event_location"
+                label="Event Location"
                 value={state.event_location}
                 onChange={handleOnChange}
                 required
@@ -230,6 +232,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Type of event"
                 placeholder="Type of event"
+                label="Event Type"
                 name="type_of_event"
                 value={state.type_of_event}
                 onChange={handleOnChange}
@@ -246,6 +249,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Expected number of attendees"
                 placeholder="Expected number of attendees"
+                label="Expected number of attendees"
                 name="expected_attendence"
                 value={state.expected_attendence}
                 onChange={handleOnChange}
@@ -268,6 +272,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatingclassname="mb-3"
                 floatinglabel="Audio/visual equipment needs"
                 placeholder="Audio/visual equipment needs"
+                label="Audio/visual equipment needs"
                 name="equipments"
                 value={state.equipments}
                 onChange={handleOnChange}
@@ -290,6 +295,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 name="security"
                 placeholder="Security needs"
                 value={state.security}
+                label="Security"
               />
               {/* <CFormInput
                 type="text"
@@ -316,6 +322,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 name="special_request"
                 value={state.special_request}
                 onChange={handleOnChange}
+                label="Note"
                 required
               />
               <CFormFeedback invalid>

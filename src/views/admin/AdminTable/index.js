@@ -3,9 +3,8 @@ import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
 import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import useDebounce from "src/hooks/useDebounce";
-import { deleteCustomer } from "src/context/CustomerContext/service";
-import { useAppState } from "src/context/AppContext";
-const CustomerTable = ({
+import { deleteAdmin } from "src/context/AdminContext/service";
+const AdminTable = ({
   isLoading,
   customers,
   tableMeta,
@@ -17,7 +16,6 @@ const CustomerTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-  const { permissions } = useAppState();
 
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
@@ -142,25 +140,17 @@ const CustomerTable = ({
           Action: (item) => (
             <td>
               <div className="d-flex gap-2">
-                {permissions?.find(
-                  (item) => item.permission === "customer-delete"
-                ) && (
-                  <AppDeleteButton
-                    title="Delete Customer"
-                    message="Do you really want to delete this customer?"
-                    delete_id={item.account_id}
-                    apiUrl={deleteCustomer}
-                    clickOnDelete={clickHideModal}
-                  />
-                )}
-                {permissions?.find(
-                  (item) => item.permission === "customer-edit"
-                ) && (
-                  <AppEditButton
-                    onClick={clickOnEdit}
-                    edit_id={item.account_id}
-                  />
-                )}
+                <AppDeleteButton
+                  title="Delete Admin"
+                  message="Do you really want to delete this admin?"
+                  delete_id={item.account_id}
+                  apiUrl={deleteAdmin}
+                  clickOnDelete={clickHideModal}
+                />
+                <AppEditButton
+                  onClick={clickOnEdit}
+                  edit_id={item.account_id}
+                />
               </div>
             </td>
           ),
@@ -182,4 +172,4 @@ const CustomerTable = ({
     </>
   );
 };
-export default CustomerTable;
+export default AdminTable;

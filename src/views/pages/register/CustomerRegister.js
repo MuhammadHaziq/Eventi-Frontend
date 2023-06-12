@@ -96,7 +96,6 @@ const CustomerRegister = () => {
           }),
         });
       }
-      console.log(state, event, "state");
     }
 
     setValidated(true);

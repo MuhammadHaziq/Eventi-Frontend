@@ -4,6 +4,7 @@ import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import useDebounce from "src/hooks/useDebounce";
 import { deleteVendor } from "src/context/VendorContext/service";
+import { useAppState } from "src/context/AppContext";
 const VendorTable = ({
   isLoading,
   vendors,
@@ -16,6 +17,7 @@ const VendorTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
+  const { permissions } = useAppState();
 
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
@@ -133,17 +135,25 @@ const VendorTable = ({
           Action: (item) => (
             <td>
               <div className="d-flex gap-2">
-                <AppDeleteButton
-                  title="Delete Vendor"
-                  message="Do you really want to delete this vendor?"
-                  delete_id={item.account_id}
-                  apiUrl={deleteVendor}
-                  clickOnDelete={clickHideModal}
-                />
-                <AppEditButton
-                  onClick={clickOnEdit}
-                  edit_id={item.account_id}
-                />
+                {permissions?.find(
+                  (item) => item.permission === "vendor-delete"
+                ) && (
+                  <AppDeleteButton
+                    title="Delete Vendor"
+                    message="Do you really want to delete this vendor?"
+                    delete_id={item.account_id}
+                    apiUrl={deleteVendor}
+                    clickOnDelete={clickHideModal}
+                  />
+                )}
+                {permissions?.find(
+                  (item) => item.permission === "vendor-edit"
+                ) && (
+                  <AppEditButton
+                    onClick={clickOnEdit}
+                    edit_id={item.account_id}
+                  />
+                )}
               </div>
             </td>
           ),
