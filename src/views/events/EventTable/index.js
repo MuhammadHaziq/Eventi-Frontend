@@ -8,6 +8,7 @@ import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
 import { useAppState } from "src/context/AppContext";
 import { useNavigate } from "react-router-dom";
+import AppEventJoinButton from "src/components/AppEventJoinButton";
 const EventTable = ({
   isLoading,
   events,
@@ -20,8 +21,7 @@ const EventTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-  const { permissions } = useAppState();
-  console.table(permissions);
+  const { permissions, currentUser } = useAppState();
   const navigate = useNavigate();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
@@ -37,6 +37,7 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
+      _style: { minWidth: "200px" },
     },
     {
       key: "event_name",
@@ -162,10 +163,10 @@ const EventTable = ({
                 {permissions?.find(
                   (item) => item.permission === "event-edit"
                 ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
-                <AppReqFormButton
-                  onClick={() => navigate(`/vendor-join-event/${item?._id}`)}
-                  title="Vendor Request To Join Event"
-                />
+
+                {permissions?.find(
+                  (item) => item.permission === "event-join"
+                ) && <AppEventJoinButton item={item} icon={true} />}
               </div>
             </td>
           ),

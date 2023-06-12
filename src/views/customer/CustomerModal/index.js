@@ -50,15 +50,15 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
         .then((response) => {
           if (response.data.data) {
             setState({
-              first_name: response.data.data.first_name,
-              last_name: response.data.data.last_name,
-              email: response.data.data.email,
-              business_name: response.data.data.business_name,
-              address: response.data.data.address,
-              date_of_birth: response.data.data.date_of_birth,
-              gender: response.data.data.gender,
-              phone_number: response.data.data.phone_number,
-              age_verification: response.data.data.age_verification,
+              first_name: response.data.data.first_name || "",
+              last_name: response.data.data.last_name || "",
+              email: response.data.data.email || "",
+              business_name: response.data.data.business_name || "",
+              address: response.data.data.address || "",
+              date_of_birth: response.data.data.date_of_birth || "",
+              gender: response.data.data.gender || "",
+              phone_number: response.data.data.phone_number || "",
+              age_verification: response.data.data.age_verification || false,
             });
             app_dispatch({
               type: "SHOW_RESPONSE",
@@ -304,7 +304,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               <CFormSwitch
                 label="Are you over 18+ years old?"
                 id="age_verification"
-                checked={state.age_verification}
+                defaultChecked={state.age_verification}
                 onChange={(e) =>
                   setState({
                     ...state,

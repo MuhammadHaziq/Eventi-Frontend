@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   CCol,
   CRow,
@@ -27,20 +27,26 @@ import {
 } from "@coreui/icons";
 
 import { getProducts } from "src/context/ProductContext/service";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductModal from "../../product/ProductModal";
-import { useAppState } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
+import {
+  updateJoinedEvent,
+  vendorJoinedEvent,
+} from "src/context/EventContext/service";
+import { AppToast } from "src/components/AppToast";
 
-const ProductDetail = () => {
-  const { event_id } = useParams();
+const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
+  const { event_id, account_id } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [dropDownProducts, setDropDownProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(showLoading);
   const [visible, setVisible] = useState(false);
   const { currentUser } = useAppState();
-
+  const app_dispatch = useAppDispatch();
   const getVendorProducts = React.useCallback(() => {
     getProducts({ no_limit: true })
       .then((response) => {
@@ -118,14 +124,55 @@ const ProductDetail = () => {
   };
 
   const saveProduct = () => {
+    setIsLoading(true);
     const data = {
       event_id: event_id,
-      vendor_id: currentUser?.data?.user_detail?._id,
       account_id: currentUser?.data?._id,
       products: selectedProducts,
     };
-    console.log(data);
+    if (account_id) {
+      data.joined_event_id = joined_event_id;
+    }
+    (account_id ? updateJoinedEvent(data) : vendorJoinedEvent(data))
+      .then((response) => {
+        setIsLoading(false);
+        if (response.data.data) {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+          navigate("/event-list");
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err.response.data.message || err.message,
+            color: "danger-alert",
+          }),
+        });
+      });
   };
+
+  useEffect(() => {
+    if (joined_event_id) {
+      setSelectedProducts(eventProducts);
+    }
+  }, [joined_event_id]);
 
   return (
     <>
@@ -164,7 +211,23 @@ const ProductDetail = () => {
                   onClick={() => setVisible(true)}
                   style={{ float: "right" }}
                 >
-                  <CIcon icon={cilPlaylistAdd} /> New Product
+                  New Product
+                </CButton>
+                <CButton
+                  color="info"
+                  shape="rounded-0"
+                  className="mt-2 text-white"
+                  onClick={saveProduct}
+                  disabled={selectedProducts?.length === 0 || isLoading}
+                  style={{ float: "right" }}
+                >
+                  {isLoading ? (
+                    <CSpinner />
+                  ) : account_id ? (
+                    "Update Product"
+                  ) : (
+                    "Save Product"
+                  )}
                 </CButton>
               </div>
             </CCol>
@@ -186,7 +249,7 @@ const ProductDetail = () => {
                 </CTableHead>
                 <CTableBody>
                   {(selectedProducts || [])?.map((item, index) => (
-                    <CTableRow key={item?._id}>
+                    <CTableRow key={index}>
                       <CTableDataCell>
                         <CFormInput
                           name="product_name"

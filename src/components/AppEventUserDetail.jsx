@@ -2,7 +2,7 @@ import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import React from "react";
 const AppEventUserDetail = ({ user }) => {
   return (
-    <CCard>
+    <CCard className="mb-4 p-2">
       <CCardHeader className="d-flex justify-content-between">
         <strong>
           {user?.user_type === "vendor" ? "Vendor" : "Customer"} Information

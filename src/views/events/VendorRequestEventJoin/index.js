@@ -1,173 +1,135 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  CCol,
-  CRow,
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormFeedback,
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CSpinner,
-  CFormTextarea,
-  CFormCheck,
-  CInputGroup,
-  CTable,
-  CTableBody,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTableDataCell,
-} from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import { cilSettings, cilInfo, cilLibraryAdd } from "@coreui/icons";
-import CreatableSelect from "react-select/creatable";
+import React, { useState, useCallback, useEffect } from "react";
+import { CCol, CRow, CCard, CCardBody, CCardHeader } from "@coreui/react";
 import "./style.scss";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
-import { AppToast } from "src/components/AppToast";
-import { getEvent, updateEvent } from "src/context/EventContext/service";
-import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
-import { useNavigate, useParams } from "react-router-dom";
 import AppEventUserDetail from "src/components/AppEventUserDetail";
-import { getVendor } from "src/context/VendorContext/service";
-import ReactSelect from "src/components/Inputs/ReactSelect";
 import ProductDetail from "./ProductDetail";
+import { useParams } from "react-router-dom";
+import { AppToast } from "src/components/AppToast";
+import { getEvent, getJoinedVendor } from "src/context/EventContext/service";
+import AppEventDetail from "src/components/AppEventDetail";
 const VendorRequestEventJoin = () => {
-  const [validated, setValidated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [vendorDetail, setVendorDetail] = useState(null);
-  const [agree, setAgree] = useState(false);
-  const app_dispatch = useAppDispatch();
-  const [state, setState] = useState({
-    event_name: "",
-    event_date: null,
-    event_location: "",
-    vendor_id: "",
-    type_of_event: "",
-    expected_attendence: "",
-    phone_number: "",
-    equipments: "",
-    security: "",
-    special_request: "",
-  });
-  const navigate = useNavigate();
-  const { event_id } = useParams();
   const { currentUser } = useAppState();
+  const app_dispatch = useAppDispatch();
+  const { event_id, account_id } = useParams();
 
-  // const getEventById = useCallback(() => {
-  //   try {
-  //     setIsLoading(true);
-  //     getEvent(event_id)
-  //       .then((response) => {
-  //         if (response.data.data) {
-  //           setState({
-  //             event_name: response.data.data.event_name,
-  //             event_date: response.data.data.event_date,
-  //             event_location: response.data.data.event_location,
-  //             vendor_id: response.data.data.vendor_id,
-  //             type_of_event: response.data.data.type_of_event,
-  //             expected_attendence: response.data.data.expected_attendence,
-  //             phone_number: response.data.data.phone_number,
-  //             equipments: response.data.data.equipments,
-  //             security: response.data.data.security === true ? "Yes" : "No",
-  //             special_request: response.data.data.special_request,
-  //           });
-  //           app_dispatch({
-  //             type: "SHOW_RESPONSE",
-  //             toast: AppToast({
-  //               message: response.data.message,
-  //               color: "success-alert",
-  //             }),
-  //           });
-  //         } else {
-  //           app_dispatch({
-  //             type: "SHOW_RESPONSE",
-  //             toast: AppToast({
-  //               message: response.data.message,
-  //               color: "danger-alert",
-  //             }),
-  //           });
-  //         }
-  //         setIsLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         setIsLoading(false);
-  //         app_dispatch({
-  //           type: "SHOW_RESPONSE",
-  //           toast: AppToast({ message: err.message, color: "danger-alert" }),
-  //         });
-  //       });
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     app_dispatch({
-  //       type: "SHOW_RESPONSE",
-  //       toast: AppToast({ message: err.message, color: "danger-alert" }),
-  //     });
-  //   }
-  // }, [event_id]);
+  const [joined_event_id, setJoinedEventId] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [eventDetail, setEventDetail] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
-      try {
-        updateEvent({
-          ...state,
-          event_id: event_id,
-          security: ["Yes", "yes"].includes(state.security) ? true : false,
-        })
-          .then((response) => {
-            if (response.data.statusCode === 200) {
-              app_dispatch({
-                type: "SHOW_RESPONSE",
-                toast: AppToast({
-                  message: response.data.message,
-                  color: "success-alert",
-                }),
-              });
-              navigate("/event-list");
-            } else {
-              app_dispatch({
-                type: "SHOW_RESPONSE",
-                toast: AppToast({
-                  message: response.data.message,
-                  color: "danger-alert",
-                }),
-              });
-            }
-          })
-          .catch((err) => {
+  const getJoinedEventDetail = useCallback(() => {
+    try {
+      setIsLoading(true);
+      getJoinedVendor(account_id, event_id)
+        .then((response) => {
+          if (response.data.data) {
+            setJoinedEventId(response?.data?.data?._id);
+            setEventDetail(response.data.data?.event_detail || null);
+            setSelectedProducts(
+              response.data.data?.products?.map((item) => {
+                return {
+                  product_id: item?.product_id,
+                  product_name: item?.product_name,
+                  product_description: item?.product_description,
+                  product_quantity: item?.product_quantity || 1,
+                  product_rate: item?.product_price || 1,
+                  product_amount: item?.product_amount,
+                };
+              })
+            );
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
-                message: err.response.data.message,
+                message: response.data.message,
+                color: "success-alert",
+              }),
+            });
+          } else {
+            setEventDetail(null);
+            setSelectedProducts([]);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
                 color: "danger-alert",
               }),
             });
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setEventDetail(null);
+          setSelectedProducts([]);
+          setIsLoading(false);
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({ message: err.message, color: "danger-alert" }),
           });
-      } catch (err) {
-        app_dispatch({
-          type: "SHOW_RESPONSE",
-          toast: AppToast({
-            message: err.message,
-            color: "danger-alert",
-          }),
         });
-      }
+    } catch (err) {
+      setIsLoading(false);
+      app_dispatch({
+        type: "SHOW_RESPONSE",
+        toast: AppToast({ message: err.message, color: "danger-alert" }),
+      });
     }
-    setValidated(true);
-  };
+  }, [account_id]);
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
-  };
+  const getEventDetail = useCallback(() => {
+    try {
+      setIsLoading(true);
+      getEvent(event_id)
+        .then((response) => {
+          if (response.data.data) {
+            setEventDetail(response.data.data || null);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
+                color: "success-alert",
+              }),
+            });
+          } else {
+            setEventDetail(null);
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
+                color: "danger-alert",
+              }),
+            });
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setEventDetail(null);
+          setIsLoading(false);
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({ message: err.message, color: "danger-alert" }),
+          });
+        });
+    } catch (err) {
+      setIsLoading(false);
+      app_dispatch({
+        type: "SHOW_RESPONSE",
+        toast: AppToast({ message: err.message, color: "danger-alert" }),
+      });
+    }
+  }, [event_id]);
+
+  useEffect(() => {
+    if (account_id) {
+      getJoinedEventDetail(account_id);
+    }
+  }, [account_id]);
+
+  useEffect(() => {
+    if (event_id) {
+      getEventDetail(event_id);
+    }
+  }, [event_id]);
 
   return (
     <>
@@ -175,10 +137,10 @@ const VendorRequestEventJoin = () => {
         <CCol>
           <CCard className="mb-4">
             <CCardHeader className="d-flex justify-content-between">
-              <strong>Vendor Request Join Event</strong>
+              <strong>Vendor Join Event</strong>
             </CCardHeader>
             <CCardBody>
-              <CCol md={6}>
+              {/* <CCol md={6}>
                 <AppEventUserDetail
                   user={
                     {
@@ -187,9 +149,13 @@ const VendorRequestEventJoin = () => {
                     } || null
                   }
                 />
-              </CCol>
-              <br></br>
-              <ProductDetail />
+              </CCol> */}
+              {eventDetail && <AppEventDetail event_detail={eventDetail} />}
+              <ProductDetail
+                joined_event_id={joined_event_id}
+                eventProducts={selectedProducts}
+                showLoading={isLoading}
+              />
             </CCardBody>
           </CCard>
         </CCol>

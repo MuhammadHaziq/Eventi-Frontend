@@ -143,11 +143,14 @@ const CustomerTable = ({
                 <AppDeleteButton
                   title="Delete Customer"
                   message="Do you really want to delete this customer?"
-                  delete_id={item._id}
+                  delete_id={item.account_id}
                   apiUrl={deleteCustomer}
                   clickOnDelete={clickHideModal}
                 />
-                <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+                <AppEditButton
+                  onClick={clickOnEdit}
+                  edit_id={item.account_id}
+                />
               </div>
             </td>
           ),
