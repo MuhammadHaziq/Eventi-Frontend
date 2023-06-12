@@ -23,7 +23,8 @@ const GridView = ({
   const navigate = useNavigate();
 
   const clickOnReqEventJoin = (id, req_data) => {
-    navigate("/reqEventJoin");
+    // navigate("/reqEventJoin");
+
     // console.log("req_id----", req_data);
     // setreqModelID(req_data);
     // setVisible(true);
@@ -56,7 +57,7 @@ const GridView = ({
                 </h6>
                 <p>{item.special_request}</p>
               </div>
-              <CButton onClick={clickOnReqEventJoin}>
+              <CButton onClick={() => navigate(`/vendor-join-event/${item?._id}`)}>
                 Request to join Event
               </CButton>
             </CCol>

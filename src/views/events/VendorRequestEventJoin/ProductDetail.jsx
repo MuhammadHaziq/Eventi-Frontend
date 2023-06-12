@@ -18,7 +18,14 @@ import {
 } from "@coreui/react";
 import ReactSelect from "src/components/Inputs/ReactSelect";
 import CIcon from "@coreui/icons-react";
-import { cilSettings, cilMinus, cilPlus } from "@coreui/icons";
+import {
+  cilSettings,
+  cilMinus,
+  cilPlus,
+  cilPlaylistAdd,
+  cilSend,
+} from "@coreui/icons";
+
 import { getProducts } from "src/context/ProductContext/service";
 import { useParams } from "react-router-dom";
 import ProductModal from "../../product/ProductModal";
@@ -139,35 +146,25 @@ const ProductDetail = () => {
             </CCol>
             <CCol className="mt-4">
               <CButton
-                color="info"
+                color="primary"
                 shape="rounded-0"
                 className="mt-2 text-white"
                 onClick={addProduct}
                 disabled={!selectedProduct || isLoading}
               >
-                Add Product
+                <CIcon icon={cilPlus} /> Add Product
               </CButton>
             </CCol>
             <CCol className="mt-4">
               <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                 <CButton
-                  color="warning"
+                  color="danger"
                   shape="rounded-0"
                   className="mt-2 me-md-2 text-white"
                   onClick={() => setVisible(true)}
                   style={{ float: "right" }}
                 >
-                  New Product
-                </CButton>
-                <CButton
-                  color="info"
-                  shape="rounded-0"
-                  className="mt-2 text-white"
-                  onClick={saveProduct}
-                  disabled={selectedProducts?.length === 0 || isLoading}
-                  style={{ float: "right" }}
-                >
-                  {isLoading ? <CSpinner /> : "Save Product"}
+                  <CIcon icon={cilPlaylistAdd} /> New Product
                 </CButton>
               </div>
             </CCol>
@@ -287,11 +284,7 @@ const ProductDetail = () => {
                           className="btn btn-warning"
                           onClick={() => removeProduct(index)}
                         >
-                          {/* {index === 0 ? (
-                          <CIcon icon={cilPlus} className="text-white" />
-                        ) : ( */}
                           <CIcon icon={cilMinus} className="text-white" />
-                          {/* )} */}
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
@@ -300,6 +293,39 @@ const ProductDetail = () => {
               </CTable>
             </CCol>
           </CRow>
+          <CCol></CCol>
+          <CRow>
+            <CCol md={4}></CCol>
+            <CCol md={8}>
+              <CRow>
+                <CCol md={9}></CCol>
+                <CCol md={3}>
+                  {" "}
+                  <div>
+                    <h6 className="vendarH6Info">Total:</h6>
+                    <span className="vendarSpanTotal">$ 0.00</span>
+                  </div>
+                </CCol>
+              </CRow>
+              <hr />
+            </CCol>
+          </CRow>
+
+          <CCol className="mt-4">
+            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+              <CButton
+                color="info"
+                shape="rounded-0"
+                className="mt-2 text-white"
+                onClick={saveProduct}
+                disabled={selectedProducts?.length === 0 || isLoading}
+                style={{ float: "right" }}
+              >
+                {isLoading ? <CSpinner /> : <CIcon icon={cilSend} />}
+                Save
+              </CButton>
+            </div>
+          </CCol>
         </CCardBody>
       </CCard>
       <ProductModal

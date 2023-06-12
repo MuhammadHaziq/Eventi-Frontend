@@ -21,6 +21,7 @@ const EventTable = ({
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const { permissions } = useAppState();
+  console.table(permissions);
   const navigate = useNavigate();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {

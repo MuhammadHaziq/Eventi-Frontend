@@ -30,7 +30,7 @@ const AppEventUserDetail = ({ user }) => {
         <div>
           <h6 className="vendarH6Info">Status:</h6>
           <span className="vendarSpanInfo">
-            {user?.user_type === "vendor" ? "Vendor" : "Customer"}
+            {user?.user_type === "vendor" ? "Vendor" : "-"}
           </span>
         </div>
       </CCardBody>
