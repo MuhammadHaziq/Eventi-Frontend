@@ -26,7 +26,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
               currentUser?.data?.user_type === "vendor"
                 ? "joined_vendors"
                 : "joined_customers"
-            ].includes(currentUser?.data?._id)
+            ]?.includes(currentUser?.data?._id)
             ? currentUser?.data?.user_type === "vendor"
               ? "Update Event"
               : "Un Join Event"
@@ -61,7 +61,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
           currentUser?.data?.user_type === "vendor"
             ? "joined_vendors"
             : "joined_customers"
-        ].includes(currentUser?.data?._id) ? (
+        ]?.includes(currentUser?.data?._id) ? (
           "Event Joined"
         ) : (
           "Request to join Event"
