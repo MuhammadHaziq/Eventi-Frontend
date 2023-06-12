@@ -6,21 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { useAppState } from "src/context/AppContext";
 
 const AppEventJoinButton = ({ item, icon = false }) => {
+
   const { currentUser } = useAppState();
   const navigate = useNavigate();
-  console.log(
-    item[
-      currentUser?.data?.user_type === "vendor"
-        ? "joined_vendors"
-        : "joined_customers"
-    ].includes(currentUser?.data?._id)
-  );
   return (
     <CButton
       onClick={() =>
         navigate(
           currentUser?.data?.user_type === "vendor"
-            ? item.joined_vendors.includes(currentUser?.data?._id)
+            ? item.joined_vendors?.includes(currentUser?.data?._id)
               ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
               : `/vendor-join-event/${item?._id}`
             : `/join-event/${currentUser?.data?._id}/${item?._id}`
@@ -31,7 +25,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
           currentUser?.data?.user_type === "vendor"
             ? "joined_vendors"
             : "joined_customers"
-        ].includes(currentUser?.data?._id)
+        ]?.includes(currentUser?.data?._id)
           ? currentUser?.data?.user_type === "vendor"
             ? "Update Event"
             : "Un Join Event"
@@ -42,7 +36,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
           currentUser?.data?.user_type === "vendor"
             ? "joined_vendors"
             : "joined_customers"
-        ].includes(currentUser?.data?._id)
+        ]?.includes(currentUser?.data?._id)
           ? 1
           : 0
       }
@@ -52,7 +46,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
           currentUser?.data?.user_type === "vendor"
             ? "joined_vendors"
             : "joined_customers"
-        ].includes(currentUser?.data?._id)
+        ]?.includes(currentUser?.data?._id)
           ? "warning"
           : "primary"
       }

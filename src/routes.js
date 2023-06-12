@@ -1,12 +1,12 @@
 import React from "react";
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 // Eventi Foms
-const CustomerRegistration = React.lazy(() =>
-  import("./pages/Forms/CustomerRegistration")
-);
-const VendarRegistration = React.lazy(() =>
-  import("./pages/Forms/VendarRegistration")
-);
+// const CustomerRegistration = React.lazy(() =>
+//   import("./pages/Forms/CustomerRegistration")
+// );
+// const VendarRegistration = React.lazy(() =>
+//   import("./pages/Forms/")
+// );
 const EventRegistration = React.lazy(() =>
   import("./views/events/CreateEvent")
 );
@@ -29,12 +29,12 @@ const routes = [
     permission: "dashboard",
     element: Dashboard,
   },
-  {
-    path: "/customer-registration",
-    name: "Customer Registration",
-    permission: "customer-add",
-    element: CustomerRegistration,
-  },
+  // {
+  //   path: "/customer-registration",
+  //   name: "Customer Registration",
+  //   permission: "customer-add",
+  //   element: CustomerRegistration,
+  // },
   {
     path: "/customer-list",
     name: "Customer List",
@@ -48,12 +48,12 @@ const routes = [
     element: CustomerJoinEvent,
   },
 
-  {
-    path: "/vendar-registration",
-    name: "Vendar Registration",
-    permission: "vendor-add",
-    element: VendarRegistration,
-  },
+  // {
+  //   path: "/vendar-registration",
+  //   name: "Vendar Registration",
+  //   permission: "vendor-add",
+  //   element: VendarRegistration,
+  // },
   {
     path: "/vendor-list",
     name: "Vendar List",

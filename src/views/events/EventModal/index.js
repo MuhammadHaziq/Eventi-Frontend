@@ -204,7 +204,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                   onChange={handleOnChange}
                   required
                 />
-                <CFormFeedback invalid>Please enter event birth.</CFormFeedback>
+                <CFormFeedback invalid>Please enter event date.</CFormFeedback>
               </CInputGroup>
             </CCol>
             <CCol md={6}>

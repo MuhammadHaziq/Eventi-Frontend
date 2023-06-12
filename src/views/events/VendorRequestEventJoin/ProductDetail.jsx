@@ -25,7 +25,6 @@ import {
   cilPlaylistAdd,
   cilSend,
 } from "@coreui/icons";
-
 import { getProducts } from "src/context/ProductContext/service";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductModal from "../../product/ProductModal";
@@ -76,18 +75,16 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
   const addProduct = () => {
     if (selectedProduct) {
       const product = products.find((item) => item._id === selectedProduct);
-      setSelectedProducts([
-        ...selectedProducts,
-        {
-          product_id: product?._id,
-          product_name: product?.product_name,
-          product_description: product?.product_description,
-          product_quantity: product?.product_quantity || 1,
-          product_rate: product?.product_price || 1,
-          product_amount:
-            (product?.product_quantity || 1) * (product?.product_price || 1),
-        },
-      ]);
+      const datanew = {
+        product_id: product?._id,
+        product_name: product?.product_name,
+        product_description: product?.product_description,
+        product_quantity: product?.product_quantity || 1,
+        product_rate: product?.product_price || 1,
+        product_amount:
+          (product?.product_quantity || 1) * (product?.product_price || 1),
+      };
+      setSelectedProducts([...selectedProducts, datanew]);
       setSelectedProduct(null);
     }
   };
@@ -108,11 +105,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
   };
 
   const removeProduct = (index) => {
-    setSelectedProducts(
-      selectedProducts?.filter((ite, idx) => {
-        return idx !== index;
-      })
-    );
+    setSelectedProducts(selectedProducts?.filter((ite, idx) => idx !== index));
   };
 
   const addNewProduct = (product) => {
@@ -173,7 +166,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
       setSelectedProducts(eventProducts);
     }
   }, [joined_event_id]);
-
+console.log(selectedProducts);
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -213,7 +206,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
                 >
                   New Product
                 </CButton>
-                <CButton
+                {/*        <CButton
                   color="info"
                   shape="rounded-0"
                   className="mt-2 text-white"
@@ -228,7 +221,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
                   ) : (
                     "Save Product"
                   )}
-                </CButton>
+                </CButton>*/}
               </div>
             </CCol>
           </CRow>
@@ -248,7 +241,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {(selectedProducts || [])?.map((item, index) => (
+                  {(selectedProducts || [])?.map((item, index) => (   
                     <CTableRow key={index}>
                       <CTableDataCell>
                         <CFormInput
@@ -363,10 +356,9 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
               <CRow>
                 <CCol md={9}></CCol>
                 <CCol md={3}>
-                  {" "}
                   <div>
                     <h6 className="vendarH6Info">Total:</h6>
-                    <span className="vendarSpanTotal">$ 0.00</span>
+                    <span className="vendarSpanTotal">{(selectedProducts || [])?.map(item => {return item.product_amount})?.reduce((preValue ,nextValue) => (+preValue || 0)  + (+nextValue || 0),0 )}</span>
                   </div>
                 </CCol>
               </CRow>
@@ -384,8 +376,14 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
                 disabled={selectedProducts?.length === 0 || isLoading}
                 style={{ float: "right" }}
               >
-                {isLoading ? <CSpinner /> : <CIcon icon={cilSend} />}
-                Save
+                <CIcon icon={cilSend} />
+                {isLoading ? (
+                  <CSpinner />
+                ) : account_id ? (
+                  "Update Product"
+                ) : (
+                  "Save Product"
+                )}
               </CButton>
             </div>
           </CCol>

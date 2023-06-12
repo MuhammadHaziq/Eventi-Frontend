@@ -121,14 +121,14 @@ const CustomerJoinEvent = () => {
                     <CButton
                       className="join-event-customer"
                       color={
-                        eventDetail?.joined_customers.includes(
+                        eventDetail?.joined_customers?.includes(
                           currentUser?.data?._id
                         )
                           ? "warning"
                           : "primary"
                       }
                       onClick={() => {
-                        eventDetail?.joined_customers.includes(
+                        eventDetail?.joined_customers?.includes(
                           currentUser?.data?._id
                         )
                           ? null
@@ -136,7 +136,7 @@ const CustomerJoinEvent = () => {
                       }}
                       disabled={isLoading}
                     >
-                      {eventDetail?.joined_customers.includes(
+                      {eventDetail?.joined_customers?.includes(
                         currentUser?.data?._id
                       )
                         ? "Joined Event"
