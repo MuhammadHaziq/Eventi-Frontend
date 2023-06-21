@@ -8,6 +8,7 @@ import {
   CFormInput,
   CFormFeedback,
   CInputGroup,
+  CFormLabel,
 } from "@coreui/react";
 import jwtDecode from "jwt-decode";
 import { GenderSelection } from "src/components/Inputs/GenderSelection";
@@ -183,10 +184,12 @@ const VendorRegister = () => {
           <CFormFeedback valid>Looks good!</CFormFeedback>
         </CCol>
         <CCol md={6}>
-          <PhoneNumberInput
-            phone_number={state.phone_number}
-            handleOnChange={handleOnChange}
-          />
+          <div>
+            <PhoneNumberInput
+              phone_number={state.phone_number}
+              handleOnChange={handleOnChange}
+            />
+          </div>
         </CCol>
         <CCol md={6}>
           <CInputGroup>
@@ -221,6 +224,7 @@ const VendorRegister = () => {
           </CInputGroup>
         </CCol>
         <CCol md={6}>
+          <CFormLabel>Gender</CFormLabel>
           <GenderSelection
             gender={state.gender}
             handleOnChange={handleOnChange}

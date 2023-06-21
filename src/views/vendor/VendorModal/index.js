@@ -11,6 +11,7 @@ import {
   CModalHeader,
   CModalTitle,
   CSpinner,
+  CFormLabel,
   CInputGroup,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
@@ -248,7 +249,8 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={6} className="mt-4">
+            <CCol md={6} className="">
+              <CFormLabel>Phone</CFormLabel>
               <PhoneNumberInput
                 phone_number={state.phone_number}
                 handleOnChange={handleOnChange}
@@ -285,18 +287,27 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
               <CFormFeedback invalid>Please enter date of birth.</CFormFeedback>
             </CCol>
             <CCol md={6}>
+              <CFormLabel>Gender</CFormLabel>
               <GenderSelection
                 gender={state.gender}
                 handleOnChange={handleOnChange}
               />
             </CCol>
-            <CCol className="text-end">
-              <CButton color="primary" type="submit" disabled={isLoading}>
+            <CCol md={12} className="text-end">
+              <CButton
+                size="md"
+                color="success"
+                variant="outline"
+                type="submit"
+                disabled={isLoading}
+              >
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
               <CButton
                 style={{ marginLeft: "10px" }}
-                color="secondary"
+                color="dark"
+                size="md"
+                variant="outline"
                 onClick={setVisible}
                 disabled={isLoading}
               >
@@ -305,7 +316,6 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
             </CCol>
           </CForm>
         </CModalBody>
-        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

@@ -283,25 +283,35 @@ const AdminModal = ({ customer_id, visible, setVisible }) => {
               <CFormFeedback invalid>Please enter date of birth.</CFormFeedback>
             </CCol>
             <CCol md={6}>
+              <CFormLabel>Gender</CFormLabel>
               <GenderSelection
                 gender={state.gender}
                 handleOnChange={handleOnChange}
               />
             </CCol>
-            <CCol md={6} className="mt-3">
+            <CCol md={6} className="">
+              <CFormLabel>Phone</CFormLabel>
               <PhoneNumberInput
                 phone_number={state.phone_number}
                 handleOnChange={handleOnChange}
               />
             </CCol>
-            <CRow>
-              <CCol className="text-end">
-                <CButton color="primary" type="submit" disabled={isLoading}>
+            <CRow className="mt-4">
+              <CCol md={12} className="text-end">
+                <CButton
+                  size="md"
+                  color="success"
+                  variant="outline"
+                  type="submit"
+                  disabled={isLoading}
+                >
                   {isLoading ? <CSpinner /> : "Save"}
                 </CButton>
                 <CButton
+                  color="dark"
+                  size="md"
+                  variant="outline"
                   style={{ marginLeft: "10px" }}
-                  color="secondary"
                   onClick={setVisible}
                   disabled={isLoading}
                 >
@@ -311,7 +321,6 @@ const AdminModal = ({ customer_id, visible, setVisible }) => {
             </CRow>
           </CForm>
         </CModalBody>
-        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

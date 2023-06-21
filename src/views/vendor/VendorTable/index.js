@@ -28,14 +28,6 @@ const VendorTable = ({
 
   const [columns] = useState([
     {
-      key: "Action",
-      label: "Action",
-      filter: false,
-      isShow: true,
-      disabled: false,
-    },
-
-    {
       key: "first_name",
       label: "First Name",
       filter: true,
@@ -86,8 +78,15 @@ const VendorTable = ({
     },
     {
       key: "phone_number",
-      label: "Phone Number",
+      label: "Mob Number",
       filter: true,
+      isShow: true,
+      disabled: false,
+    },
+    {
+      key: "Action",
+      label: "Action",
+      filter: false,
       isShow: true,
       disabled: false,
     },
@@ -136,6 +135,14 @@ const VendorTable = ({
             <td>
               <div className="d-flex gap-2">
                 {permissions?.find(
+                  (item) => item.permission === "vendor-edit"
+                ) && (
+                  <AppEditButton
+                    onClick={clickOnEdit}
+                    edit_id={item.account_id}
+                  />
+                )}
+                {permissions?.find(
                   (item) => item.permission === "vendor-delete"
                 ) && (
                   <AppDeleteButton
@@ -144,14 +151,6 @@ const VendorTable = ({
                     delete_id={item.account_id}
                     apiUrl={deleteVendor}
                     clickOnDelete={clickHideModal}
-                  />
-                )}
-                {permissions?.find(
-                  (item) => item.permission === "vendor-edit"
-                ) && (
-                  <AppEditButton
-                    onClick={clickOnEdit}
-                    edit_id={item.account_id}
                   />
                 )}
               </div>

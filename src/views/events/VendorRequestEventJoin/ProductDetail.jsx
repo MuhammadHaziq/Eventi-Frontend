@@ -166,7 +166,6 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
       setSelectedProducts(eventProducts);
     }
   }, [joined_event_id]);
-console.log(selectedProducts);
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -241,7 +240,7 @@ console.log(selectedProducts);
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {(selectedProducts || [])?.map((item, index) => (   
+                  {(selectedProducts || [])?.map((item, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>
                         <CFormInput
@@ -358,7 +357,17 @@ console.log(selectedProducts);
                 <CCol md={3}>
                   <div>
                     <h6 className="vendarH6Info">Total:</h6>
-                    <span className="vendarSpanTotal">{(selectedProducts || [])?.map(item => {return item.product_amount})?.reduce((preValue ,nextValue) => (+preValue || 0)  + (+nextValue || 0),0 )}</span>
+                    <span className="vendarSpanTotal">
+                      {(selectedProducts || [])
+                        ?.map((item) => {
+                          return item.product_amount;
+                        })
+                        ?.reduce(
+                          (preValue, nextValue) =>
+                            (+preValue || 0) + (+nextValue || 0),
+                          0
+                        )}
+                    </span>
                   </div>
                 </CCol>
               </CRow>

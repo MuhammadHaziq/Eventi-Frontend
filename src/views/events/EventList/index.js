@@ -67,7 +67,12 @@ const EventList = () => {
       {isError ? "" : <AppProgress loading={isFetching} />}
       {permissions.find((item) => item.permission === "event-add") && (
         <>
-          <CButton onClick={() => navigate("/event-registration")}>
+          <CButton
+            size="sm"
+            color="primary"
+            variant="outline"
+            onClick={() => navigate("/event-registration")}
+          >
             Add Event
           </CButton>
           <br></br>
@@ -78,7 +83,11 @@ const EventList = () => {
         <CCol>
           <CCard className="mb-4">
             <CCardHeader className="d-flex justify-content-between">
-              <strong>Event List ({data?.data?.data?.meta?.itemCount})</strong>
+              <strong>
+                {" "}
+                Total number of Event {gridView ? "Grid" : "List"} (
+                {data?.data?.data?.meta?.itemCount})
+              </strong>
               <span>
                 <CFormSwitch
                   label="Grid View"

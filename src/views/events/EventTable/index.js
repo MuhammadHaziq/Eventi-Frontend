@@ -31,14 +31,6 @@ const EventTable = ({
 
   const [columns] = useState([
     {
-      key: "Action",
-      label: "Action",
-      filter: false,
-      isShow: true,
-      disabled: false,
-      _style: { minWidth: "200px" },
-    },
-    {
       key: "event_name",
       label: "Event Name",
       filter: true,
@@ -72,7 +64,7 @@ const EventTable = ({
     },
     {
       key: "phone_number",
-      label: "Phone Number",
+      label: "Mob Number",
       filter: true,
       isShow: true,
       disabled: false,
@@ -108,6 +100,14 @@ const EventTable = ({
       isShow: true,
       disabled: false,
       _style: { minWidth: "130px" },
+    },
+    {
+      key: "Action",
+      label: "Action",
+      filter: false,
+      isShow: true,
+      disabled: false,
+      _style: { minWidth: "200px" },
     },
   ]);
   useEffect(() => {
@@ -149,6 +149,13 @@ const EventTable = ({
             <td>
               <div className="d-flex gap-2">
                 {permissions?.find(
+                  (item) => item.permission === "event-edit"
+                ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
+
+                {permissions?.find(
+                  (item) => item.permission === "event-join"
+                ) && <AppEventJoinButton item={item} icon={true} />}
+                {permissions?.find(
                   (item) => item.permission === "event-delete"
                 ) && (
                   <AppDeleteButton
@@ -159,13 +166,6 @@ const EventTable = ({
                     clickOnDelete={clickHideModal}
                   />
                 )}
-                {permissions?.find(
-                  (item) => item.permission === "event-edit"
-                ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
-
-                {permissions?.find(
-                  (item) => item.permission === "event-join"
-                ) && <AppEventJoinButton item={item} icon={true} />}
               </div>
             </td>
           ),

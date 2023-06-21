@@ -14,6 +14,7 @@ import {
   CSpinner,
   CFormTextarea,
   CInputGroup,
+  CFormLabel,
 } from "@coreui/react";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
@@ -260,6 +261,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               </CFormFeedback>
             </CCol>
             <CCol md={6}>
+              <CFormLabel>Phone</CFormLabel>
               <PhoneNumberInput
                 phone_number={state.phone_number}
                 handleOnChange={handleOnChange}
@@ -329,14 +331,22 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 Please provide a Special requests or accommodations.
               </CFormFeedback>
             </CCol>
-            <CRow className="mt-2">
+            <CRow className="mt-4">
               <CCol className="text-end">
-                <CButton color="primary" type="submit" disabled={isLoading}>
+                <CButton
+                  size="md"
+                  color="success"
+                  variant="outline"
+                  type="submit"
+                  disabled={isLoading}
+                >
                   {isLoading ? <CSpinner /> : "Update"}
                 </CButton>
                 <CButton
                   style={{ marginLeft: "10px" }}
-                  color="secondary"
+                  color="dark"
+                  size="md"
+                  variant="outline"
                   onClick={setVisible}
                   disabled={isLoading}
                 >
@@ -346,7 +356,6 @@ const EventModal = ({ eventId, visible, setVisible }) => {
             </CRow>
           </CForm>
         </CModalBody>
-        <CModalFooter></CModalFooter>
       </CModal>
     </>
   );

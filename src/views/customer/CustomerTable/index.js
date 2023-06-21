@@ -28,14 +28,6 @@ const CustomerTable = ({
 
   const [columns] = useState([
     {
-      key: "Action",
-      label: "Action",
-      filter: false,
-      isShow: true,
-      disabled: false,
-    },
-
-    {
       key: "first_name",
       label: "First Name",
       filter: true,
@@ -93,8 +85,15 @@ const CustomerTable = ({
     },
     {
       key: "phone_number",
-      label: "Phone Number",
+      label: "Mob Number",
       filter: true,
+      isShow: true,
+      disabled: false,
+    },
+    {
+      key: "Action",
+      label: "Action",
+      filter: false,
       isShow: true,
       disabled: false,
     },
@@ -143,6 +142,14 @@ const CustomerTable = ({
             <td>
               <div className="d-flex gap-2">
                 {permissions?.find(
+                  (item) => item.permission === "customer-edit"
+                ) && (
+                  <AppEditButton
+                    onClick={clickOnEdit}
+                    edit_id={item.account_id}
+                  />
+                )}
+                {permissions?.find(
                   (item) => item.permission === "customer-delete"
                 ) && (
                   <AppDeleteButton
@@ -151,14 +158,6 @@ const CustomerTable = ({
                     delete_id={item.account_id}
                     apiUrl={deleteCustomer}
                     clickOnDelete={clickHideModal}
-                  />
-                )}
-                {permissions?.find(
-                  (item) => item.permission === "customer-edit"
-                ) && (
-                  <AppEditButton
-                    onClick={clickOnEdit}
-                    edit_id={item.account_id}
                   />
                 )}
               </div>

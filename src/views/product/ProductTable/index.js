@@ -26,13 +26,6 @@ const ProductTable = ({
 
   const [columns] = useState([
     {
-      key: "Action",
-      label: "Action",
-      filter: false,
-      isShow: true,
-      disabled: false,
-    },
-    {
       key: "product_name",
       label: "Product Name",
       filter: true,
@@ -50,6 +43,13 @@ const ProductTable = ({
       key: "product_quantity",
       label: "Product Qty",
       filter: true,
+      isShow: true,
+      disabled: false,
+    },
+    {
+      key: "Action",
+      label: "Action",
+      filter: false,
       isShow: true,
       disabled: false,
     },
@@ -96,6 +96,8 @@ const ProductTable = ({
           Action: (item) => (
             <td>
               <div className="d-flex gap-2">
+                <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+
                 <AppDeleteButton
                   title="Delete Product"
                   message="Do you really want to delete this product?"
@@ -103,7 +105,6 @@ const ProductTable = ({
                   apiUrl={deleteProduct}
                   clickOnDelete={clickHideModal}
                 />
-                <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
               </div>
             </td>
           ),

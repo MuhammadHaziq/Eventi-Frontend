@@ -26,14 +26,6 @@ const AdminTable = ({
 
   const [columns] = useState([
     {
-      key: "Action",
-      label: "Action",
-      filter: false,
-      isShow: true,
-      disabled: false,
-    },
-
-    {
       key: "first_name",
       label: "First Name",
       filter: true,
@@ -91,8 +83,15 @@ const AdminTable = ({
     },
     {
       key: "phone_number",
-      label: "Phone Number",
+      label: "Mob Number",
       filter: true,
+      isShow: true,
+      disabled: false,
+    },
+    {
+      key: "Action",
+      label: "Action",
+      filter: false,
       isShow: true,
       disabled: false,
     },
@@ -140,16 +139,16 @@ const AdminTable = ({
           Action: (item) => (
             <td>
               <div className="d-flex gap-2">
+                <AppEditButton
+                  onClick={clickOnEdit}
+                  edit_id={item.account_id}
+                />
                 <AppDeleteButton
                   title="Delete Admin"
                   message="Do you really want to delete this admin?"
                   delete_id={item.account_id}
                   apiUrl={deleteAdmin}
                   clickOnDelete={clickHideModal}
-                />
-                <AppEditButton
-                  onClick={clickOnEdit}
-                  edit_id={item.account_id}
                 />
               </div>
             </td>

@@ -20,6 +20,9 @@ import {
 } from "src/context/ProductContext/service";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+import { getVendors } from "src/context/VendorContext/service";
+import ReactSelect from "src/components/Inputs/ReactSelect";
+import { useAppState } from "src/context/AppContext";
 
 const ProductModal = ({
   product_id,
@@ -29,12 +32,38 @@ const ProductModal = ({
 }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { currentUser } = useAppState();
+  const [vendors, setVendors] = useState([]);
+  const [dropDownVendors, setDropDownVendors] = useState([]);
+  const [selectedVendors, setSelectedVendors] = useState(null);
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     product_name: "",
     product_quantity: null,
     product_price: null,
   });
+
+  const getVendorProducts = React.useCallback(() => {
+    getVendors()
+      .then((response) => {
+        if (response.data.data) {
+          setVendors(response?.data.data.data);
+          setDropDownVendors(
+            response?.data?.data.data?.map((item) => {
+              return { value: item?.account_id, label: item?.first_name };
+            }) || []
+          );
+        } else {
+          setVendors([]);
+          setDropDownVendors([]);
+        }
+      })
+      .catch((err) => {
+        setDropDownVendors([]);
+        setVendors([]);
+        console.log(err);
+      });
+  }, []);
 
   const getProductById = useCallback(() => {
     try {
@@ -97,14 +126,19 @@ const ProductModal = ({
               product_name: state.product_name,
               product_price: state.product_price,
               product_quantity: state.product_quantity,
+              vendor_account_id: selectedVendors,
             })
           : addProduct({
               product_name: state.product_name,
               product_price: state.product_price,
               product_quantity: state.product_quantity,
+              vendor_account_id: selectedVendors,
             })
         )
+
           .then((response) => {
+            console.log(response);
+            return;
             setIsLoading(false);
             if (response?.data?.data) {
               addNewProduct(response?.data?.data);
@@ -151,6 +185,7 @@ const ProductModal = ({
     if (product_id) {
       getProductById();
     }
+    currentUser?.data?.user_type === "admin" ? getVendorProducts() : "";
   }, [product_id]);
 
   return (
@@ -159,7 +194,7 @@ const ProductModal = ({
         backdrop="static"
         visible={visible}
         onClose={setVisible}
-        size="lg"
+        size="md"
       >
         <CModalHeader>
           <CModalTitle>{product_id ? "Edit" : "Add"} Product</CModalTitle>
@@ -171,7 +206,7 @@ const ProductModal = ({
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <CCol md={4}>
+            <CCol md={12}>
               <CFormInput
                 type="text"
                 id="floatingInputValid"
@@ -186,7 +221,7 @@ const ProductModal = ({
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={4}>
+            <CCol md={12}>
               <CFormInput
                 type="number"
                 id="floatingInputValid2"
@@ -201,7 +236,7 @@ const ProductModal = ({
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={4}>
+            <CCol md={12}>
               <CFormInput
                 type="number"
                 id="floatingInputValid2"
@@ -216,14 +251,39 @@ const ProductModal = ({
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
+            {currentUser?.data?.user_type === "admin" ? (
+              <CCol md={12}>
+                <ReactSelect
+                  options={dropDownVendors}
+                  handleChange={(e) => setSelectedVendors(e.target.value)}
+                  name="selectedVendors"
+                  label="Select Product"
+                  value={selectedVendors}
+                  placeholder="Select Product"
+                  id="selectedVendors"
+                />
+                <CFormFeedback valid>Looks good!</CFormFeedback>
+              </CCol>
+            ) : (
+              ""
+            )}
+
             <CCol className="text-end">
-              <CButton color="primary" type="submit" disabled={isLoading}>
+              <CButton
+                size="md"
+                color="success"
+                variant="outline"
+                type="submit"
+                disabled={isLoading}
+              >
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
 
               <CButton
                 style={{ marginLeft: "10px" }}
-                color="secondary"
+                color="dark"
+                size="md"
+                variant="outline"
                 onClick={setVisible}
                 disabled={isLoading}
               >

@@ -63,7 +63,14 @@ export const ProductList = () => {
       {isError ? "" : <AppProgress loading={isFetching} />}
       {permissions.find((item) => item.permission === "product-add") && (
         <>
-          <CButton onClick={() => setVisible(!visible)}>Add Product</CButton>
+          <CButton
+            size="sm"
+            color="primary"
+            variant="outline"
+            onClick={() => setVisible(!visible)}
+          >
+            Add Product
+          </CButton>
           <br></br>
           <br></br>
         </>
@@ -73,7 +80,8 @@ export const ProductList = () => {
           <CCard className="mb-4">
             <CCardHeader>
               <strong>
-                Product List ({data?.data?.data?.meta?.itemCount})
+                Total number of Product List (
+                {data?.data?.data?.meta?.itemCount})
               </strong>
             </CCardHeader>
             <CCardBody>

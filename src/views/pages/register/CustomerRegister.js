@@ -101,7 +101,7 @@ const CustomerRegister = () => {
     setValidated(true);
   };
   return (
-    <CCardBody className="p-4">
+    <CCardBody className="p-3">
       <CForm
         className="row g-2 needs-validation"
         noValidate
@@ -181,10 +181,12 @@ const CustomerRegister = () => {
           <CFormFeedback valid>Looks good!</CFormFeedback>
         </CCol>
         <CCol md={6}>
-          <PhoneNumberInput
-            phone_number={state.phone_number}
-            handleOnChange={handleOnChange}
-          />
+          <div>
+            <PhoneNumberInput
+              phone_number={state.phone_number}
+              handleOnChange={handleOnChange}
+            />
+          </div>
         </CCol>
         <CCol md={6}>
           <CInputGroup>
@@ -219,6 +221,7 @@ const CustomerRegister = () => {
           </CInputGroup>
         </CCol>
         <CCol md={6}>
+          <CFormLabel>Gender</CFormLabel>
           <GenderSelection
             gender={state.gender}
             handleOnChange={handleOnChange}

@@ -54,7 +54,9 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
                 <h6 className="vendarH6Info">Event Type:</h6>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div>
-              <AppEventJoinButton item={item} />
+              <div className="mt-3 mx-3">
+                <AppEventJoinButton item={item} />
+              </div>
             </CCol>
           </CRow>
         </CContainer>

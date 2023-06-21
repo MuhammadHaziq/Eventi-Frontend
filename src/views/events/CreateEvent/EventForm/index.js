@@ -12,6 +12,7 @@ import {
   CFormTextarea,
   CInputGroup,
   CRow,
+  CFormLabel,
 } from "@coreui/react";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { addEvent } from "src/context/EventContext/service";
@@ -212,6 +213,7 @@ export const EventRegistration = () => {
                   </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
+                  <CFormLabel>Phone</CFormLabel>
                   <PhoneNumberInput
                     phone_number={state.phone_number}
                     handleOnChange={handleOnChange}
@@ -308,7 +310,12 @@ export const EventRegistration = () => {
                 </CCol>
 
                 <CCol xs={12}>
-                  <CButton color="primary" type="submit">
+                  <CButton
+                    size="md"
+                    color="success"
+                    variant="outline"
+                    type="submit"
+                  >
                     Submit
                   </CButton>
                 </CCol>

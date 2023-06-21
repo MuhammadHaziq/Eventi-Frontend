@@ -1,6 +1,12 @@
 import React from "react";
-import { CInputGroup, CFormInput, CFormFeedback } from "@coreui/react";
+import {
+  CInputGroup,
+  CFormInput,
+  CFormLabel,
+  CFormFeedback,
+} from "@coreui/react";
 import "react-phone-number-input/style.css";
+import "./style.css";
 import PhoneInput from "react-phone-number-input";
 export const PhoneNumberInput = ({
   phone_number,
@@ -18,9 +24,7 @@ export const PhoneNumberInput = ({
       <PhoneInput
         id="validationContactNumber"
         defaultCountry="US"
-        floatingclassname="mb-3 form-control"
         className="form-control"
-        floatinglabel={placeHolder}
         placeholder={placeHolder}
         label="Phone Number"
         value={phone_number}

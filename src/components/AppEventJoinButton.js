@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useAppState } from "src/context/AppContext";
 
 const AppEventJoinButton = ({ item, icon = false }) => {
-
   const { currentUser } = useAppState();
   const navigate = useNavigate();
   return (
@@ -42,7 +41,6 @@ const AppEventJoinButton = ({ item, icon = false }) => {
           ? 1
           : 0
       }
-      className="mt-3"
       color={
         item[
           currentUser?.data?.user_type === "vendor"

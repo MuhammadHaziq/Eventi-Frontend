@@ -15,13 +15,13 @@ export const GenderSelection = ({
         floatingclassname="mb-3"
         floatinglabel="Gender"
         placeholder="Gender"
-        label="Gender"
+        label=""
         name="gender"
         value={gender}
         onChange={handleOnChange}
         required={required}
       >
-        <option></option>
+        <option>Gender</option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Other">Other</option>

@@ -62,7 +62,14 @@ export const AdminList = () => {
       {isError ? "" : <AppProgress loading={isFetching} />}
       {permissions.find((item) => item.permission === "admin-add") && (
         <>
-          <CButton onClick={() => setVisible(!visible)}>Add Admin</CButton>
+          <CButton
+            size="sm"
+            color="primary"
+            variant="outline"
+            onClick={() => setVisible(!visible)}
+          >
+            Add Admin
+          </CButton>
           <br></br>
           <br></br>
         </>
@@ -71,7 +78,10 @@ export const AdminList = () => {
         <CCol>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Customer List</strong>
+              <strong>
+                Total number of Customer List (
+                {data?.data?.data?.meta?.itemCount})
+              </strong>
             </CCardHeader>
             <CCardBody>
               <AdminTable

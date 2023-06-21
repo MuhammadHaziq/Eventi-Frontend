@@ -63,7 +63,14 @@ export const VendorList = () => {
       {isError ? "" : <AppProgress loading={isFetching} />}
       {permissions.find((item) => item.permission === "vendor-add") && (
         <>
-          <CButton onClick={() => setVisible(!visible)}>Add Vendor</CButton>
+          <CButton
+            size="sm"
+            color="primary"
+            variant="outline"
+            onClick={() => setVisible(!visible)}
+          >
+            Add Vendor
+          </CButton>
           <br></br>
           <br></br>
         </>
@@ -73,7 +80,10 @@ export const VendorList = () => {
         <CCol>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Vendor List</strong>
+              <strong>
+                Total number of Vendor List ({data?.data?.data?.meta?.itemCount}
+                )
+              </strong>
             </CCardHeader>
             <CCardBody>
               <VendorTable
