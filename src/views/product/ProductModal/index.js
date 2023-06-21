@@ -111,6 +111,7 @@ const ProductModal = ({
   }, [product_id]);
 
   const handleSubmit = (event) => {
+    console.log(selectedVendors);
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -137,8 +138,6 @@ const ProductModal = ({
         )
 
           .then((response) => {
-            console.log(response);
-            return;
             setIsLoading(false);
             if (response?.data?.data) {
               addNewProduct(response?.data?.data);
@@ -185,7 +184,9 @@ const ProductModal = ({
     if (product_id) {
       getProductById();
     }
-    currentUser?.data?.user_type === "admin" ? getVendorProducts() : "";
+    if (currentUser?.data?.user_type === "admin") {
+      getVendorProducts();
+    }
   }, [product_id]);
 
   return (
