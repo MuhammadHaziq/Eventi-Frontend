@@ -184,9 +184,7 @@ const ProductModal = ({
     if (product_id) {
       getProductById();
     }
-    if (currentUser?.data?.user_type === "admin") {
-      getVendorProducts();
-    }
+    getVendorProducts();
   }, [product_id]);
 
   return (
