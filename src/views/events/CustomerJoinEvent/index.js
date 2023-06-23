@@ -146,7 +146,9 @@ const CustomerJoinEvent = () => {
         <CCol>
           <CCard className="mb-2">
             <CCardHeader className="d-flex justify-content-between">
-              <strong>Join Event</strong>
+              <strong>
+                <h5>Join Event Details</h5>
+              </strong>
             </CCardHeader>
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
@@ -185,7 +187,9 @@ const CustomerJoinEvent = () => {
             </CCardBody>
           </CCard>
           <CCard className="mb-2">
-            <CCardHeader>Joined Customers</CCardHeader>
+            <CCardHeader>
+              <strong>Joined Customers</strong>
+            </CCardHeader>
             <CCardBody>
               <JoinedCustomers
                 joinedCustomers={eventDetail?.joined_customers || []}
@@ -193,7 +197,9 @@ const CustomerJoinEvent = () => {
             </CCardBody>
           </CCard>
           <CCard className="mb-4">
-            <CCardHeader>Joined Vendors</CCardHeader>
+            <CCardHeader>
+              <strong>Joined Vendors</strong>
+            </CCardHeader>
             <CCardBody>
               <JoinedVendors
                 joinedVendors={eventDetail?.joined_vendors || []}

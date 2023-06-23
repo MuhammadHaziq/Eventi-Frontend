@@ -39,22 +39,22 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
             </CCol>
             <CCol sm={8}>
               <div>
-                <h6 className="vendarH6Info">Event Name:</h6>
+                <h5 className="vendarH6Info">Event Name:</h5>
                 <span className="vendarSpanInfo">{item?.event_name}</span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Location:</h6>
+                <h5 className="vendarH6Info">Event Location:</h5>
                 <span className="vendarSpanInfo">{item?.event_location}</span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Date:</h6>
+                <h5 className="vendarH6Info">Event Date:</h5>
                 <span className="vendarSpanInfo">{item?.event_date}</span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Type:</h6>
+                <h5 className="vendarH6Info">Event Type:</h5>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div>
-              <div className="mt-3 mx-3">
+              <div className="mx-3" style={{ marginTop: "210px" }}>
                 <AppEventJoinButton item={item} />
               </div>
             </CCol>

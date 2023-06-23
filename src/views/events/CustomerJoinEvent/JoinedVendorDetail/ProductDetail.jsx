@@ -27,7 +27,9 @@ const ProductDetail = ({ joined_event_id, eventProducts }) => {
   return (
     <>
       <CCard className="mb-4 p-2">
-        <CCardHeader>Products Detail</CCardHeader>
+        <CCardHeader>
+          <strong>Products Detail</strong>
+        </CCardHeader>
         <CCardBody>
           <CRow>
             <CCol>

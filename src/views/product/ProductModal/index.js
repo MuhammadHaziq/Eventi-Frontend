@@ -174,12 +174,10 @@ const ProductModal = ({
     }
     setValidated(true);
   };
-
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
-
   useEffect(() => {
     if (product_id) {
       getProductById();

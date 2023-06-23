@@ -22,8 +22,9 @@ import {
   cilSettings,
   cilMinus,
   cilPlus,
+  cilLibraryAdd,
   cilPlaylistAdd,
-  cilSend,
+  cilCheckCircle,
 } from "@coreui/icons";
 import { getProducts } from "src/context/ProductContext/service";
 import { useNavigate, useParams } from "react-router-dom";
@@ -203,6 +204,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
                   onClick={() => setVisible(true)}
                   style={{ float: "right" }}
                 >
+                  <CIcon icon={cilLibraryAdd} />
                   New Product
                 </CButton>
                 {/*        <CButton
@@ -378,20 +380,20 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
           <CCol className="mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <CButton
-                color="info"
+                color="success"
                 shape="rounded-0"
                 className="mt-2 text-white"
                 onClick={saveProduct}
                 disabled={selectedProducts?.length === 0 || isLoading}
                 style={{ float: "right" }}
               >
-                <CIcon icon={cilSend} />
+                <CIcon icon={cilCheckCircle} />
                 {isLoading ? (
                   <CSpinner />
                 ) : account_id ? (
-                  "Update Product"
+                  " Update Product"
                 ) : (
-                  "Save Product"
+                  " Save Product"
                 )}
               </CButton>
             </div>
