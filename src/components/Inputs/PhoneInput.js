@@ -13,6 +13,7 @@ export const PhoneNumberInput = ({
   handleOnChange,
   placeHolder = "Phone Number",
   required = true,
+  disabled = false,
 }) => {
   const handleChange = (e) => {
     const val = { target: { name: "phone_number", value: e } };
@@ -31,6 +32,7 @@ export const PhoneNumberInput = ({
         name="phone_number"
         onChange={handleChange}
         required={required}
+        disabled={disabled}
       />
       {/* <CFormInput
           type="number"

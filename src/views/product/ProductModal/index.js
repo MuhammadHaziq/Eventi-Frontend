@@ -130,13 +130,21 @@ const ProductModal = ({
               product_name: state.product_name,
               product_price: state.product_price,
               product_quantity: state.product_quantity,
-              vendor_account_id: selectedVendors,
+              vendor_account_id: !["admin"].includes(
+                currentUser?.data?.user_type
+              )
+                ? currentUser?.data?._id
+                : selectedVendors,
             })
           : addProduct({
               product_name: state.product_name,
               product_price: state.product_price,
               product_quantity: state.product_quantity,
-              vendor_account_id: selectedVendors,
+              vendor_account_id: !["admin"].includes(
+                currentUser?.data?.user_type
+              )
+                ? currentUser?.data?._id
+                : selectedVendors,
             })
         )
 
@@ -189,7 +197,7 @@ const ProductModal = ({
       getVendorProducts();
     }
   }, [product_id]);
-
+  console.log(currentUser, "currentUser");
   return (
     <>
       <CModal

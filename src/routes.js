@@ -1,12 +1,5 @@
 import React from "react";
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
-// Eventi Foms
-// const CustomerRegistration = React.lazy(() =>
-//   import("./pages/Forms/CustomerRegistration")
-// );
-// const VendarRegistration = React.lazy(() =>
-//   import("./pages/Forms/VendarRegistration")
-// );
 const EventRegistration = React.lazy(() =>
   import("./views/events/CreateEvent")
 );
@@ -18,7 +11,10 @@ const EventList = React.lazy(() => import("./views/events/EventList"));
 const VendorRequestEventJoin = React.lazy(() =>
   import("./views/events/VendorRequestEventJoin")
 );
-import JoinedVendorDetail from "./views/events/CustomerJoinEvent/JoinedVendorDetail";
+const UserProfile = React.lazy(() => import("./views/profile/userProfile"));
+const JoinedVendorDetail = React.lazy(() =>
+  import("./views/events/CustomerJoinEvent/JoinedVendorDetail")
+);
 
 const CustomerJoinEvent = React.lazy(() =>
   import("./views/events/CustomerJoinEvent")
@@ -31,12 +27,6 @@ const routes = [
     permission: "dashboard",
     element: Dashboard,
   },
-  // {
-  //   path: "/customer-registration",
-  //   name: "Customer Registration",
-  //   permission: "customer-add",
-  //   element: CustomerRegistration,
-  // },
   {
     path: "/customer-list",
     name: "Customer List",
@@ -56,13 +46,6 @@ const routes = [
     permission: "event-detail",
     element: JoinedVendorDetail,
   },
-
-  // {
-  //   path: "/vendar-registration",
-  //   name: "Vendar Registration",
-  //   permission: "vendor-add",
-  //   element: VendarRegistration,
-  // },
   {
     path: "/vendor-list",
     name: "Vendar List",
@@ -106,6 +89,12 @@ const routes = [
     name: "Admin List",
     permission: "admin-list",
     element: AdminList,
+  },
+  {
+    path: "/account/profile/:account_id",
+    name: "User Profile",
+    permission: "view-profile",
+    element: UserProfile,
   },
 ];
 

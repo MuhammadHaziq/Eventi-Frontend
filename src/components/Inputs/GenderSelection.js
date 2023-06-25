@@ -5,6 +5,7 @@ export const GenderSelection = ({
   gender,
   handleOnChange,
   required = true,
+  disabled = false,
 }) => {
   return (
     <>
@@ -20,6 +21,7 @@ export const GenderSelection = ({
         value={gender}
         onChange={handleOnChange}
         required={required}
+        disabled={disabled}
       >
         <option>Gender</option>
         <option value="Male">Male</option>
