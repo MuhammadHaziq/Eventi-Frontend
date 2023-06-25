@@ -1,0 +1,17 @@
+.upload-image-container {
+  background-color: #8080802b;
+  border-radius: 5px;
+  line-height: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.accepted-files-list {
+  list-style: none;
+  img {
+    height: 70px;
+    width: 70px;
+  }
+}

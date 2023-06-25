@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import ReactSelect from "src/components/Inputs/ReactSelect";
+import UploadImage from "src/components/Image/UploadImage/Index";
 
 export const EventRegistration = () => {
   const [validated, setValidated] = useState(false);
@@ -283,7 +284,10 @@ export const EventRegistration = () => {
                     Please provide a Special requests or accommodations.
                   </CFormFeedback>
                 </CCol>
-                <CCol md={12}>
+                <CCol>
+                  <UploadImage />
+                </CCol>
+                {/* <CCol md={12}>
                   <CFormInput
                     type="file"
                     id="formFileMultiple"
@@ -294,7 +298,7 @@ export const EventRegistration = () => {
                       setState({ ...state, banner_images: e.target.files });
                     }}
                   />
-                </CCol>
+                </CCol> */}
                 <CCol xs={12}>
                   <CFormCheck
                     type="checkbox"
