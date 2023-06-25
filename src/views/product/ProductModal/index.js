@@ -20,9 +20,9 @@ import {
 } from "src/context/ProductContext/service";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
-import { getVendors } from "src/context/VendorContext/service";
 import ReactSelect from "src/components/Inputs/ReactSelect";
 import { useAppState } from "src/context/AppContext";
+import { vendorDropDown } from "src/context/AppContext/service";
 
 const ProductModal = ({
   product_id,
@@ -44,13 +44,16 @@ const ProductModal = ({
   });
 
   const getVendorProducts = React.useCallback(() => {
-    getVendors()
+    vendorDropDown()
       .then((response) => {
         if (response.data.data) {
-          setVendors(response?.data.data.data);
+          setVendors(response?.data.data);
           setDropDownVendors(
-            response?.data?.data.data?.map((item) => {
-              return { value: item?.account_id, label: item?.first_name };
+            response?.data?.data?.map((item) => {
+              return {
+                value: item?.account_id,
+                label: (item?.first_name || "") + " " + (item?.last_name || ""),
+              };
             }) || []
           );
         } else {
@@ -76,6 +79,7 @@ const ProductModal = ({
               product_quantity: response.data.data.product_quantity,
               product_price: response.data.data.product_price,
             });
+            setSelectedVendors(response.data.data.vendor_account_id || "");
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -111,7 +115,6 @@ const ProductModal = ({
   }, [product_id]);
 
   const handleSubmit = (event) => {
-    console.log(selectedVendors);
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -253,6 +256,7 @@ const ProductModal = ({
             {currentUser?.data?.user_type === "admin" ? (
               <CCol md={12}>
                 <ReactSelect
+                  isSearchable={true}
                   options={dropDownVendors}
                   handleChange={(e) => setSelectedVendors(e.target.value)}
                   name="selectedVendors"
