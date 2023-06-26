@@ -118,6 +118,20 @@ const ProductModal = ({
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+    if (!product_id) {
+      if (files && files?.length === 0) {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: "File Input Is Required",
+            color: "danger-alert",
+          }),
+        });
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      }
+    }
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -126,29 +140,30 @@ const ProductModal = ({
       event.stopPropagation();
       setIsLoading(true);
       try {
-        (product_id
-          ? updateProduct({
-              product_id: product_id,
-              product_name: state.product_name,
-              product_price: state.product_price,
-              product_quantity: state.product_quantity,
-              vendor_account_id: !["admin"].includes(
-                currentUser?.data?.user_type
-              )
-                ? currentUser?.data?._id
-                : selectedVendors,
-            })
-          : addProduct({
-              product_name: state.product_name,
-              product_price: state.product_price,
-              product_quantity: state.product_quantity,
-              vendor_account_id: !["admin"].includes(
-                currentUser?.data?.user_type
-              )
-                ? currentUser?.data?._id
-                : selectedVendors,
-            })
-        )
+        const formData = new FormData();
+        formData.append("product_name", state.product_name);
+        formData.append("product_price", state.product_price);
+        formData.append("product_quantity", state.product_quantity);
+        formData.append(
+          "vendor_account_id",
+          !["admin"].includes(currentUser?.data?.user_type)
+            ? currentUser?.data?._id
+            : selectedVendors
+        );
+        if (product_id) {
+          formData.append("product_id", state.product_id);
+        }
+        if (!product_id) {
+          if (files && files?.length > 0) {
+            for (let x in files) {
+              if (typeof files[x] === "object") {
+                formData.append(`product_images`, files[x]);
+              }
+            }
+          }
+        }
+
+        (product_id ? updateProduct(formData) : addProduct(formData))
 
           .then((response) => {
             setIsLoading(false);
@@ -187,10 +202,12 @@ const ProductModal = ({
     }
     setValidated(true);
   };
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
+
   useEffect(() => {
     if (product_id) {
       getProductById();
