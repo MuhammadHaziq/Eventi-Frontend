@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   CButton,
   CCard,
@@ -20,16 +20,18 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import ReactSelect from "src/components/Inputs/ReactSelect";
-import UploadImage from "src/components/Image/UploadImage/Index";
+import UploadImage from "src/components/Image/UploadImage";
 
 export const EventRegistration = () => {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
+  const [, setImages] = useState([]);
+  const [files, setFiles] = useState([]);
   const [state, setState] = useState({
     event_name: "",
     event_date: null,
     event_location: "",
-    banner_images: null,
+    // banner_images: [],
     type_of_event: "",
     expected_attendence: "",
     phone_number: "",
@@ -42,6 +44,18 @@ export const EventRegistration = () => {
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+    if (files && files?.length === 0) {
+      app_dispatch({
+        type: "SHOW_RESPONSE",
+        toast: AppToast({
+          message: "File Input Is Required",
+          color: "danger-alert",
+        }),
+      });
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -63,10 +77,10 @@ export const EventRegistration = () => {
         );
         formData.append("special_request", state.special_request);
 
-        if (state.banner_images) {
-          for (let x in state.banner_images) {
-            if (typeof state.banner_images[x] === "object") {
-              formData.append(`banner_images`, state.banner_images[x]);
+        if (files && files?.length > 0) {
+          for (let x in files) {
+            if (typeof files[x] === "object") {
+              formData.append(`banner_images`, files[x]);
             }
           }
         }
@@ -89,7 +103,7 @@ export const EventRegistration = () => {
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
-                message: err.message,
+                message: err?.response?.data?.message || err?.message,
                 color: "danger-alert",
               }),
             });
@@ -112,6 +126,53 @@ export const EventRegistration = () => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      // if(acceptedFiles?.length >= 5 || files?.length >= 5){
+      if (
+        (acceptedFiles || [])?.length + (state.banner_images || [])?.length >
+        5
+      ) {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: "More Than 5 Files Are Not Allowed",
+            color: "danger-alert",
+          }),
+        });
+
+        return;
+      }
+      setFiles([
+        ...files,
+        ...acceptedFiles?.map((file) => {
+          return Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          });
+        }),
+      ]);
+
+      acceptedFiles.map((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          setImages((prevState) => [
+            ...prevState,
+            { id: index, src: e.target.result },
+          ]);
+        };
+        reader.readAsDataURL(file);
+
+        return file;
+      });
+    },
+    [files]
+  );
+
+  const handleOnRemove = (fileName) => {
+    setFiles(files?.filter((item) => item.name !== fileName));
+  };
+
   return (
     <>
       <CRow>
@@ -285,7 +346,13 @@ export const EventRegistration = () => {
                   </CFormFeedback>
                 </CCol>
                 <CCol>
-                  <UploadImage />
+                  <UploadImage
+                    onDrop={onDrop}
+                    maxFiles={5}
+                    images={files}
+                    removeSelectedFiles={handleOnRemove}
+                    maxSize={25000000}
+                  />
                 </CCol>
                 {/* <CCol md={12}>
                   <CFormInput

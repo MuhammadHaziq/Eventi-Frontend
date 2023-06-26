@@ -22,10 +22,12 @@ import { getEvent, updateEvent } from "src/context/EventContext/service";
 import { PhoneNumberInput } from "src/components/Inputs/PhoneInput";
 import { useNavigate } from "react-router-dom";
 import ReactSelect from "src/components/Inputs/ReactSelect";
+import UploadImage from "src/components/Image/UploadImage";
 const EventModal = ({ eventId, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const app_dispatch = useAppDispatch();
+  const [files, setFiles] = useState([]);
   const [state, setState] = useState({
     event_name: "",
     event_date: null,
@@ -46,6 +48,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       getEvent(eventId)
         .then((response) => {
           if (response.data.data) {
+            console.log(response.data.data, "response.data.data");
             setState({
               event_name: response.data.data.event_name,
               event_date: response.data.data.event_date,
@@ -58,6 +61,15 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               security: response.data.data.security === true ? "Yes" : "No",
               special_request: response.data.data.special_request,
             });
+            setFiles([
+              ...files,
+              ...response.data.data?.banner_images?.map((item) => {
+                return {
+                  preview: `${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${response.data.data?.created_by}/${item}`,
+                  name: item,
+                };
+              }),
+            ]);
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -159,6 +171,52 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       getEventById();
     }
   }, [eventId]);
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      // if(acceptedFiles?.length >= 5 || files?.length >= 5){
+      if (
+        (acceptedFiles || [])?.length + (state.banner_images || [])?.length >
+        5
+      ) {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: "More Than 5 Files Are Not Allowed",
+            color: "danger-alert",
+          }),
+        });
+
+        return;
+      }
+      setFiles([
+        ...files,
+        ...acceptedFiles?.map((file) => {
+          return Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          });
+        }),
+      ]);
+
+      acceptedFiles.map((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          setImages((prevState) => [
+            ...prevState,
+            { id: index, src: e.target.result },
+          ]);
+        };
+        reader.readAsDataURL(file);
+
+        return file;
+      });
+    },
+    [files]
+  );
+
+  const handleOnRemove = (fileName) => {
+    setFiles(files?.filter((item) => item.name !== fileName));
+  };
 
   return (
     <>
@@ -330,6 +388,15 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               <CFormFeedback invalid>
                 Please provide a Special requests or accommodations.
               </CFormFeedback>
+            </CCol>
+            <CCol>
+              <UploadImage
+                onDrop={onDrop}
+                maxFiles={5}
+                images={files}
+                removeSelectedFiles={handleOnRemove}
+                maxSize={25000000}
+              />
             </CCol>
             <CRow className="mt-4">
               <CCol className="text-end">

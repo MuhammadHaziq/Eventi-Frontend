@@ -8,10 +8,27 @@
   justify-content: center;
   margin-bottom: 5px;
 }
-.accepted-files-list {
+ul {
   list-style: none;
   img {
     height: 70px;
     width: 70px;
+  }
+}
+.file-upload-container {
+  ul {
+    li {
+      svg {
+        position: absolute;
+        background: antiquewhite;
+        width: 25px;
+        height: 25px;
+        border-radius: 50px;
+        text-align: center;
+        padding: 5px;
+        z-index: 999;
+        cursor: pointer;
+      }
+    }
   }
 }

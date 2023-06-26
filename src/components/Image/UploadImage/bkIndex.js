@@ -10,14 +10,22 @@ const UploadImage = (
   maxFiles = 2,
   multiple = true,
   maxSize = 5000000
+  //
 ) => {
   const [files, setFiles] = useState([]);
+  const [images, setImages] = useState([]);
   const app_dispatch = useAppDispatch();
   const onDrop = useCallback((acceptedFiles) => {
+    console.log(images, "files");
     const maxNumber =
-      maxFiles - (files?.length || 0) - (acceptedFiles?.length || 0);
-    if (acceptedFiles?.length > maxNumber) {
-      console.log(acceptedFiles?.length, maxNumber);
+      maxFiles - ((files?.length || 0) - (acceptedFiles?.length || 0));
+    console.log(
+      maxNumber,
+      acceptedFiles?.length,
+      files?.length,
+      "files?.length"
+    );
+    if ((images?.length || 0) + (acceptedFiles?.length || 0) > maxFiles) {
       app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({
@@ -26,14 +34,34 @@ const UploadImage = (
         }),
       });
     } else {
-      console.log("ELSE");
-      setFiles(
-        acceptedFiles.map((file) => {
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          });
-        })
+      const acceptFiles = acceptedFiles?.filter(
+        (item) => item?.size <= maxSize
       );
+      if (acceptFiles && acceptFiles?.length > 0) {
+        setImages(acceptFiles);
+        setFiles(
+          acceptFiles?.map((file) => {
+            return Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            });
+          })
+        );
+      }
+      const notAcceptFiles = acceptedFiles?.filter(
+        (item) => item?.size > maxSize
+      );
+      if (notAcceptFiles && notAcceptFiles?.length > 0) {
+        console.log(notAcceptFiles, "notAcceptFiles");
+        for (const item of notAcceptFiles) {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: `${item?.name} Can Not Upload More Than ${maxSize} Files Size`,
+              color: "danger-alert",
+            }),
+          });
+        }
+      }
     }
   }, []);
 
@@ -44,14 +72,13 @@ const UploadImage = (
       },
       // maxFiles: maxFiles,
       multiple: multiple,
-      maxSize: maxSize,
+      // maxSize: maxSize,
       // validator: nameLengthValidator,
       onDrop: onDrop,
     });
 
   const acceptedFileItems = files.map((file) => (
     <li key={file.path}>
-      {console.log(file)}
       <CImage src={file.preview} alt={file.path} />
     </li>
   ));

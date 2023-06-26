@@ -8,7 +8,6 @@ import {
   CButton,
   CModal,
   CModalBody,
-  CModalFooter,
   CModalHeader,
   CModalTitle,
   CSpinner,
@@ -23,6 +22,7 @@ import { AppToast } from "src/components/AppToast";
 import ReactSelect from "src/components/Inputs/ReactSelect";
 import { useAppState } from "src/context/AppContext";
 import { vendorDropDown } from "src/context/AppContext/service";
+import UploadImage from "src/components/Image/UploadImage";
 
 const ProductModal = ({
   product_id,
@@ -36,6 +36,8 @@ const ProductModal = ({
   const [vendors, setVendors] = useState([]);
   const [dropDownVendors, setDropDownVendors] = useState([]);
   const [selectedVendors, setSelectedVendors] = useState(null);
+  const [, setImages] = useState([]);
+  const [files, setFiles] = useState([]);
   const app_dispatch = useAppDispatch();
   const [state, setState] = useState({
     product_name: "",
@@ -197,7 +199,53 @@ const ProductModal = ({
       getVendorProducts();
     }
   }, [product_id]);
-  console.log(currentUser, "currentUser");
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      // if(acceptedFiles?.length >= 5 || files?.length >= 5){
+      if (
+        (acceptedFiles || [])?.length + (state.banner_images || [])?.length >
+        5
+      ) {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: "More Than 5 Files Are Not Allowed",
+            color: "danger-alert",
+          }),
+        });
+
+        return;
+      }
+      setFiles([
+        ...files,
+        ...acceptedFiles?.map((file) => {
+          return Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          });
+        }),
+      ]);
+
+      acceptedFiles.map((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          setImages((prevState) => [
+            ...prevState,
+            { id: index, src: e.target.result },
+          ]);
+        };
+        reader.readAsDataURL(file);
+
+        return file;
+      });
+    },
+    [files]
+  );
+
+  const handleOnRemove = (fileName) => {
+    setFiles(files?.filter((item) => item.name !== fileName));
+  };
+
   return (
     <>
       <CModal
@@ -278,7 +326,15 @@ const ProductModal = ({
             ) : (
               ""
             )}
-
+            <CCol md={12}>
+              <UploadImage
+                onDrop={onDrop}
+                maxFiles={5}
+                images={files}
+                removeSelectedFiles={handleOnRemove}
+                maxSize={25000000}
+              />
+            </CCol>
             <CCol className="text-end">
               <CButton
                 size="md"
