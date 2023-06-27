@@ -81,6 +81,15 @@ const ProductModal = ({
               product_quantity: response.data.data.product_quantity,
               product_price: response.data.data.product_price,
             });
+            setFiles([
+              ...files,
+              ...response.data.data?.product_images?.map((item) => {
+                return {
+                  preview: `${process.env.REACT_APP_API_ENDPOINT}/media/productImage/${response.data.data?.created_by}/${item}`,
+                  name: item,
+                };
+              }),
+            ]);
             setSelectedVendors(response.data.data.vendor_account_id || "");
             app_dispatch({
               type: "SHOW_RESPONSE",
