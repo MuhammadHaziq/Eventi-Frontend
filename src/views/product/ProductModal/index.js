@@ -34,6 +34,7 @@ const ProductModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useAppState();
   const [vendors, setVendors] = useState([]);
+  const [removedFiles, setRemovedFiles] = useState([]);
   const [dropDownVendors, setDropDownVendors] = useState([]);
   const [selectedVendors, setSelectedVendors] = useState(null);
   const [, setImages] = useState([]);
@@ -83,10 +84,11 @@ const ProductModal = ({
             });
             setFiles([
               ...files,
-              ...response.data.data?.product_images?.map((item) => {
+              ...(response.data.data?.product_images || [])?.map((item) => {
                 return {
-                  preview: `${process.env.REACT_APP_API_ENDPOINT}/media/productImage/${response.data.data?.created_by}/${item}`,
+                  preview: `${process.env.REACT_APP_API_ENDPOINT}/media/productImage/${response.data.data?._id}/${item}`,
                   name: item,
+                  isOld: true,
                 };
               }),
             ]);
@@ -127,20 +129,20 @@ const ProductModal = ({
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-    if (!product_id) {
-      if (files && files?.length === 0) {
-        app_dispatch({
-          type: "SHOW_RESPONSE",
-          toast: AppToast({
-            message: "File Input Is Required",
-            color: "danger-alert",
-          }),
-        });
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
-      }
+
+    if (files && files?.length === 0) {
+      app_dispatch({
+        type: "SHOW_RESPONSE",
+        toast: AppToast({
+          message: "File Input Is Required",
+          color: "danger-alert",
+        }),
+      });
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
     }
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -153,6 +155,7 @@ const ProductModal = ({
         formData.append("product_name", state.product_name);
         formData.append("product_price", state.product_price);
         formData.append("product_quantity", state.product_quantity);
+        formData.append("removed_files", JSON.stringify(removedFiles));
         formData.append(
           "vendor_account_id",
           !["admin"].includes(currentUser?.data?.user_type)
@@ -160,14 +163,14 @@ const ProductModal = ({
             : selectedVendors
         );
         if (product_id) {
-          formData.append("product_id", state.product_id);
+          formData.append("product_id", product_id);
         }
-        if (!product_id) {
-          if (files && files?.length > 0) {
-            for (let x in files) {
-              if (typeof files[x] === "object") {
-                formData.append(`product_images`, files[x]);
-              }
+
+        const uploadFiles = files?.filter((item) => item.isOld !== true);
+        if (uploadFiles && uploadFiles?.length > 0) {
+          for (let x in uploadFiles) {
+            if (typeof uploadFiles[x] === "object") {
+              formData.append(`product_images`, uploadFiles[x]);
             }
           }
         }
@@ -269,6 +272,12 @@ const ProductModal = ({
   );
 
   const handleOnRemove = (fileName) => {
+    setRemovedFiles([
+      ...removedFiles,
+      ...files
+        ?.filter((item) => item.name == fileName)
+        ?.map((item) => item.name),
+    ]);
     setFiles(files?.filter((item) => item.name !== fileName));
   };
 
