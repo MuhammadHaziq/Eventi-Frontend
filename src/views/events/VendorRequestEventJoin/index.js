@@ -140,16 +140,6 @@ const VendorRequestEventJoin = () => {
               <strong>Vendor Join Event</strong>
             </CCardHeader>
             <CCardBody>
-              {/* <CCol md={6}>
-                <AppEventUserDetail
-                  user={
-                    {
-                      ...currentUser?.data?.user_detail,
-                      user_type: currentUser?.data?.user_type,
-                    } || null
-                  }
-                />
-              </CCol> */}
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
               <ProductDetail
                 joined_event_id={joined_event_id}

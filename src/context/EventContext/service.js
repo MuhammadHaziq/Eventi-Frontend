@@ -35,3 +35,10 @@ export const updateJoinedEvent = (data) => {
 export const customerJoinEvent = (eventId, account_id, data) => {
   return authAxios.put(`/api/event/${eventId}/${account_id}`, data);
 };
+
+export const adminUpdateCustomerStatus = (eventId, customer_id, data) => {
+  return authAxios.put(
+    `/api/event/adminUpdateCustomerStatus/${eventId}/${customer_id}`,
+    data
+  );
+};

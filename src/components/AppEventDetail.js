@@ -97,7 +97,7 @@ const AppEventDetail = ({ event_detail }) => {
                     <CCarouselItem key={index}>
                       <CImage
                         className="event-image-carousel w-100 h-100"
-                        src={`${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${event_detail?.created_by}/${item}`}
+                        src={`${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${event_detail?._id}/${item}`}
                         alt="slide 1"
                       />
                     </CCarouselItem>

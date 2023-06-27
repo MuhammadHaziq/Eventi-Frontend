@@ -74,9 +74,11 @@ const CustomerJoinEvent = () => {
     }
   }, [event_id]);
 
-  const joinEvent = () => {
+  const joinEvent = (status) => {
     setIsLoading(true);
-    customerJoinEvent(event_id, account_id)
+    customerJoinEvent(event_id, account_id, {
+      status: status || "Request To Approved",
+    })
       .then((response) => {
         if (response.data.data) {
           app_dispatch({
@@ -140,6 +142,15 @@ const CustomerJoinEvent = () => {
       });
   };
 
+  const getNextStatusForEvent = (status) => {
+    const eventStatus = {
+      "": "Request To Approved",
+      "Request To Approved": "Request To Payment",
+      "Request To Payment": "Approved",
+    };
+    return eventStatus[status] || "Request To Approved";
+  };
+
   return (
     <>
       <CRow>
@@ -160,25 +171,41 @@ const CustomerJoinEvent = () => {
                         className="join-event-customer"
                         color={
                           eventDetail?.joined_customers
-                            ?.map((item) => item?._id)
+                            ?.map(
+                              (item) =>
+                                item?.customer_id?.user_detail?.account_id
+                            )
                             .includes(currentUser?.data?._id)
                             ? "warning"
                             : "primary"
                         }
                         onClick={() => {
-                          eventDetail?.joined_customers
-                            ?.map((item) => item?._id)
-                            .includes(currentUser?.data?._id)
-                            ? unJoinEvent()
-                            : joinEvent();
+                          joinEvent(
+                            getNextStatusForEvent(
+                              eventDetail?.joined_customers?.filter(
+                                (item) =>
+                                  item?.customer_id?.user_detail?.account_id ===
+                                  currentUser?.data?._id
+                              )?.[0]?.event_status
+                            )
+                          );
                         }}
-                        disabled={isLoading}
+                        disabled={
+                          isLoading ||
+                          ["Request To Approved", "Approved"].includes(
+                            eventDetail?.joined_customers?.filter(
+                              (item) =>
+                                item?.customer_id?.user_detail?.account_id ===
+                                currentUser?.data?._id
+                            )?.[0]?.event_status || "Pending"
+                          )
+                        }
                       >
-                        {eventDetail?.joined_customers
-                          ?.map((item) => item?._id)
-                          .includes(currentUser?.data?._id)
-                          ? "Event Joined"
-                          : "Join Event"}
+                        {eventDetail?.joined_customers?.filter(
+                          (item) =>
+                            item?.customer_id?.user_detail?.account_id ===
+                            currentUser?.data?._id
+                        )?.[0]?.event_status || "Join Event"}
                       </CButton>
                     </CCol>
                   </CRow>
