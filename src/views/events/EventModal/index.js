@@ -27,12 +27,13 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const app_dispatch = useAppDispatch();
+  const [removedFiles, setRemovedFiles] = useState([]);
   const [files, setFiles] = useState([]);
+  const [, setImages] = useState([]);
   const [state, setState] = useState({
     event_name: "",
     event_date: null,
     event_location: "",
-    vendor_id: "",
     type_of_event: "",
     expected_attendence: "",
     phone_number: "",
@@ -65,8 +66,9 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               ...files,
               ...response.data.data?.banner_images?.map((item) => {
                 return {
-                  preview: `${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${response.data.data?.created_by}/${item}`,
+                  preview: `${process.env.REACT_APP_API_ENDPOINT}/media/eventImage/${response.data.data?._id}/${item}`,
                   name: item,
+                  isOld: true,
                 };
               }),
             ]);
@@ -112,12 +114,33 @@ const EventModal = ({ eventId, visible, setVisible }) => {
     } else {
       event.preventDefault();
       event.stopPropagation();
+      const formData = new FormData();
+      formData.append("event_name", state.event_name);
+      formData.append("event_date", state.event_date);
+      formData.append("event_location", state.event_location);
+      formData.append("type_of_event", state.type_of_event);
+      formData.append("expected_attendence", state.expected_attendence);
+      formData.append("phone_number", state.phone_number);
+      formData.append("equipments", state.equipments);
+      formData.append("special_request", state.special_request);
+      formData.append(
+        "security",
+        ["Yes", "yes"].includes(state.security) ? true : false
+      );
+      formData.append("removed_files", JSON.stringify(removedFiles));
+      formData.append("eventId", eventId);
+      const uploadFiles = files?.filter((item) => item.isOld !== true);
+
+      if (uploadFiles && uploadFiles?.length > 0) {
+        for (let x in uploadFiles) {
+          if (typeof uploadFiles[x] === "object") {
+            formData.append(`banner_images`, uploadFiles[x]);
+          }
+        }
+      }
+
       try {
-        updateEvent({
-          ...state,
-          eventId: eventId,
-          security: ["Yes", "yes"].includes(state.security) ? true : false,
-        })
+        updateEvent(eventId, formData)
           .then((response) => {
             if (response.data.statusCode === 200) {
               app_dispatch({
@@ -174,11 +197,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      // if(acceptedFiles?.length >= 5 || files?.length >= 5){
-      if (
-        (acceptedFiles || [])?.length + (state.banner_images || [])?.length >
-        5
-      ) {
+      if ((acceptedFiles || [])?.length + (files || [])?.length > 5) {
         app_dispatch({
           type: "SHOW_RESPONSE",
           toast: AppToast({
@@ -215,6 +234,12 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   );
 
   const handleOnRemove = (fileName) => {
+    setRemovedFiles([
+      ...removedFiles,
+      ...files
+        ?.filter((item) => item.name == fileName)
+        ?.map((item) => item.name),
+    ]);
     setFiles(files?.filter((item) => item.name !== fileName));
   };
 

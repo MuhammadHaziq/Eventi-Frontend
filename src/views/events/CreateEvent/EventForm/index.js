@@ -31,7 +31,6 @@ export const EventRegistration = () => {
     event_name: "",
     event_date: null,
     event_location: "",
-    // banner_images: [],
     type_of_event: "",
     expected_attendence: "",
     phone_number: "",

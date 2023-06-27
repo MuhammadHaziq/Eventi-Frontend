@@ -231,11 +231,7 @@ const ProductModal = ({
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      // if(acceptedFiles?.length >= 5 || files?.length >= 5){
-      if (
-        (acceptedFiles || [])?.length + (state.banner_images || [])?.length >
-        5
-      ) {
+      if ((acceptedFiles || [])?.length + (files || [])?.length > 5) {
         app_dispatch({
           type: "SHOW_RESPONSE",
           toast: AppToast({

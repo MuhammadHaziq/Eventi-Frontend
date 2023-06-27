@@ -16,8 +16,8 @@ export const getEvent = (id) => {
   return authAxios.get(`/api/event/${id}`);
 };
 
-export const updateEvent = (data) => {
-  return authAxios.put(`/api/event/${data.eventId}`, data);
+export const updateEvent = (eventId, data) => {
+  return authAxios.put(`/api/event/${eventId}`, data);
 };
 
 export const vendorJoinedEvent = (data) => {
