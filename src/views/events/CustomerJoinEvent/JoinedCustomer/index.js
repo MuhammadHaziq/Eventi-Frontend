@@ -96,8 +96,6 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
       });
   };
 
-  console.log(customers, "customers");
-
   return (
     <CSmartTable
       activePage={3}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CCol,
   CRow,
@@ -32,11 +32,17 @@ import ProductModal from "../../product/ProductModal";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import {
   updateJoinedEvent,
+  updateJoinedVendorEvent,
   vendorJoinedEvent,
 } from "src/context/EventContext/service";
 import { AppToast } from "src/components/AppToast";
 
-const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
+const ProductDetail = ({
+  joined_event_id,
+  eventProducts,
+  showLoading,
+  vendorEventStatus,
+}) => {
   const { event_id, account_id } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -123,6 +129,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
       event_id: event_id,
       account_id: currentUser?.data?._id,
       products: selectedProducts,
+      status: getNextStatusForEvent(vendorEventStatus) || "Request To Approved",
     };
     if (account_id) {
       data.joined_event_id = joined_event_id;
@@ -138,7 +145,9 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
               color: "success-alert",
             }),
           });
-          navigate("/event-list");
+          if (!account_id) {
+            navigate("/event-list");
+          }
         } else {
           app_dispatch({
             type: "SHOW_RESPONSE",
@@ -162,11 +171,54 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
       });
   };
 
+  const updateEvent = () => {
+    const data = {
+      event_id: event_id,
+      account_id: currentUser?.data?._id,
+      status: getNextStatusForEvent(vendorEventStatus) || "Request To Approved",
+    };
+    setIsLoading(true);
+
+    updateJoinedVendorEvent(data)
+      .then((response) => {
+        setIsLoading(false);
+        console.log(response, "responseresponse");
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: response.data.message,
+            color: "success-alert",
+          }),
+        });
+      })
+      .catch((err) => {
+        setIsLoading(false);
+
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err.response.data.message || err.message,
+            color: "danger-alert",
+          }),
+        });
+      });
+  };
+
   useEffect(() => {
     if (joined_event_id) {
       setSelectedProducts(eventProducts);
     }
   }, [joined_event_id]);
+
+  const getNextStatusForEvent = (status) => {
+    const eventStatus = {
+      "": "Request To Approved",
+      "Request To Approved": "Request To Payment",
+      "Request To Payment": "Approved",
+    };
+    return eventStatus[status] || "Request To Approved";
+  };
+
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -207,22 +259,6 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
                   <CIcon icon={cilLibraryAdd} />
                   New Product
                 </CButton>
-                {/*        <CButton
-                  color="info"
-                  shape="rounded-0"
-                  className="mt-2 text-white"
-                  onClick={saveProduct}
-                  disabled={selectedProducts?.length === 0 || isLoading}
-                  style={{ float: "right" }}
-                >
-                  {isLoading ? (
-                    <CSpinner />
-                  ) : account_id ? (
-                    "Update Product"
-                  ) : (
-                    "Save Product"
-                  )}
-                </CButton>*/}
               </div>
             </CCol>
           </CRow>
@@ -350,8 +386,7 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
               </CTable>
             </CCol>
           </CRow>
-          <CCol></CCol>
-          <CRow>
+          <CRow className="mt-3">
             <CCol md={4}></CCol>
             <CCol md={8}>
               <CRow>
@@ -379,23 +414,53 @@ const ProductDetail = ({ joined_event_id, eventProducts, showLoading }) => {
 
           <CCol className="mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <CButton
-                color="success"
-                shape="rounded-0"
-                className="mt-2 text-white"
-                onClick={saveProduct}
-                disabled={selectedProducts?.length === 0 || isLoading}
-                style={{ float: "right" }}
-              >
-                <CIcon icon={cilCheckCircle} />
-                {isLoading ? (
-                  <CSpinner />
-                ) : account_id ? (
-                  " Update Product"
-                ) : (
-                  " Save Product"
-                )}
-              </CButton>
+              {!["Request To Payment", "Approved"]?.includes(
+                vendorEventStatus
+              ) && (
+                <CButton
+                  color="success"
+                  shape="rounded-0"
+                  className="mt-2 text-white"
+                  onClick={saveProduct}
+                  disabled={
+                    selectedProducts?.length === 0 ||
+                    isLoading ||
+                    ["Request To Payment", "Approved"]?.includes(
+                      vendorEventStatus
+                    )
+                  }
+                  style={{ float: "right" }}
+                >
+                  <CIcon icon={cilCheckCircle} />
+                  {isLoading ? (
+                    <CSpinner />
+                  ) : account_id ? (
+                    " Update Product"
+                  ) : (
+                    " Save Product"
+                  )}
+                </CButton>
+              )}
+
+              {!["Request To Approved", ""]?.includes(vendorEventStatus) && (
+                <CButton
+                  color="success"
+                  shape="rounded-0"
+                  className="mt-2 text-white"
+                  onClick={updateEvent}
+                  disabled={
+                    selectedProducts?.length === 0 ||
+                    isLoading ||
+                    ["Request To Approved", "", "Approved"]?.includes(
+                      vendorEventStatus
+                    )
+                  }
+                  style={{ float: "right" }}
+                >
+                  <CIcon icon={cilCheckCircle} />
+                  {isLoading ? <CSpinner /> : vendorEventStatus}
+                </CButton>
+              )}
             </div>
           </CCol>
         </CCardBody>

@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
 import { CButton } from "@coreui/react";
-import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 const { CSmartTable } = require("@coreui/react-pro");
 
 const JoinedVendors = ({ joinedVendors = [] }) => {
   const { event_id } = useParams();
+  const [vendors, setVendors] = useState([]);
   const navigate = useNavigate();
   const columns = [
     { key: "first_name" },
@@ -14,13 +15,25 @@ const JoinedVendors = ({ joinedVendors = [] }) => {
     { key: "show_detail", label: "Detail" },
   ];
 
+  useEffect(() => {
+    if (joinedVendors && joinedVendors?.length > 0) {
+      setVendors(
+        joinedVendors?.map((item) => {
+          return { ...item.vendor_id, ...item };
+        })
+      );
+    }
+  }, [joinedVendors]);
+
+  console.log(vendors, "vendors");
+
   return (
     <CSmartTable
       activePage={3}
       columns={columns}
       columnFilter
       columnSorter
-      items={joinedVendors}
+      items={vendors}
       itemsPerPage={5}
       pagination
       tableProps={{
@@ -37,7 +50,9 @@ const JoinedVendors = ({ joinedVendors = [] }) => {
                 shape="square"
                 size="sm"
                 onClick={() =>
-                  navigate(`/joined-vednor-detail/${item?._id}/${event_id}`)
+                  navigate(
+                    `/joined-vednor-detail/${item?.vendor_id?._id}/${event_id}`
+                  )
                 }
               >
                 Detail

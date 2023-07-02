@@ -13,6 +13,7 @@ const VendorRequestEventJoin = () => {
   const app_dispatch = useAppDispatch();
   const { event_id, account_id } = useParams();
 
+  const [vendorEventStatus, setVendorEventStatus] = useState("");
   const [joined_event_id, setJoinedEventId] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [eventDetail, setEventDetail] = useState(null);
@@ -83,6 +84,11 @@ const VendorRequestEventJoin = () => {
         .then((response) => {
           if (response.data.data) {
             setEventDetail(response.data.data || null);
+            setVendorEventStatus(
+              response.data.data.joined_vendors?.filter(
+                (item) => item?.vendor_id?._id === currentUser?.data?._id
+              )?.[0]?.event_status || ""
+            );
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -145,6 +151,7 @@ const VendorRequestEventJoin = () => {
                 joined_event_id={joined_event_id}
                 eventProducts={selectedProducts}
                 showLoading={isLoading}
+                vendorEventStatus={vendorEventStatus}
               />
             </CCardBody>
           </CCard>
