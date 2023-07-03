@@ -67,7 +67,6 @@ const ProductModal = ({
       .catch((err) => {
         setDropDownVendors([]);
         setVendors([]);
-        console.log(err);
       });
   }, []);
 

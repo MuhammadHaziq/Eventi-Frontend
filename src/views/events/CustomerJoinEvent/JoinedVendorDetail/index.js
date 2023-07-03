@@ -166,7 +166,7 @@ const VendorRequestEventJoin = () => {
                 joined_event_id={joined_event_id}
                 eventProducts={selectedProducts}
                 vendorEventStatus={vendorEventStatus}
-                getJoinedEventDetail={getJoinedEventDetail}
+                setVendorEventStatus={setVendorEventStatus}
               />
             </CCardBody>
           </CCard>

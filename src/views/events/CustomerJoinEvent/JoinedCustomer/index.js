@@ -2,7 +2,7 @@ import { CButton, CSpinner } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppState } from "src/context/AppContext";
-import { adminUpdateCustomerStatus } from "src/context/EventContext/service";
+import { updateCustomerStatus } from "src/context/EventContext/service";
 const { CSmartTable } = require("@coreui/react-pro");
 
 const JoinedCustomers = ({ joinedCustomers = [] }) => {
@@ -54,7 +54,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
   const updateEvent = (customer_id, status) => {
     setIsLoading(true);
     setCurrentCustomer(customer_id);
-    adminUpdateCustomerStatus(event_id, customer_id, {
+    updateCustomerStatus(event_id, customer_id, {
       status: status || "Request To Approved",
     })
       .then((response) => {
@@ -62,7 +62,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
           setCustomers(
             customers?.map((item) => {
               if (item?.user_detail?.account_id === customer_id) {
-                return { ...item, event_status: "Request To Payment" };
+                return { ...item, event_status: status };
               }
               return item;
             })

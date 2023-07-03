@@ -19,7 +19,7 @@ import {
 import CIcon from "@coreui/icons-react";
 import { cilCheckCircle } from "@coreui/icons";
 import { useParams } from "react-router-dom";
-import { adminUpdateVendorStatus } from "src/context/EventContext/service";
+import { updateVendorStatus } from "src/context/EventContext/service";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 
@@ -27,7 +27,7 @@ const ProductDetail = ({
   joined_event_id,
   eventProducts,
   vendorEventStatus,
-  getJoinedEventDetail,
+  setVendorEventStatus,
 }) => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,11 +54,10 @@ const ProductDetail = ({
       vendor_id: account_id,
       status: getNextStatusForEvent(vendorEventStatus) || "Request To Payment",
     };
-    adminUpdateVendorStatus(data)
+    updateVendorStatus(data)
       .then((response) => {
-        console.log(response, "response");
         if (response?.data?.data?.modifiedCount) {
-          getJoinedEventDetail();
+          setVendorEventStatus(getNextStatusForEvent(vendorEventStatus));
         }
         app_dispatch({
           type: "SHOW_RESPONSE",
@@ -77,7 +76,6 @@ const ProductDetail = ({
           }),
         });
       });
-    console.log(data, "UPDATE EVENT");
   };
 
   return (

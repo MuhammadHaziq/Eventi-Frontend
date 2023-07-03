@@ -152,6 +152,7 @@ const VendorRequestEventJoin = () => {
                 eventProducts={selectedProducts}
                 showLoading={isLoading}
                 vendorEventStatus={vendorEventStatus}
+                setVendorEventStatus={setVendorEventStatus}
               />
             </CCardBody>
           </CCard>

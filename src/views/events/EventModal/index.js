@@ -49,7 +49,6 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       getEvent(eventId)
         .then((response) => {
           if (response.data.data) {
-            console.log(response.data.data, "response.data.data");
             setState({
               event_name: response.data.data.event_name,
               event_date: response.data.data.event_date,

@@ -42,6 +42,7 @@ const ProductDetail = ({
   eventProducts,
   showLoading,
   vendorEventStatus,
+  setVendorEventStatus,
 }) => {
   const { event_id, account_id } = useParams();
   const navigate = useNavigate();
@@ -71,7 +72,6 @@ const ProductDetail = ({
       .catch((err) => {
         setDropDownProducts([]);
         setProducts([]);
-        console.log(err);
       });
   }, []);
 
@@ -182,7 +182,9 @@ const ProductDetail = ({
     updateJoinedVendorEvent(data)
       .then((response) => {
         setIsLoading(false);
-        console.log(response, "responseresponse");
+        if (response?.data?.data?.modifiedCount) {
+          setVendorEventStatus(getNextStatusForEvent(vendorEventStatus));
+        }
         app_dispatch({
           type: "SHOW_RESPONSE",
           toast: AppToast({

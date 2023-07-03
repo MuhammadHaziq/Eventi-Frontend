@@ -43,16 +43,16 @@ export const customerJoinEvent = (eventId, account_id, data) => {
   return authAxios.put(`/api/event/${eventId}/${account_id}`, data);
 };
 
-export const adminUpdateCustomerStatus = (eventId, customer_id, data) => {
+export const updateCustomerStatus = (eventId, customer_id, data) => {
   return authAxios.put(
-    `/api/event/adminUpdateCustomerStatus/${eventId}/${customer_id}`,
+    `/api/event/update-customer-status/${eventId}/${customer_id}`,
     data
   );
 };
 
-export const adminUpdateVendorStatus = (data) => {
+export const updateVendorStatus = (data) => {
   return authAxios.put(
-    `/api/event/adminUpdateVendorStatus/${data.event_id}/${data.vendor_id}`,
+    `/api/event/update-vendor-status/${data.event_id}/${data.vendor_id}`,
     data
   );
 };
