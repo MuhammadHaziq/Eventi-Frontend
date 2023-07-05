@@ -44,6 +44,7 @@ const ProductDetail = ({
   showLoading,
   vendorEventStatus,
   setVendorEventStatus,
+  eventDetail,
 }) => {
   const { event_id, account_id } = useParams();
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const ProductDetail = ({
   const [visiblePaymentModel, setVisiblePaymentModel] = useState(false);
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
+
   const getVendorProducts = React.useCallback(() => {
     getProducts({ no_limit: true })
       .then((response) => {
@@ -472,6 +474,7 @@ const ProductDetail = ({
           </CCol>
         </CCardBody>
       </CCard>
+
       <ProductModal
         setVisible={() => setVisible(false)}
         visible={visible}
@@ -480,6 +483,7 @@ const ProductDetail = ({
       <PaymentModel
         setVisiblePaymentModel={() => setVisiblePaymentModel(false)}
         visiblePaymentModel={visiblePaymentModel}
+        eventDetail={eventDetail}
         // addNewProduct={addNewProduct}
       />
     </>

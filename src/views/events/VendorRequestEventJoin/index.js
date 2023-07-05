@@ -77,7 +77,6 @@ const VendorRequestEventJoin = () => {
   }, [account_id]);
   //this call use for payment pop
   const getEventDetail = useCallback(() => {
-    alert("hi!");
     try {
       setIsLoading(true);
       getEvent(event_id)
@@ -89,6 +88,7 @@ const VendorRequestEventJoin = () => {
                 (item) => item?.vendor_id?._id === currentUser?.data?._id
               )?.[0]?.event_status || ""
             );
+
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -153,6 +153,7 @@ const VendorRequestEventJoin = () => {
                 showLoading={isLoading}
                 vendorEventStatus={vendorEventStatus}
                 setVendorEventStatus={setVendorEventStatus}
+                eventDetail={eventDetail}
               />
             </CCardBody>
           </CCard>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PaystackButton } from "react-paystack";
 import {
   CFormLabel,
@@ -13,14 +13,37 @@ import {
   CButton,
   CSpinner,
 } from "@coreui/react";
+import { useAppState } from "src/context/AppContext";
 
-const componentName = ({ visiblePaymentModel, setVisiblePaymentModel }) => {
+const componentName = ({
+  visiblePaymentModel,
+  setVisiblePaymentModel,
+  eventDetail,
+}) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
-  const amount = 25;
   const [email, setEmail] = useState("haseeb@kodxsystem.com");
   const [name, setName] = useState("Haseeb");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("03224512868");
-
+  const [amount, setAmount] = useState(0);
+  const { currentUser } = useAppState();
+  useEffect(() => {
+    if (eventDetail) {
+      const vendorDetail =
+        eventDetail?.joined_vendors?.filter(
+          (item) => item?.vendor_id?._id === currentUser?.data?._id
+        )?.[0]?.vendor_id || null;
+      setAmount(+eventDetail?.amount || 0);
+      setEmail(vendorDetail?.email || "");
+      setPhone(vendorDetail?.phone || "");
+      setFirstName(vendorDetail?.first_name || "");
+      setLastName(vendorDetail?.last_name || "");
+      setName(
+        (vendorDetail?.first_name || "") + " " + (vendorDetail?.last_name || "")
+      );
+    }
+  }, [eventDetail]);
   const resetForm = () => {
     setEmail("");
     setName("");
@@ -46,7 +69,7 @@ const componentName = ({ visiblePaymentModel, setVisiblePaymentModel }) => {
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
-
+  console.log(eventDetail);
   return (
     <>
       <CModal
@@ -69,7 +92,13 @@ const componentName = ({ visiblePaymentModel, setVisiblePaymentModel }) => {
               <strong>Email :</strong>
             </CFormLabel>
             <CCol sm={6}>
-              <CFormInput type="text" id="staticEmail" readOnly plainText />
+              <CFormInput
+                type="text"
+                id="staticEmail"
+                readOnly
+                plainText
+                value={email}
+              />
             </CCol>
           </CRow>
           <CRow className="mb-3">
@@ -83,7 +112,7 @@ const componentName = ({ visiblePaymentModel, setVisiblePaymentModel }) => {
               <CFormInput
                 type="text"
                 id="staticFirstName"
-                defaultValue="Haseeb"
+                defaultValue={firstName}
                 readOnly
                 plainText
               />
@@ -100,7 +129,7 @@ const componentName = ({ visiblePaymentModel, setVisiblePaymentModel }) => {
               <CFormInput
                 type="text"
                 id="staticLastName"
-                defaultValue="Test"
+                defaultValue={lastName}
                 readOnly
                 plainText
               />
@@ -117,7 +146,7 @@ const componentName = ({ visiblePaymentModel, setVisiblePaymentModel }) => {
               <CFormInput
                 type="text"
                 id="staticAmount"
-                defaultValue="25"
+                defaultValue={amount}
                 readOnly
                 plainText
               />
