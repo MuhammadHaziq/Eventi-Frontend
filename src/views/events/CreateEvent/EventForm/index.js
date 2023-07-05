@@ -100,7 +100,6 @@ export const EventRegistration = () => {
             }
           })
           .catch((err) => {
-            console.log(err);
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -117,7 +116,6 @@ export const EventRegistration = () => {
             color: "danger-alert",
           }),
         });
-        console.error(err.message);
       }
     }
     setValidated(true);

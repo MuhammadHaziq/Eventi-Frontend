@@ -152,21 +152,14 @@ const VendorRequestEventJoin = () => {
             </CCardHeader>
             <CCardBody>
               <CCol md={12}>
-                <AppEventUserDetail
-                  user={
-                    {
-                      ...currentUser?.data?.user_detail,
-                      user_type: currentUser?.data?.user_type,
-                    } || null
-                  }
-                />
+                <AppEventUserDetail />
               </CCol>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
               <ProductDetail
                 joined_event_id={joined_event_id}
                 eventProducts={selectedProducts}
                 vendorEventStatus={vendorEventStatus}
-                getJoinedEventDetail={getJoinedEventDetail}
+                setVendorEventStatus={setVendorEventStatus}
               />
             </CCardBody>
           </CCard>

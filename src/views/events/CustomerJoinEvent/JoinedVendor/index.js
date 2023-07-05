@@ -25,8 +25,6 @@ const JoinedVendors = ({ joinedVendors = [] }) => {
     }
   }, [joinedVendors]);
 
-  console.log(vendors, "vendors");
-
   return (
     <CSmartTable
       activePage={3}

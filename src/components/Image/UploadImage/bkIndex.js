@@ -16,15 +16,8 @@ const UploadImage = (
   const [images, setImages] = useState([]);
   const app_dispatch = useAppDispatch();
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(images, "files");
     const maxNumber =
       maxFiles - ((files?.length || 0) - (acceptedFiles?.length || 0));
-    console.log(
-      maxNumber,
-      acceptedFiles?.length,
-      files?.length,
-      "files?.length"
-    );
     if ((images?.length || 0) + (acceptedFiles?.length || 0) > maxFiles) {
       app_dispatch({
         type: "SHOW_RESPONSE",
@@ -51,7 +44,6 @@ const UploadImage = (
         (item) => item?.size > maxSize
       );
       if (notAcceptFiles && notAcceptFiles?.length > 0) {
-        console.log(notAcceptFiles, "notAcceptFiles");
         for (const item of notAcceptFiles) {
           app_dispatch({
             type: "SHOW_RESPONSE",
@@ -83,7 +75,6 @@ const UploadImage = (
     </li>
   ));
 
-  console.log(files);
   return (
     <CContainer className="upload-image">
       <div {...getRootProps({ className: "dropzone upload-image-container" })}>

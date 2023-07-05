@@ -1,36 +1,56 @@
 import { CCard, CCardBody, CCardHeader } from "@coreui/react";
-import React from "react";
-const AppEventUserDetail = ({ user }) => {
+import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getCurrentUserDetail } from "src/context/AppContext/service";
+const AppEventUserDetail = () => {
+  const { account_id } = useParams();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const getUserDetail = useCallback(() => {
+    if (account_id) {
+      getCurrentUserDetail(account_id)
+        .then((response) => {
+          setCurrentUser(response.data.data.data);
+        })
+        .catch((error) => {});
+    }
+  }, [account_id]);
+  useEffect(() => {
+    if (account_id) {
+      getUserDetail();
+    }
+  }, [account_id]);
   return (
     <CCard className="mb-4 p-2">
       <CCardHeader className="d-flex justify-content-between">
         <strong>
-          {user?.user_type === "vendor" ? "Vendor" : "Customer"} Information
+          {currentUser?.user_type === "vendor" ? "Vendor" : "Customer"}{" "}
+          Information
         </strong>
       </CCardHeader>
       <CCardBody>
         <div>
           <h6 className="vendarH6Info">Name:</h6>
           <span className="vendarSpanInfo">
-            {user?.first_name} {user?.last_name}
+            {currentUser?.first_name} {currentUser?.last_name}
           </span>
         </div>
         <div>
           <h6 className="vendarH6Info">Business Name:</h6>
-          <span className="vendarSpanInfo">{user?.business_name}</span>
+          <span className="vendarSpanInfo">{currentUser?.business_name}</span>
         </div>
         <div>
           <h6 className="vendarH6Info">Email:</h6>
-          <span className="vendarSpanInfo">{user?.email}</span>
+          <span className="vendarSpanInfo">{currentUser?.email}</span>
         </div>
         <div>
           <h6 className="vendarH6Info">Phone:</h6>
-          <span className="vendarSpanInfo">{user?.phone_number}</span>
+          <span className="vendarSpanInfo">{currentUser?.phone_number}</span>
         </div>
         <div>
           <h6 className="vendarH6Info">Status:</h6>
           <span className="vendarSpanInfo">
-            {user?.user_type === "vendor" ? "Vendor" : "-"}
+            {currentUser?.user_type === "vendor" ? "Vendor" : "-"}
           </span>
         </div>
       </CCardBody>

@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import { CCol, CRow, CCard, CCardBody, CCardHeader } from "@coreui/react";
 import "./style.scss";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
-import AppEventUserDetail from "src/components/AppEventUserDetail";
 import ProductDetail from "./ProductDetail";
 import { useParams } from "react-router-dom";
 import { AppToast } from "src/components/AppToast";
@@ -153,6 +152,7 @@ const VendorRequestEventJoin = () => {
                 eventProducts={selectedProducts}
                 showLoading={isLoading}
                 vendorEventStatus={vendorEventStatus}
+                setVendorEventStatus={setVendorEventStatus}
               />
             </CCardBody>
           </CCard>
