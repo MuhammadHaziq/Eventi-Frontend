@@ -16,6 +16,7 @@ import AppEventDetail from "src/components/AppEventDetail";
 import "./style.scss";
 import JoinedCustomers from "./JoinedCustomer";
 import JoinedVendors from "./JoinedVendor";
+import CustomerPayment from "src/components/CustomerPayment";
 
 const CustomerJoinEvent = () => {
   const { currentUser } = useAppState();
@@ -24,6 +25,8 @@ const CustomerJoinEvent = () => {
   const { event_id, account_id } = useParams();
   const [eventDetail, setEventDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [eventStatus, setEventStatus] = useState("");
+  const [showPaymentModel, setShowPaymentModel] = useState(false);
 
   const getEventDetail = useCallback(() => {
     try {
@@ -32,6 +35,13 @@ const CustomerJoinEvent = () => {
         .then((response) => {
           if (response.data.data) {
             setEventDetail(response.data.data || null);
+            setEventStatus(
+              response.data.data?.joined_customers?.filter(
+                (item) =>
+                  item?.customer_id?.user_detail?.account_id ===
+                  currentUser?.data?._id
+              )?.[0]?.event_status || "Join Event"
+            );
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -180,32 +190,18 @@ const CustomerJoinEvent = () => {
                             : "primary"
                         }
                         onClick={() => {
-                          joinEvent(
-                            getNextStatusForEvent(
-                              eventDetail?.joined_customers?.filter(
-                                (item) =>
-                                  item?.customer_id?.user_detail?.account_id ===
-                                  currentUser?.data?._id
-                              )?.[0]?.event_status
-                            )
-                          );
+                          eventStatus === "Request To Payment"
+                            ? setShowPaymentModel(!showPaymentModel)
+                            : joinEvent(getNextStatusForEvent(eventStatus));
                         }}
                         disabled={
                           isLoading ||
                           ["Request To Approved", "Approved"].includes(
-                            eventDetail?.joined_customers?.filter(
-                              (item) =>
-                                item?.customer_id?.user_detail?.account_id ===
-                                currentUser?.data?._id
-                            )?.[0]?.event_status || "Pending"
+                            eventStatus || "Pending"
                           )
                         }
                       >
-                        {eventDetail?.joined_customers?.filter(
-                          (item) =>
-                            item?.customer_id?.user_detail?.account_id ===
-                            currentUser?.data?._id
-                        )?.[0]?.event_status || "Join Event"}
+                        {eventStatus || "Join Event"}
                       </CButton>
                     </CCol>
                   </CRow>
@@ -235,6 +231,13 @@ const CustomerJoinEvent = () => {
           </CCard>
         </CCol>
       </CRow>
+      {showPaymentModel && (
+        <CustomerPayment
+          visiblePaymentModel={showPaymentModel}
+          setVisiblePaymentModel={setShowPaymentModel}
+          eventDetail={eventDetail}
+        />
+      )}
     </>
   );
 };

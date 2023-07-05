@@ -15,7 +15,7 @@ import {
 } from "@coreui/react";
 import { useAppState } from "src/context/AppContext";
 
-const componentName = ({
+const CustomerPayment = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
   eventDetail,
@@ -30,17 +30,20 @@ const componentName = ({
   const { currentUser } = useAppState();
   useEffect(() => {
     if (eventDetail) {
-      const vendorDetail =
-        eventDetail?.joined_vendors?.filter(
-          (item) => item?.vendor_id?._id === currentUser?.data?._id
-        )?.[0]?.vendor_id || null;
-      setAmount(+eventDetail?.amount || 0);
-      setEmail(vendorDetail?.email || "");
-      setPhone(vendorDetail?.phone || "");
-      setFirstName(vendorDetail?.first_name || "");
-      setLastName(vendorDetail?.last_name || "");
+      const customerDetail =
+        eventDetail?.joined_customers?.filter(
+          (item) => item?.customer_id?._id === currentUser?.data?._id
+        )?.[0]?.customer_id || null;
+      console.log(eventDetail?.amount, "eventDetail?.amount");
+      setAmount(eventDetail?.amount || 0);
+      setEmail(customerDetail?.email || "");
+      setPhone(customerDetail?.phone || "");
+      setFirstName(customerDetail?.first_name || "");
+      setLastName(customerDetail?.last_name || "");
       setName(
-        (vendorDetail?.first_name || "") + " " + (vendorDetail?.last_name || "")
+        (customerDetail?.first_name || "") +
+          " " +
+          (customerDetail?.last_name || "")
       );
     }
   }, [eventDetail]);
@@ -169,4 +172,4 @@ const componentName = ({
     </>
   );
 };
-export default componentName;
+export default CustomerPayment;
