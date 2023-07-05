@@ -76,8 +76,9 @@ const VendorRequestEventJoin = () => {
       });
     }
   }, [account_id]);
-
+  //this call use for payment pop
   const getEventDetail = useCallback(() => {
+    alert("hi!");
     try {
       setIsLoading(true);
       getEvent(event_id)

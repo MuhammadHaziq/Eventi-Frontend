@@ -8,6 +8,7 @@ import {
   CButton,
   CModal,
   CModalBody,
+  CFormText,
   CModalFooter,
   CModalHeader,
   CModalTitle,
@@ -33,6 +34,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   const [state, setState] = useState({
     event_name: "",
     event_date: null,
+    amount: "",
     event_location: "",
     type_of_event: "",
     expected_attendence: "",
@@ -53,6 +55,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
             setState({
               event_name: response.data.data.event_name,
               event_date: response.data.data.event_date,
+              amount: response.data.data.amount,
               event_location: response.data.data.event_location,
               vendor_id: response.data.data.vendor_id,
               type_of_event: response.data.data.type_of_event,
@@ -117,6 +120,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       const formData = new FormData();
       formData.append("event_name", state.event_name);
       formData.append("event_date", state.event_date);
+      formData.append("amount", state.amount);
       formData.append("event_location", state.event_location);
       formData.append("type_of_event", state.type_of_event);
       formData.append("expected_attendence", state.expected_attendence);
@@ -294,6 +298,23 @@ const EventModal = ({ eventId, visible, setVisible }) => {
             </CCol>
             <CCol md={6}>
               <CFormInput
+                type="number"
+                id="validationAmount"
+                floatingclassname="mb-3"
+                floatinglabel="Amount"
+                placeholder="Amount"
+                name="amount"
+                label="Amount"
+                defaultValue={state.amount}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>
+                Please provide a Amount Name.
+              </CFormFeedback>
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
                 type="text"
                 id="validationVenueLocation"
                 floatingclassname="mb-3"
@@ -415,6 +436,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               </CFormFeedback>
             </CCol>
             <CCol>
+              <CFormLabel>Image Upload</CFormLabel>
+              <CFormText>You can only upload a maximum of 5 images</CFormText>
               <UploadImage
                 onDrop={onDrop}
                 maxFiles={5}

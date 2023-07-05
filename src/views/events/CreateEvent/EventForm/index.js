@@ -30,6 +30,7 @@ export const EventRegistration = () => {
   const [state, setState] = useState({
     event_name: "",
     event_date: null,
+    amount: null,
     event_location: "",
     type_of_event: "",
     expected_attendence: "",
@@ -65,6 +66,7 @@ export const EventRegistration = () => {
         const formData = new FormData();
         formData.append("event_name", state.event_name);
         formData.append("event_date", state.event_date);
+        formData.append("amount", state.amount);
         formData.append("event_location", state.event_location);
         formData.append("type_of_event", state.type_of_event);
         formData.append("expected_attendence", state.expected_attendence);
@@ -203,24 +205,40 @@ export const EventRegistration = () => {
                   />
                   <CFormFeedback invalid>Looks good!</CFormFeedback>
                 </CCol>
-                <CCol md={6} className="mt-5">
-                  <CInputGroup>
-                    <CFormInput
-                      type="date"
-                      id="validationEventDate"
-                      floatingclassname="mb-3"
-                      floatinglabel="Event Date"
-                      placeholder="Event Date"
-                      name="event_date"
-                      min={new Date()}
-                      defaultValue={state.event_date}
-                      onChange={handleOnChange}
-                      required
-                    />
-                    <CFormFeedback invalid>
-                      Please enter event birth.
-                    </CFormFeedback>
-                  </CInputGroup>
+                <CCol md={6}>
+                  <CFormInput
+                    type="date"
+                    id="validationEventDate"
+                    floatingclassname="mb-3"
+                    label="Event Date"
+                    floatinglabel="Event Date"
+                    placeholder="Event Date"
+                    name="event_date"
+                    min={new Date()}
+                    defaultValue={state.event_date}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please enter event birth.
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={6}>
+                  <CFormInput
+                    type="number"
+                    id="validationAmount"
+                    floatingclassname="mb-3"
+                    floatinglabel="Amount"
+                    placeholder="Amount"
+                    name="amount"
+                    label="Amount"
+                    defaultValue={state.amount}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a Amount Name.
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
@@ -312,17 +330,7 @@ export const EventRegistration = () => {
                     value={state.security}
                     label="Security"
                   />
-                  {/* // <CFormInput
-                  //   type="text"
-                  //   id="validationSecurityNeeds"
-                  //   floatingclassname="mb-3"
-                  //   floatinglabel="Security needs"
-                  //   placeholder="Security needs"
-                  //   name="security"
-                  //   defaultValue={state.security}
-                  //   onChange={handleOnChange}
-                  //   required
-                  // /> */}
+
                   <CFormFeedback invalid>
                     Please provide a Security needs
                   </CFormFeedback>

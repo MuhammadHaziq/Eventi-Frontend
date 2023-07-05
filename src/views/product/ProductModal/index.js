@@ -11,6 +11,8 @@ import {
   CModalHeader,
   CModalTitle,
   CSpinner,
+  CFormLabel,
+  CFormText,
 } from "@coreui/react";
 import {
   addProduct,
@@ -358,6 +360,8 @@ const ProductModal = ({
               ""
             )}
             <CCol md={12}>
+              <CFormLabel>Image Upload</CFormLabel>
+              <CFormText>You can only upload a maximum of 5 images</CFormText>
               <UploadImage
                 onDrop={onDrop}
                 maxFiles={5}

@@ -29,6 +29,7 @@ import {
 import { getProducts } from "src/context/ProductContext/service";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductModal from "../../product/ProductModal";
+import PaymentModel from "src/components/Payment";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import {
   updateJoinedEvent,
@@ -51,6 +52,7 @@ const ProductDetail = ({
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(showLoading);
   const [visible, setVisible] = useState(false);
+  const [visiblePaymentModel, setVisiblePaymentModel] = useState(false);
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
   const getVendorProducts = React.useCallback(() => {
@@ -172,6 +174,9 @@ const ProductDetail = ({
   };
 
   const updateEvent = () => {
+    alert("update Event here..");
+    setVisiblePaymentModel(true);
+    return;
     const data = {
       event_id: event_id,
       account_id: currentUser?.data?._id,
@@ -469,6 +474,11 @@ const ProductDetail = ({
         setVisible={() => setVisible(false)}
         visible={visible}
         addNewProduct={addNewProduct}
+      />
+      <PaymentModel
+        setVisiblePaymentModel={() => setVisiblePaymentModel(false)}
+        visiblePaymentModel={visiblePaymentModel}
+        // addNewProduct={addNewProduct}
       />
     </>
   );

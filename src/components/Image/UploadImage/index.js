@@ -93,10 +93,10 @@ function UploadImage({
               Drag &apos;n&apos; drop some files here, or click to select files
               ( png/jpg)
             </p>
-            <em>
+            {/*   <em>
               ({maxFiles} files are the maximum number of files you can drop
               here)
-            </em>
+            </em> */}
           </>
         )}
         {images.length > 0 && (

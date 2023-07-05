@@ -55,6 +55,14 @@ const EventTable = ({
       _style: { minWidth: "130px" },
     },
     {
+      key: "amount",
+      label: "Event Amount",
+      filter: false,
+      isShow: true,
+      disabled: false,
+      _style: { minWidth: "130px" },
+    },
+    {
       key: "type_of_event",
       label: "Type Of Event",
       filter: true,
@@ -68,6 +76,7 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
+      _style: { minWidth: "130px" },
     },
 
     {
@@ -76,6 +85,7 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
+      _style: { minWidth: "130px" },
     },
 
     {
@@ -84,6 +94,7 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
+      _style: { minWidth: "130px" },
     },
     {
       key: "special_request",

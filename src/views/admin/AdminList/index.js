@@ -79,8 +79,7 @@ export const AdminList = () => {
           <CCard className="mb-4">
             <CCardHeader>
               <strong>
-                Total number of Customer List (
-                {data?.data?.data?.meta?.itemCount})
+                Total number of Admin List ({data?.data?.data?.meta?.itemCount})
               </strong>
             </CCardHeader>
             <CCardBody>

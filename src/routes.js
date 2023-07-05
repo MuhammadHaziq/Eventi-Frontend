@@ -8,6 +8,7 @@ const AdminList = React.lazy(() => import("./views/admin"));
 const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
+// const PaymentForm = React.lazy(() => import("./views/events/PaymentForm"));
 const VendorRequestEventJoin = React.lazy(() =>
   import("./views/events/VendorRequestEventJoin")
 );
@@ -39,7 +40,6 @@ const routes = [
     permission: "event-join",
     element: CustomerJoinEvent,
   },
-
   {
     path: "/joined-vednor-detail/:account_id/:event_id",
     name: "Joined Vendor Detail",
@@ -64,6 +64,12 @@ const routes = [
     permission: "event-list",
     element: EventList,
   },
+  // {
+  //   path: "/payment-form",
+  //   name: "Payment Form",
+  //   permission: "event-list",
+  //   element: PaymentForm,
+  // },
 
   {
     path: "/vendor-join-event/:event_id",
