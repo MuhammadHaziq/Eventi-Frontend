@@ -175,11 +175,14 @@ const ProductDetail = ({
       });
   };
 
-  const updateEvent = () => {
-    alert("update Event here..");
+  const refTranIDFuction = (refTranID) => {
     setVisiblePaymentModel(true);
-    return;
+    // refTranID !== null ? updateEvent : "";
+  };
+
+  const updateEvent = (refTranID) => {
     const data = {
+      refTranID: refTranID,
       event_id: event_id,
       account_id: currentUser?.data?._id,
       status: getNextStatusForEvent(vendorEventStatus) || "Request To Approved",
@@ -456,7 +459,7 @@ const ProductDetail = ({
                   color="success"
                   shape="rounded-0"
                   className="mt-2 text-white"
-                  onClick={updateEvent}
+                  onClick={refTranIDFuction}
                   disabled={
                     selectedProducts?.length === 0 ||
                     isLoading ||
@@ -484,6 +487,7 @@ const ProductDetail = ({
         setVisiblePaymentModel={() => setVisiblePaymentModel(false)}
         visiblePaymentModel={visiblePaymentModel}
         eventDetail={eventDetail}
+        onPropSuccess={updateEvent}
         // addNewProduct={addNewProduct}
       />
     </>
