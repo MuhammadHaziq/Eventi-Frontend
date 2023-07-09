@@ -36,7 +36,6 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "event_location",
@@ -44,7 +43,6 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "Event_date",
@@ -52,7 +50,6 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "amount",
@@ -60,7 +57,6 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "type_of_event",
@@ -68,7 +64,6 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "phone_number",
@@ -76,7 +71,6 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
 
     {
@@ -85,7 +79,6 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
 
     {
@@ -94,7 +87,6 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "special_request",
@@ -102,7 +94,6 @@ const EventTable = ({
       filter: true,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "Created_At",
@@ -110,7 +101,6 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "130px" },
     },
     {
       key: "Action",
@@ -118,7 +108,6 @@ const EventTable = ({
       filter: false,
       isShow: true,
       disabled: false,
-      _style: { minWidth: "200px" },
     },
   ]);
   useEffect(() => {

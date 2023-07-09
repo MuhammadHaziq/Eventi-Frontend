@@ -21,44 +21,42 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
     <>
       {(data || [])?.map((item, index) => (
         <CContainer className="event-grid-section" key={index}>
-          <CRow>
-            <CCol sm={4}>
-              <CCard className="mb-2">
-                <CCardBody
-                  style={{
-                    width: "100%",
-                    height: "350px",
-                  }}
-                >
-                  <AppSwiperthumbs
-                    images={item?.banner_images}
-                    accountId={item?.created_by}
-                  />
-                </CCardBody>
-              </CCard>
-            </CCol>
-            <CCol sm={8}>
-              <div>
-                <h5 className="vendarH6Info">Event Name:</h5>
-                <span className="vendarSpanInfo">{item?.event_name}</span>
-              </div>
-              <div>
-                <h5 className="vendarH6Info">Event Location:</h5>
-                <span className="vendarSpanInfo">{item?.event_location}</span>
-              </div>
-              <div>
-                <h5 className="vendarH6Info">Event Date:</h5>
-                <span className="vendarSpanInfo">{item?.event_date}</span>
-              </div>
-              <div>
-                <h5 className="vendarH6Info">Event Type:</h5>
-                <span className="vendarSpanInfo">{item?.type_of_event}</span>
-              </div>
-              <div className="mx-3" style={{ marginTop: "210px" }}>
-                <AppEventJoinButton item={item} />
-              </div>
-            </CCol>
-          </CRow>
+          <CCol sm={4}>
+            <CCard className="mb-2">
+              <CCardBody
+                style={{
+                  width: "100%",
+                  height: "300px",
+                }}
+              >
+                <AppSwiperthumbs
+                  images={item?.banner_images}
+                  accountId={item?.created_by}
+                />
+              </CCardBody>
+              <CCol>
+                <div>
+                  <h5 className="vendarH6Info">Event Name:</h5>
+                  <span className="vendarSpanInfo">{item?.event_name}</span>
+                </div>
+                <div>
+                  <h5 className="vendarH6Info">Event Location:</h5>
+                  <span className="vendarSpanInfo">{item?.event_location}</span>
+                </div>
+                <div>
+                  <h5 className="vendarH6Info">Event Date:</h5>
+                  <span className="vendarSpanInfo">{item?.event_date}</span>
+                </div>
+                <div>
+                  <h5 className="vendarH6Info">Event Type:</h5>
+                  <span className="vendarSpanInfo">{item?.type_of_event}</span>
+                </div>
+                <div className="mx-3" style={{ marginTop: "10px" }}>
+                  <AppEventJoinButton item={item} />
+                </div>
+              </CCol>
+            </CCard>
+          </CCol>
         </CContainer>
       ))}
 

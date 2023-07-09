@@ -348,9 +348,9 @@ const ProductModal = ({
                   options={dropDownVendors}
                   handleChange={(e) => setSelectedVendors(e.target.value)}
                   name="selectedVendors"
-                  label="Select Product"
+                  label="Select Vendors"
                   value={selectedVendors}
-                  placeholder="Select Product"
+                  placeholder="Select Vendors"
                   id="selectedVendors"
                 />
                 <CFormFeedback valid>Looks good!</CFormFeedback>
