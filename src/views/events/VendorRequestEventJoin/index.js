@@ -17,6 +17,7 @@ const VendorRequestEventJoin = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [eventDetail, setEventDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [productImages, setProductImages] = useState([]);
 
   const getJoinedEventDetail = useCallback(() => {
     try {
@@ -38,6 +39,8 @@ const VendorRequestEventJoin = () => {
                 };
               })
             );
+            setProductImages(response.data.data?.product_images);
+
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -48,6 +51,8 @@ const VendorRequestEventJoin = () => {
           } else {
             setEventDetail(null);
             setSelectedProducts([]);
+            setProductImages([]);
+
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -61,6 +66,8 @@ const VendorRequestEventJoin = () => {
         .catch((err) => {
           setEventDetail(null);
           setSelectedProducts([]);
+          setProductImages([]);
+
           setIsLoading(false);
           app_dispatch({
             type: "SHOW_RESPONSE",
@@ -69,6 +76,8 @@ const VendorRequestEventJoin = () => {
         });
     } catch (err) {
       setIsLoading(false);
+      setProductImages([]);
+
       app_dispatch({
         type: "SHOW_RESPONSE",
         toast: AppToast({ message: err.message, color: "danger-alert" }),
@@ -87,7 +96,6 @@ const VendorRequestEventJoin = () => {
                 (item) => item?.vendor_id?._id === currentUser?.data?._id
               )?.[0]?.event_status || ""
             );
-
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -153,6 +161,8 @@ const VendorRequestEventJoin = () => {
                 vendorEventStatus={vendorEventStatus}
                 setVendorEventStatus={setVendorEventStatus}
                 eventDetail={eventDetail}
+                productImages={productImages}
+                setProductImages={setProductImages}
               />
             </CCardBody>
           </CCard>

@@ -15,6 +15,7 @@ import {
   CTableHeaderCell,
   CTableRow,
   CTableDataCell,
+  CImage,
 } from "@coreui/react";
 import ReactSelect from "src/components/Inputs/ReactSelect";
 import CIcon from "@coreui/icons-react";
@@ -45,6 +46,8 @@ const ProductDetail = ({
   vendorEventStatus,
   setVendorEventStatus,
   eventDetail,
+  productImages,
+  setProductImages,
 }) => {
   const { event_id, account_id } = useParams();
   const navigate = useNavigate();
@@ -96,6 +99,10 @@ const ProductDetail = ({
           (product?.product_quantity || 1) * (product?.product_price || 1),
       };
       setSelectedProducts([...selectedProducts, datanew]);
+      setProductImages([
+        ...productImages,
+        { _id: product?._id, productImages: product?.productImages || [] },
+      ]);
       setSelectedProduct(null);
     }
   };
@@ -177,7 +184,6 @@ const ProductDetail = ({
 
   const refTranIDFuction = (refTranID) => {
     setVisiblePaymentModel(true);
-    // refTranID !== null ? updateEvent : "";
   };
 
   const updateEvent = (refTranID) => {
@@ -231,6 +237,11 @@ const ProductDetail = ({
     return eventStatus[status] || "Request To Approved";
   };
 
+  const getFirstImage = (productId, imageObject) => {
+    return imageObject?.filter((ite) => ite?._id === productId)?.[0]
+      ?.product_images?.[0];
+  };
+
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -279,6 +290,7 @@ const ProductDetail = ({
               <CTable>
                 <CTableHead>
                   <CTableRow>
+                    <CTableHeaderCell scope="col">Image</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Item</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Description</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
@@ -292,6 +304,30 @@ const ProductDetail = ({
                 <CTableBody>
                   {(selectedProducts || [])?.map((item, index) => (
                     <CTableRow key={index}>
+                      <CTableDataCell>
+                        {productImages?.filter(
+                          (ite) => ite?._id === item?.product_id
+                        )?.[0]?.product_images?.length > 0 ? (
+                          <CImage
+                            src={`${
+                              process.env.REACT_APP_API_ENDPOINT
+                            }/media/productImage/${
+                              item?.product_id
+                            }/${getFirstImage(
+                              item?.product_id,
+                              productImages
+                            )}`}
+                            width={"50px"}
+                            height={"50px"}
+                          />
+                        ) : (
+                          <CImage
+                            src={`./images/no_image_found.png`}
+                            width={"50px"}
+                            height={"50px"}
+                          />
+                        )}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CFormInput
                           name="product_name"
