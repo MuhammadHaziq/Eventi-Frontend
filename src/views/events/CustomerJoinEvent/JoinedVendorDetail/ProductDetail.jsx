@@ -15,6 +15,7 @@ import {
   CTableDataCell,
   CButton,
   CSpinner,
+  CImage,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilCheckCircle } from "@coreui/icons";
@@ -28,6 +29,7 @@ const ProductDetail = ({
   eventProducts,
   vendorEventStatus,
   setVendorEventStatus,
+  productImages,
 }) => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -78,6 +80,11 @@ const ProductDetail = ({
       });
   };
 
+  const getFirstImage = (productId, imageObject) => {
+    return imageObject?.filter((ite) => ite?._id === productId)?.[0]
+      ?.product_images?.[0];
+  };
+
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -90,6 +97,7 @@ const ProductDetail = ({
               <CTable>
                 <CTableHead>
                   <CTableRow>
+                    <CTableHeaderCell scope="col">Image</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Item</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Description</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
@@ -100,6 +108,30 @@ const ProductDetail = ({
                 <CTableBody>
                   {(selectedProducts || [])?.map((item, index) => (
                     <CTableRow key={index}>
+                      <CTableDataCell>
+                        {productImages?.filter(
+                          (ite) => ite?._id === item?.product_id
+                        )?.[0]?.product_images?.length > 0 ? (
+                          <CImage
+                            src={`${
+                              process.env.REACT_APP_API_ENDPOINT
+                            }/media/productImage/${
+                              item?.product_id
+                            }/${getFirstImage(
+                              item?.product_id,
+                              productImages
+                            )}`}
+                            width={"50px"}
+                            height={"50px"}
+                          />
+                        ) : (
+                          <CImage
+                            src={`./images/no_image_found.png`}
+                            width={"50px"}
+                            height={"50px"}
+                          />
+                        )}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CFormInput
                           name="product_name"

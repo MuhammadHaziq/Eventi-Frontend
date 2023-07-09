@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { CCol, CRow, CCard, CCardBody, CCardHeader } from "@coreui/react";
 import "./style.scss";
-import { useAppDispatch, useAppState } from "src/context/AppContext";
+import { useAppDispatch } from "src/context/AppContext";
 import AppEventUserDetail from "src/components/AppEventUserDetail";
 import ProductDetail from "./ProductDetail";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,7 +9,6 @@ import { AppToast } from "src/components/AppToast";
 import { getEvent, getJoinedVendor } from "src/context/EventContext/service";
 import AppEventDetail from "src/components/AppEventDetail";
 const VendorRequestEventJoin = () => {
-  const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { event_id, account_id } = useParams();
@@ -17,6 +16,7 @@ const VendorRequestEventJoin = () => {
   const [vendorEventStatus, setVendorEventStatus] = useState("");
   const [joined_event_id, setJoinedEventId] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [productImages, setProductImages] = useState(null);
   const [eventDetail, setEventDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,6 +40,7 @@ const VendorRequestEventJoin = () => {
                 };
               })
             );
+            setProductImages(response.data.data?.product_images);
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -50,6 +51,7 @@ const VendorRequestEventJoin = () => {
           } else {
             setEventDetail(null);
             setSelectedProducts([]);
+            setProductImages(null);
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -63,6 +65,7 @@ const VendorRequestEventJoin = () => {
         .catch((err) => {
           setEventDetail(null);
           setSelectedProducts([]);
+          setProductImages(null);
           setIsLoading(false);
           app_dispatch({
             type: "SHOW_RESPONSE",
@@ -146,7 +149,6 @@ const VendorRequestEventJoin = () => {
             <CCardHeader className="d-flex justify-content-between">
               <strong>Vendor Join Event</strong>
               <span onClick={() => navigate(-1)} className="back-header-button">
-                {" "}
                 Back
               </span>
             </CCardHeader>
@@ -160,6 +162,7 @@ const VendorRequestEventJoin = () => {
                 eventProducts={selectedProducts}
                 vendorEventStatus={vendorEventStatus}
                 setVendorEventStatus={setVendorEventStatus}
+                productImages={productImages}
               />
             </CCardBody>
           </CCard>

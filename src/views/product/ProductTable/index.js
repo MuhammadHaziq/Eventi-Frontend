@@ -4,6 +4,7 @@ import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import { deleteProduct } from "src/context/ProductContext/service";
 import useDebounce from "src/hooks/useDebounce";
+import { CImage } from "@coreui/react";
 const ProductTable = ({
   isLoading,
   products,
@@ -25,6 +26,13 @@ const ProductTable = ({
   }, [tableFilterDebounce]);
 
   const [columns] = useState([
+    {
+      key: "Image",
+      label: "Product Image",
+      filter: false,
+      isShow: true,
+      disabled: false,
+    },
     {
       key: "product_name",
       label: "Product Name",
@@ -93,6 +101,23 @@ const ProductTable = ({
           updateFilter({ sort: JSON.stringify(sorter) });
         }}
         scopedColumns={{
+          Image: (item) => (
+            <td>
+              {item?.product_images?.length > 0 ? (
+                <CImage
+                  src={`${process.env.REACT_APP_API_ENDPOINT}/media/productImage/${item?._id}/${item?.product_images[0]}`}
+                  width={"50px"}
+                  height={"50px"}
+                />
+              ) : (
+                <CImage
+                  src={`./images/no_image_found.png`}
+                  width={"50px"}
+                  height={"50px"}
+                />
+              )}
+            </td>
+          ),
           Action: (item) => (
             <td>
               <div className="d-flex gap-2">
