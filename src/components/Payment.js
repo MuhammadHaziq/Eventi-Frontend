@@ -19,15 +19,16 @@ const componentName = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
   eventDetail,
+  onPropSuccess,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
-  const [email, setEmail] = useState("haseeb@kodxsystem.com");
-  const [name, setName] = useState("Haseeb");
+  const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("03224512868");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
+
   const { currentUser } = useAppState();
+  console.log(currentUser);
   useEffect(() => {
     if (eventDetail) {
       const vendorDetail =
@@ -36,18 +37,15 @@ const componentName = ({
         )?.[0]?.vendor_id || null;
       setAmount(+eventDetail?.amount || 0);
       setEmail(vendorDetail?.email || "");
-      setPhone(vendorDetail?.phone || "");
       setFirstName(vendorDetail?.first_name || "");
       setLastName(vendorDetail?.last_name || "");
-      setName(
-        (vendorDetail?.first_name || "") + " " + (vendorDetail?.last_name || "")
-      );
     }
   }, [eventDetail]);
   const resetForm = () => {
     setEmail("");
-    setName("");
-    setPhone("");
+    setFirstName("");
+    setLastName("");
+    setAmount("");
   };
 
   const componentProps = {
@@ -55,17 +53,18 @@ const componentName = ({
     amount: amount * 100,
     currency: "ZAR",
     metadata: {
-      name,
-      phone,
+      firstName,
+      lastName,
     },
     publicKey,
     text: "Pay Now",
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
-      alert(
-        `Your purchase was successful! Transaction reference: ${reference}`
-      );
-      resetForm();
+      // alert(
+      //   `Your purchase was successful! Transaction reference: ${reference}`
+      // );
+      // resetForm();
+      onPropSuccess(reference);
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
@@ -112,7 +111,7 @@ const componentName = ({
               <CFormInput
                 type="text"
                 id="staticFirstName"
-                defaultValue={firstName}
+                value={firstName}
                 readOnly
                 plainText
               />
@@ -129,7 +128,7 @@ const componentName = ({
               <CFormInput
                 type="text"
                 id="staticLastName"
-                defaultValue={lastName}
+                value={lastName}
                 readOnly
                 plainText
               />
