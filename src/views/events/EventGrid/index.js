@@ -32,7 +32,7 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
                 >
                   <AppSwiperthumbs
                     images={item?.banner_images}
-                    accountId={item?.created_by}
+                    accountId={item?._id}
                   />
                 </CCardBody>
               </CCard>
