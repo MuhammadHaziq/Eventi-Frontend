@@ -4,6 +4,7 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
+  CFormSelect,
   CRow,
   CButton,
   CFormSwitch,
@@ -18,6 +19,7 @@ import { getEvents } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
 import AppProgress from "src/components/AppProgress";
 import GridView from "../EventGrid";
+import Select from "react-select";
 const EventList = () => {
   const app_dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
@@ -25,6 +27,9 @@ const EventList = () => {
   const [gridView, setGridView] = useState(false);
   const [filters, setFilters] = useState();
   const { permissions } = useAppState();
+  const [state, setState] = useState({
+    notification: "",
+  });
   const navigate = useNavigate();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -47,6 +52,11 @@ const EventList = () => {
       retry: false,
     }
   );
+  const handleOnChange = (e) => {
+    alert(e.target.value);
+    // const { name, value } = e.target;
+    // setState({ ...state, [name]: value });
+  };
 
   const useGetData = (filterDatas) => {
     setFilters({ ...filters, ...filterDatas });
@@ -84,7 +94,6 @@ const EventList = () => {
           <CCard className="mb-4">
             <CCardHeader className="d-flex justify-content-between">
               <strong>
-                {" "}
                 Total number of Event {gridView ? "Grid" : "List"} (
                 {data?.data?.data?.meta?.itemCount})
               </strong>
@@ -98,6 +107,31 @@ const EventList = () => {
               </span>
             </CCardHeader>
             <CCardBody>
+              {/*  <CRow>
+              <CCol md={4}>
+                <Select
+                  id="notification"
+                  aria-label="Default select example"
+                  isRequired={true}
+                  handleChange={handleOnChange}
+                  name="notification"
+                  value={state.notification}
+                  options={[
+                    "All",
+                    {
+                      label: "Pending for payment",
+                      value: "pending_Payment",
+                    },
+                    {
+                      label: "Pending for Approval",
+                      value: "pending_Approval",
+                    },
+                    { label: "Pending for join event ", value: "3" },
+                  ]}
+                />
+              </CCol>
+            </CRow> */}
+
               {gridView ? (
                 <GridView
                   data={data?.data?.data?.data || []}

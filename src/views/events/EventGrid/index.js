@@ -3,6 +3,7 @@ import {
   CCard,
   CCardBody,
   CButton,
+  CCardGroup,
   CContainer,
   CRow,
   CCol,
@@ -19,48 +20,56 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
   const navigate = useNavigate();
   return (
     <>
-      {(data || [])?.map((item, index) => (
-        <CContainer className="event-grid-section" key={index}>
-          <CRow>
-            <CCol sm={4}>
-              <CCard className="mb-2">
-                <CCardBody
-                  style={{
-                    width: "100%",
-                    height: "350px",
-                  }}
-                >
-                  <AppSwiperthumbs
-                    images={item?.banner_images}
-                    accountId={item?._id}
-                  />
-                </CCardBody>
-              </CCard>
-            </CCol>
-            <CCol sm={8}>
+      <CRow className="event-grid-section">
+        {(data || [])?.map((item, index) => (
+          <CCol md={4} key={index}>
+            <CCard className="mb-4">
+              <CCardBody
+                style={{
+                  width: "100%",
+                  height: "280px",
+                }}
+              >
+                <AppSwiperthumbs
+                  images={item?.banner_images}
+                  accountId={item?._id}
+                />
+              </CCardBody>
+              <hr></hr>
               <div>
-                <h5 className="vendarH6Info">Event Name:</h5>
+                <h6 className="vendarH6Info">Event Name:</h6>
                 <span className="vendarSpanInfo">{item?.event_name}</span>
               </div>
               <div>
-                <h5 className="vendarH6Info">Event Location:</h5>
+                <h6 className="vendarH6Info">Event Location:</h6>
                 <span className="vendarSpanInfo">{item?.event_location}</span>
               </div>
               <div>
-                <h5 className="vendarH6Info">Event Date:</h5>
+                <h6 className="vendarH6Info">Event Amount:</h6>
+                <span className="vendarSpanInfo">{item?.amount}</span>
+              </div>
+              <div>
+                <h6 className="vendarH6Info">Event Date:</h6>
                 <span className="vendarSpanInfo">{item?.event_date}</span>
               </div>
               <div>
-                <h5 className="vendarH6Info">Event Type:</h5>
+                <h6 className="vendarH6Info">Mob Number:</h6>
+                <span className="vendarSpanInfo">{item?.phone_number}</span>
+              </div>
+              <div>
+                <h6 className="vendarH6Info">Event Type:</h6>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div>
-              <div className="mx-3" style={{ marginTop: "210px" }}>
+              <div
+                className="mx-3"
+                style={{ marginTop: "10px", marginBottom: "10px" }}
+              >
                 <AppEventJoinButton item={item} />
               </div>
-            </CCol>
-          </CRow>
-        </CContainer>
-      ))}
+            </CCard>
+          </CCol>
+        ))}
+      </CRow>
 
       {+tableMeta?.pageCount > 1 && (
         <div className={"mt-2"}>

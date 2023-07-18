@@ -483,9 +483,9 @@ const ProductDetail = ({
                   {isLoading ? (
                     <CSpinner />
                   ) : account_id ? (
-                    " Update Product"
+                    " Update & Event Join"
                   ) : (
-                    " Save Product"
+                    " Save & Event Join"
                   )}
                 </CButton>
               )}
