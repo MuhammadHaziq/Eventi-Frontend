@@ -326,7 +326,7 @@ const UserProfile = () => {
               ) && (
                 <CCol className="text-end">
                   <CButton
-                    size="md"
+                    size="lg"
                     color="success"
                     variant="outline"
                     type="submit"
@@ -337,7 +337,7 @@ const UserProfile = () => {
                   <CButton
                     style={{ marginLeft: "10px" }}
                     color="dark"
-                    size="md"
+                    size="lg"
                     variant="outline"
                     onClick={() => setEdit(!edit)}
                     disabled={isLoading}

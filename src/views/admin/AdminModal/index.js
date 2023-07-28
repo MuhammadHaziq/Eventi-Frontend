@@ -299,7 +299,7 @@ const AdminModal = ({ customer_id, visible, setVisible }) => {
             <CRow className="mt-4">
               <CCol md={12} className="text-end">
                 <CButton
-                  size="md"
+                  size="lg"
                   color="success"
                   variant="outline"
                   type="submit"
@@ -309,7 +309,7 @@ const AdminModal = ({ customer_id, visible, setVisible }) => {
                 </CButton>
                 <CButton
                   color="dark"
-                  size="md"
+                  size="lg"
                   variant="outline"
                   style={{ marginLeft: "10px" }}
                   onClick={setVisible}

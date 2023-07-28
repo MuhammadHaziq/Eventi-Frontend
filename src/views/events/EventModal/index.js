@@ -52,17 +52,17 @@ const EventModal = ({ eventId, visible, setVisible }) => {
         .then((response) => {
           if (response.data.data) {
             setState({
-              event_name: response.data.data.event_name,
-              event_date: response.data.data.event_date,
-              amount: response.data.data.amount,
-              event_location: response.data.data.event_location,
-              vendor_id: response.data.data.vendor_id,
-              type_of_event: response.data.data.type_of_event,
-              expected_attendence: response.data.data.expected_attendence,
-              phone_number: response.data.data.phone_number,
-              equipments: response.data.data.equipments,
+              event_name: response.data.data.event_name || "",
+              event_date: response.data.data.event_date || "",
+              amount: response.data.data.amount || "",
+              event_location: response.data.data.event_location || "",
+              vendor_id: response.data.data.vendor_id || "",
+              type_of_event: response.data.data.type_of_event || "",
+              expected_attendence: response.data.data.expected_attendence || "",
+              phone_number: response.data.data.phone_number || "",
+              equipments: response.data.data.equipments || "",
               security: response.data.data.security === true ? "Yes" : "No",
-              special_request: response.data.data.special_request,
+              special_request: response.data.data.special_request || "",
             });
             setFiles([
               ...files,
@@ -448,7 +448,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
             <CRow className="mt-4">
               <CCol className="text-end">
                 <CButton
-                  size="md"
+                  size="lg"
                   color="success"
                   variant="outline"
                   type="submit"
@@ -459,7 +459,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 <CButton
                   style={{ marginLeft: "10px" }}
                   color="dark"
-                  size="md"
+                  size="lg"
                   variant="outline"
                   onClick={setVisible}
                   disabled={isLoading}

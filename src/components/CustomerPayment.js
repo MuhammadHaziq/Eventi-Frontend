@@ -79,7 +79,7 @@ const CustomerPayment = ({
         backdrop="static"
         visible={visiblePaymentModel}
         onClick={() => setVisiblePaymentModel(!visiblePaymentModel)}
-        size="md"
+        size="lg"
       >
         <CModalHeader>
           <CModalTitle> Payment</CModalTitle>
@@ -160,7 +160,7 @@ const CustomerPayment = ({
             <CButton
               style={{ marginLeft: "10px" }}
               color="dark"
-              size="md"
+              size="lg"
               variant="outline"
               onClick={() => setVisiblePaymentModel(!visiblePaymentModel)}
             >

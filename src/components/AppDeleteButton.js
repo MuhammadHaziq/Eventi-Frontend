@@ -64,7 +64,7 @@ const AppDeleteButton = ({
         backdrop="static"
         visible={visible}
         onClose={() => setVisible(false)}
-        size="md"
+        size="lg"
         alignment="center"
       >
         <CModalHeader>

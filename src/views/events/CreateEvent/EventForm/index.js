@@ -387,7 +387,7 @@ export const EventRegistration = () => {
 
                 <CCol xs={12}>
                   <CButton
-                    size="md"
+                    size="lg"
                     color="success"
                     variant="outline"
                     type="submit"

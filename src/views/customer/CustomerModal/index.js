@@ -318,7 +318,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
             </CCol>
             <CCol className="text-end">
               <CButton
-                size="md"
+                size="lg"
                 color="success"
                 variant="outline"
                 type="submit"
@@ -329,7 +329,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               <CButton
                 style={{ marginLeft: "10px" }}
                 color="dark"
-                size="md"
+                size="lg"
                 variant="outline"
                 onClick={setVisible}
                 disabled={isLoading}

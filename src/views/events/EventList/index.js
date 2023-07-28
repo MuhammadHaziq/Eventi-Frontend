@@ -77,16 +77,18 @@ const EventList = () => {
       {isError ? "" : <AppProgress loading={isFetching} />}
       {permissions.find((item) => item.permission === "event-add") && (
         <>
-          <CButton
-            size="sm"
-            color="primary"
-            variant="outline"
-            onClick={() => navigate("/event-registration")}
-          >
-            Add Event
-          </CButton>
-          <br></br>
-          <br></br>
+          <CRow className="mb-2">
+            <CCol>
+              <CButton
+                size="sm"
+                color="primary"
+                variant="outline"
+                onClick={() => navigate("/event-registration")}
+              >
+                Add Event
+              </CButton>
+            </CCol>
+          </CRow>
         </>
       )}
       <CRow>
@@ -157,13 +159,13 @@ const EventList = () => {
       </CRow>
       {visible && (
         <>
-          {visible && (
-            <EventModal
-              setVisible={clickHideModal}
-              visible={visible}
-              eventId={selectProduct}
-            />
-          )}
+          {/* {visible && ( */}
+          <EventModal
+            setVisible={clickHideModal}
+            visible={visible}
+            eventId={selectProduct}
+          />
+          {/* )} */}
         </>
       )}
     </>

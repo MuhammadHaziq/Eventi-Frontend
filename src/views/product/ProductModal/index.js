@@ -284,7 +284,7 @@ const ProductModal = ({
         backdrop="static"
         visible={visible}
         onClose={setVisible}
-        size="md"
+        size="lg"
       >
         <CModalHeader>
           <CModalTitle>{product_id ? "Edit" : "Add"} Product</CModalTitle>
@@ -371,7 +371,7 @@ const ProductModal = ({
             </CCol>
             <CCol className="text-end">
               <CButton
-                size="md"
+                size="lg"
                 color="success"
                 variant="outline"
                 type="submit"
@@ -383,7 +383,7 @@ const ProductModal = ({
               <CButton
                 style={{ marginLeft: "10px" }}
                 color="dark"
-                size="md"
+                size="lg"
                 variant="outline"
                 onClick={setVisible}
                 disabled={isLoading}
