@@ -38,6 +38,7 @@ import {
   vendorJoinedEvent,
 } from "src/context/EventContext/service";
 import { AppToast } from "src/components/AppToast";
+import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
 
 const ProductDetail = ({
   joined_event_id,
@@ -140,7 +141,7 @@ const ProductDetail = ({
       event_id: event_id,
       account_id: currentUser?.data?._id,
       products: selectedProducts,
-      status: getNextStatusForEvent(vendorEventStatus) || "Request To Approved",
+      status: UserRequestEventStatuses(vendorEventStatus) || "Request To Join",
     };
     if (account_id) {
       data.joined_event_id = joined_event_id;
@@ -186,12 +187,12 @@ const ProductDetail = ({
     setVisiblePaymentModel(true);
   };
 
-  const updateEvent = (refTranID) => {
+  const updateEvent = () => {
     const data = {
-      refTranID: refTranID,
+      // refTranID: refTranID,
       event_id: event_id,
       account_id: currentUser?.data?._id,
-      status: getNextStatusForEvent(vendorEventStatus) || "Request To Approved",
+      status: UserRequestEventStatuses(vendorEventStatus) || "Request To Join",
     };
     setIsLoading(true);
 
@@ -199,7 +200,7 @@ const ProductDetail = ({
       .then((response) => {
         setIsLoading(false);
         if (response?.data?.data?.modifiedCount) {
-          setVendorEventStatus(getNextStatusForEvent(vendorEventStatus));
+          setVendorEventStatus(EventStatuses(vendorEventStatus));
         }
         app_dispatch({
           type: "SHOW_RESPONSE",
@@ -228,20 +229,11 @@ const ProductDetail = ({
     }
   }, [joined_event_id]);
 
-  const getNextStatusForEvent = (status) => {
-    const eventStatus = {
-      "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
-    };
-    return eventStatus[status] || "Request To Approved";
-  };
-
   const getFirstImage = (productId, imageObject) => {
     return imageObject?.filter((ite) => ite?._id === productId)?.[0]
       ?.product_images?.[0];
   };
-
+  console.log(selectedProducts, vendorEventStatus, "selectedProducts");
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -462,7 +454,7 @@ const ProductDetail = ({
 
           <CCol className="mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              {!["Request To Payment", "Approved"]?.includes(
+              {!["Pending For Payment", "Approved"]?.includes(
                 vendorEventStatus
               ) && (
                 <CButton
@@ -473,7 +465,7 @@ const ProductDetail = ({
                   disabled={
                     selectedProducts?.length === 0 ||
                     isLoading ||
-                    ["Request To Payment", "Approved"]?.includes(
+                    ["Pending For Payment", "Approved"]?.includes(
                       vendorEventStatus
                     )
                   }
@@ -490,23 +482,24 @@ const ProductDetail = ({
                 </CButton>
               )}
 
-              {!["Request To Approved", ""]?.includes(vendorEventStatus) && (
+              {!["Request To Join", ""]?.includes(vendorEventStatus) && (
                 <CButton
                   color="success"
                   shape="rounded-0"
                   className="mt-2 text-white"
-                  onClick={refTranIDFuction}
+                  // onClick={refTranIDFuction}
+                  onClick={updateEvent}
                   disabled={
                     selectedProducts?.length === 0 ||
                     isLoading ||
-                    ["Request To Approved", "", "Approved"]?.includes(
+                    ["Request To Join", "", "Approved"]?.includes(
                       vendorEventStatus
                     )
                   }
                   style={{ float: "right" }}
                 >
                   <CIcon icon={cilCheckCircle} />
-                  {isLoading ? <CSpinner /> : vendorEventStatus}
+                  {isLoading ? <CSpinner /> : EventStatuses(vendorEventStatus)}
                 </CButton>
               )}
             </div>

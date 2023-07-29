@@ -23,6 +23,10 @@ import { useParams } from "react-router-dom";
 import { updateVendorStatus } from "src/context/EventContext/service";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+import {
+  AdminEventStatuses,
+  AdminRequestEventStatuses,
+} from "src/utils/constants";
 
 const ProductDetail = ({
   joined_event_id,
@@ -44,8 +48,8 @@ const ProductDetail = ({
   const getNextStatusForEvent = (status) => {
     const eventStatus = {
       "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
+      "Request To Approved": "Pending For Payment",
+      "Pending For Payment": "Approved",
     };
     return eventStatus[status] || "Request To Approved";
   };
@@ -54,12 +58,13 @@ const ProductDetail = ({
     const data = {
       event_id: event_id,
       vendor_id: account_id,
-      status: getNextStatusForEvent(vendorEventStatus) || "Request To Payment",
+      status:
+        AdminRequestEventStatuses(vendorEventStatus) || "Pending For Payment",
     };
     updateVendorStatus(data)
       .then((response) => {
         if (response?.data?.data?.modifiedCount) {
-          setVendorEventStatus(getNextStatusForEvent(vendorEventStatus));
+          setVendorEventStatus(AdminRequestEventStatuses(vendorEventStatus));
         }
         app_dispatch({
           type: "SHOW_RESPONSE",
@@ -84,7 +89,11 @@ const ProductDetail = ({
     return imageObject?.filter((ite) => ite?._id === productId)?.[0]
       ?.product_images?.[0];
   };
-
+  console.log(
+    vendorEventStatus,
+    AdminEventStatuses(vendorEventStatus),
+    "vendorEventStatusvendorEventStatus"
+  );
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -224,14 +233,18 @@ const ProductDetail = ({
                 disabled={
                   selectedProducts?.length === 0 ||
                   isLoading ||
-                  ["Request To Payment", "Approved"]?.includes(
+                  ["Pending For Payment", "Approved"]?.includes(
                     vendorEventStatus
                   )
                 }
                 style={{ float: "right" }}
               >
                 <CIcon icon={cilCheckCircle} />
-                {isLoading ? <CSpinner /> : " " + vendorEventStatus}
+                {isLoading ? (
+                  <CSpinner />
+                ) : (
+                  " " + AdminEventStatuses(vendorEventStatus)
+                )}
               </CButton>
             </div>
           </CCol>
