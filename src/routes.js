@@ -9,17 +9,16 @@ const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
 // const PaymentForm = React.lazy(() => import("./views/events/PaymentForm"));
-const VendorRequestEventJoin = React.lazy(() =>
-  import("./views/events/VendorRequestEventJoin")
-);
+const VendorEventJoin = React.lazy(() => import("./views/joinEvent/vendor"));
 const UserProfile = React.lazy(() => import("./views/profile/userProfile"));
-const JoinedVendorDetail = React.lazy(() =>
-  import("./views/events/CustomerJoinEvent/JoinedVendorDetail")
+const VendorJoinedDetail = React.lazy(() =>
+  import("./views/joinEvent/customer/VendorJoinedDetail")
 );
-
 const CustomerJoinEvent = React.lazy(() =>
-  import("./views/events/CustomerJoinEvent")
+  import("./views/joinEvent/customer")
 );
+const AdminJoinEvent = React.lazy(() => import("./views/joinEvent/admin"));
+
 const routes = [
   { path: "/", exact: true, name: "Home" },
   {
@@ -44,7 +43,7 @@ const routes = [
     path: "/joined-vednor-detail/:account_id/:event_id",
     name: "Joined Vendor Detail",
     permission: "event-detail",
-    element: JoinedVendorDetail,
+    element: VendorJoinedDetail,
   },
   {
     path: "/vendor-list",
@@ -75,13 +74,13 @@ const routes = [
     path: "/vendor-join-event/:event_id",
     name: "Vendor Request Event Join Form",
     permission: "event-join",
-    element: VendorRequestEventJoin,
+    element: VendorEventJoin,
   },
   {
     path: "/vendor-update-event/:account_id/:event_id",
     name: "Vendor Request Update Event",
     permission: "event-join",
-    element: VendorRequestEventJoin,
+    element: VendorEventJoin,
   },
   {
     path: "/product-list",
@@ -95,6 +94,12 @@ const routes = [
     name: "Admin List",
     permission: "admin-list",
     element: AdminList,
+  },
+  {
+    path: "/event-detail/:account_id/:event_id",
+    name: "Event Detail",
+    permission: "event-detail",
+    element: AdminJoinEvent,
   },
   {
     path: "/account/profile/:account_id",

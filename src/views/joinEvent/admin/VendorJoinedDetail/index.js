@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { CCol, CRow, CCard, CCardBody, CCardHeader } from "@coreui/react";
-import "./style.scss";
 import { useAppDispatch } from "src/context/AppContext";
 import AppEventUserDetail from "src/components/AppEventUserDetail";
 import ProductDetail from "./ProductDetail";
@@ -8,7 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppToast } from "src/components/AppToast";
 import { getEvent, getJoinedVendor } from "src/context/EventContext/service";
 import AppEventDetail from "src/components/AppEventDetail";
-const VendorRequestEventJoin = () => {
+import "./style.scss";
+
+const VendorJoinedDetail = () => {
   const app_dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { event_id, account_id } = useParams();
@@ -161,7 +162,6 @@ const VendorRequestEventJoin = () => {
                 joined_event_id={joined_event_id}
                 eventProducts={selectedProducts}
                 vendorEventStatus={vendorEventStatus}
-                setVendorEventStatus={setVendorEventStatus}
                 productImages={productImages}
               />
             </CCardBody>
@@ -171,4 +171,4 @@ const VendorRequestEventJoin = () => {
     </>
   );
 };
-export default VendorRequestEventJoin;
+export default VendorJoinedDetail;

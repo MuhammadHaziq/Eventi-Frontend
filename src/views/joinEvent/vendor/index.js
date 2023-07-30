@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { CCol, CRow, CCard, CCardBody, CCardHeader } from "@coreui/react";
-import "./style.scss";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
-import ProductDetail from "./ProductDetail";
+import ProductDetail from "./productDetail";
 import { useParams } from "react-router-dom";
 import { AppToast } from "src/components/AppToast";
 import { getEvent, getJoinedVendor } from "src/context/EventContext/service";
 import AppEventDetail from "src/components/AppEventDetail";
-const VendorRequestEventJoin = () => {
+import "./style.scss";
+
+const VendorEventJoin = () => {
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
   const { event_id, account_id } = useParams();
@@ -171,4 +172,4 @@ const VendorRequestEventJoin = () => {
     </>
   );
 };
-export default VendorRequestEventJoin;
+export default VendorEventJoin;

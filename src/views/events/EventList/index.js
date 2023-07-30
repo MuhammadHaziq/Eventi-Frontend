@@ -10,7 +10,6 @@ import {
   CFormSwitch,
 } from "@coreui/react";
 import EventModal from "../EventModal";
-import VendorRequestEventJoin from "../VendorRequestEventJoin";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";

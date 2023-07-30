@@ -8,7 +8,7 @@ import { useAppState } from "src/context/AppContext";
 const AppEventJoinButton = ({ item, icon = false }) => {
   const { currentUser } = useAppState();
   const navigate = useNavigate();
-
+  console.log(currentUser, "currentUser");
   return (
     <div className="d-grid gap-2">
       <CButton
@@ -20,6 +20,8 @@ const AppEventJoinButton = ({ item, icon = false }) => {
                   ?.includes(currentUser?.data?._id)
                 ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
                 : `/vendor-join-event/${item?._id}`
+              : currentUser?.data?.user_type === "admin"
+              ? `/event-detail/${currentUser?.data?._id}/${item?._id}`
               : `/join-event/${currentUser?.data?._id}/${item?._id}`
           )
         }

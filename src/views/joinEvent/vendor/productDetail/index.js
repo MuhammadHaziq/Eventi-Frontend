@@ -24,12 +24,11 @@ import {
   cilMinus,
   cilPlus,
   cilLibraryAdd,
-  cilPlaylistAdd,
   cilCheckCircle,
 } from "@coreui/icons";
 import { getProducts } from "src/context/ProductContext/service";
 import { useNavigate, useParams } from "react-router-dom";
-import ProductModal from "../../product/ProductModal";
+import ProductModal from "src/views/product/ProductModal";
 import PaymentModel from "src/components/Payment";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import {
