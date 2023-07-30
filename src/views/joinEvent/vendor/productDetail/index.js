@@ -199,7 +199,7 @@ const ProductDetail = ({
       .then((response) => {
         setIsLoading(false);
         if (response?.data?.data?.modifiedCount) {
-          setVendorEventStatus(EventStatuses(vendorEventStatus));
+          setVendorEventStatus(UserRequestEventStatuses(vendorEventStatus));
         }
         app_dispatch({
           type: "SHOW_RESPONSE",
@@ -491,14 +491,16 @@ const ProductDetail = ({
                   disabled={
                     selectedProducts?.length === 0 ||
                     isLoading ||
-                    ["Request To Join", "", "Approved"]?.includes(
-                      vendorEventStatus
-                    )
+                    ["Approved"]?.includes(vendorEventStatus)
                   }
                   style={{ float: "right" }}
                 >
                   <CIcon icon={cilCheckCircle} />
-                  {isLoading ? <CSpinner /> : EventStatuses(vendorEventStatus)}
+                  {isLoading ? (
+                    <CSpinner />
+                  ) : (
+                    " " + EventStatuses(vendorEventStatus)
+                  )}
                 </CButton>
               )}
             </div>

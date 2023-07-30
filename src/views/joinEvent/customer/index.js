@@ -17,6 +17,7 @@ import "./style.scss";
 import JoinedCustomers from "./JoinedCustomer";
 import JoinedVendors from "./JoinedVendor";
 import CustomerPayment from "src/components/CustomerPayment";
+import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
 
 const CustomerJoinEvent = () => {
   const { currentUser } = useAppState();
@@ -87,7 +88,7 @@ const CustomerJoinEvent = () => {
   const joinEvent = (status) => {
     setIsLoading(true);
     customerJoinEvent(event_id, account_id, {
-      status: status || "Request To Approved",
+      status: status || "Request To Join",
     })
       .then((response) => {
         if (response.data.data) {
@@ -152,15 +153,6 @@ const CustomerJoinEvent = () => {
       });
   };
 
-  const getNextStatusForEvent = (status) => {
-    const eventStatus = {
-      "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
-    };
-    return eventStatus[status] || "Request To Approved";
-  };
-
   return (
     <>
       <CRow>
@@ -173,40 +165,37 @@ const CustomerJoinEvent = () => {
             </CCardHeader>
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
-              {currentUser?.data?.user_type !== "admin" && (
-                <CContainer>
-                  <CRow>
-                    <CCol>
-                      <CButton
-                        className="join-event-customer"
-                        color={
-                          eventDetail?.joined_customers
-                            ?.map(
-                              (item) =>
-                                item?.customer_id?.user_detail?.account_id
-                            )
-                            .includes(currentUser?.data?._id)
-                            ? "warning"
-                            : "primary"
-                        }
-                        onClick={() => {
-                          eventStatus === "Request To Payment"
-                            ? setShowPaymentModel(!showPaymentModel)
-                            : joinEvent(getNextStatusForEvent(eventStatus));
-                        }}
-                        disabled={
-                          isLoading ||
-                          ["Request To Approved", "Approved"].includes(
-                            eventStatus || "Pending"
+              <CContainer>
+                <CRow>
+                  <CCol>
+                    <CButton
+                      className="join-event-customer"
+                      color={
+                        eventDetail?.joined_customers
+                          ?.map(
+                            (item) => item?.customer_id?.user_detail?.account_id
                           )
-                        }
-                      >
-                        {eventStatus || "Join Event"}
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                </CContainer>
-              )}
+                          .includes(currentUser?.data?._id)
+                          ? "warning"
+                          : "primary"
+                      }
+                      onClick={() => {
+                        eventStatus === "Pending For Payment"
+                          ? setShowPaymentModel(!showPaymentModel)
+                          : joinEvent(UserRequestEventStatuses(eventStatus));
+                      }}
+                      disabled={
+                        isLoading ||
+                        ["Request To Join", "Approved"].includes(
+                          eventStatus || "Pending"
+                        )
+                      }
+                    >
+                      {EventStatuses(eventStatus) || "Join Event"}
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CContainer>
             </CCardBody>
           </CCard>
           <CCard className="mb-2">

@@ -45,8 +45,8 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
   const getNextStatusForEvent = (status) => {
     const eventStatus = {
       "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
+      "Request To Approved": "Pending For Payment",
+      "Pending For Payment": "Approved",
     };
     return eventStatus[status] || "Request To Approved";
   };
@@ -120,7 +120,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
                 }}
                 disabled={
                   isLoading ||
-                  ["Request To Payment", "Approved"].includes(
+                  ["Pending For Payment", "Approved"].includes(
                     item?.event_status || "Pending"
                   )
                 }

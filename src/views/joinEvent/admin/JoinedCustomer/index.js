@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppState } from "src/context/AppContext";
 import { updateCustomerStatus } from "src/context/EventContext/service";
+import {
+  AdminEventStatuses,
+  AdminRequestEventStatuses,
+} from "src/utils/constants";
 const { CSmartTable } = require("@coreui/react-pro");
 
 const JoinedCustomers = ({ joinedCustomers = [] }) => {
@@ -41,15 +45,6 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
       );
     }
   }, [joinedCustomers]);
-
-  const getNextStatusForEvent = (status) => {
-    const eventStatus = {
-      "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
-    };
-    return eventStatus[status] || "Request To Approved";
-  };
 
   const updateEvent = (customer_id, status) => {
     setIsLoading(true);
@@ -115,12 +110,12 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
                 onClick={() => {
                   updateEvent(
                     item?.user_detail?.account_id,
-                    getNextStatusForEvent(item?.event_status)
+                    AdminRequestEventStatuses(item?.event_status)
                   );
                 }}
                 disabled={
                   isLoading ||
-                  ["Request To Payment", "Approved"].includes(
+                  ["Pending For Payment", "Approved"].includes(
                     item?.event_status || "Pending"
                   )
                 }
@@ -129,7 +124,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
                 currentCustomer === item?.user_detail?.account_id ? (
                   <CSpinner />
                 ) : (
-                  item?.event_status || "Join Event"
+                  AdminEventStatuses(item?.event_status) || "Join Event"
                 )}
               </CButton>
             )}

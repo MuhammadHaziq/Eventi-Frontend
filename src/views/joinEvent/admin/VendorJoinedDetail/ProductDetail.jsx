@@ -23,6 +23,10 @@ import { useParams } from "react-router-dom";
 import { updateVendorStatus } from "src/context/EventContext/service";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
+import {
+  AdminEventStatuses,
+  AdminRequestEventStatuses,
+} from "src/utils/constants";
 
 const ProductDetail = ({
   joined_event_id,
@@ -41,25 +45,17 @@ const ProductDetail = ({
     }
   }, [joined_event_id]);
 
-  const getNextStatusForEvent = (status) => {
-    const eventStatus = {
-      "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
-    };
-    return eventStatus[status] || "Request To Approved";
-  };
-
   const updateEvent = () => {
     const data = {
       event_id: event_id,
       vendor_id: account_id,
-      status: getNextStatusForEvent(vendorEventStatus) || "Request To Payment",
+      status:
+        AdminRequestEventStatuses(vendorEventStatus) || "Pending For Payment",
     };
     updateVendorStatus(data)
       .then((response) => {
         if (response?.data?.data?.modifiedCount) {
-          setVendorEventStatus(getNextStatusForEvent(vendorEventStatus));
+          setVendorEventStatus(AdminRequestEventStatuses(vendorEventStatus));
         }
         app_dispatch({
           type: "SHOW_RESPONSE",
@@ -224,14 +220,16 @@ const ProductDetail = ({
                 disabled={
                   selectedProducts?.length === 0 ||
                   isLoading ||
-                  ["Request To Payment", "Approved"]?.includes(
-                    vendorEventStatus
-                  )
+                  !["Request To Join"]?.includes(vendorEventStatus)
                 }
                 style={{ float: "right" }}
               >
                 <CIcon icon={cilCheckCircle} />
-                {isLoading ? <CSpinner /> : " " + vendorEventStatus}
+                {isLoading ? (
+                  <CSpinner />
+                ) : (
+                  " " + AdminEventStatuses(vendorEventStatus)
+                )}
               </CButton>
             </div>
           </CCol>

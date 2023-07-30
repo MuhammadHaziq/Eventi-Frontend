@@ -155,8 +155,8 @@ const AdminJoinEvent = () => {
   const getNextStatusForEvent = (status) => {
     const eventStatus = {
       "": "Request To Approved",
-      "Request To Approved": "Request To Payment",
-      "Request To Payment": "Approved",
+      "Request To Approved": "Pending For Payment",
+      "Pending For Payment": "Approved",
     };
     return eventStatus[status] || "Request To Approved";
   };
@@ -190,7 +190,7 @@ const AdminJoinEvent = () => {
                             : "primary"
                         }
                         onClick={() => {
-                          eventStatus === "Request To Payment"
+                          eventStatus === "Pending For Payment"
                             ? setShowPaymentModel(!showPaymentModel)
                             : joinEvent(getNextStatusForEvent(eventStatus));
                         }}
