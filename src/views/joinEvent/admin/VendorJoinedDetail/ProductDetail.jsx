@@ -14,33 +14,77 @@ import {
   CTableRow,
   CTableDataCell,
   CButton,
+  CSpinner,
   CImage,
 } from "@coreui/react";
-import { AdminEventStatuses } from "src/utils/constants";
+import CIcon from "@coreui/icons-react";
+import { cilCheckCircle } from "@coreui/icons";
+import { useParams } from "react-router-dom";
+import { updateVendorStatus } from "src/context/EventContext/service";
+import { useAppDispatch } from "src/context/AppContext";
+import { AppToast } from "src/components/AppToast";
 
 const ProductDetail = ({
   joined_event_id,
   eventProducts,
   vendorEventStatus,
+  setVendorEventStatus,
   productImages,
 }) => {
   const [selectedProducts, setSelectedProducts] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const { event_id, account_id } = useParams();
+  const app_dispatch = useAppDispatch();
   useEffect(() => {
     if (joined_event_id) {
       setSelectedProducts(eventProducts);
     }
   }, [joined_event_id]);
 
+  const getNextStatusForEvent = (status) => {
+    const eventStatus = {
+      "": "Request To Approved",
+      "Request To Approved": "Request To Payment",
+      "Request To Payment": "Approved",
+    };
+    return eventStatus[status] || "Request To Approved";
+  };
+
+  const updateEvent = () => {
+    const data = {
+      event_id: event_id,
+      vendor_id: account_id,
+      status: getNextStatusForEvent(vendorEventStatus) || "Request To Payment",
+    };
+    updateVendorStatus(data)
+      .then((response) => {
+        if (response?.data?.data?.modifiedCount) {
+          setVendorEventStatus(getNextStatusForEvent(vendorEventStatus));
+        }
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: response?.data?.message,
+            color: "success-alert",
+          }),
+        });
+      })
+      .catch((err) => {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: err?.response?.data?.message || err?.message,
+            color: "danger-alert",
+          }),
+        });
+      });
+  };
+
   const getFirstImage = (productId, imageObject) => {
     return imageObject?.filter((ite) => ite?._id === productId)?.[0]
       ?.product_images?.[0];
   };
-  console.log(
-    vendorEventStatus,
-    AdminEventStatuses(vendorEventStatus),
-    "vendorEventStatusvendorEventStatus"
-  );
+
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -176,10 +220,18 @@ const ProductDetail = ({
                 color="success"
                 shape="rounded-0"
                 className="mt-2 text-white"
-                disabled={true}
+                onClick={updateEvent}
+                disabled={
+                  selectedProducts?.length === 0 ||
+                  isLoading ||
+                  ["Request To Payment", "Approved"]?.includes(
+                    vendorEventStatus
+                  )
+                }
                 style={{ float: "right" }}
               >
-                {AdminEventStatuses(vendorEventStatus)}
+                <CIcon icon={cilCheckCircle} />
+                {isLoading ? <CSpinner /> : " " + vendorEventStatus}
               </CButton>
             </div>
           </CCol>

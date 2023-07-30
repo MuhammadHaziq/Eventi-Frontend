@@ -162,6 +162,7 @@ const VendorJoinedDetail = () => {
                 joined_event_id={joined_event_id}
                 eventProducts={selectedProducts}
                 vendorEventStatus={vendorEventStatus}
+                setVendorEventStatus={setVendorEventStatus}
                 productImages={productImages}
               />
             </CCardBody>

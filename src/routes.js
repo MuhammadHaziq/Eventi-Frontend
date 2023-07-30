@@ -14,8 +14,12 @@ const UserProfile = React.lazy(() => import("./views/profile/userProfile"));
 const VendorJoinedDetail = React.lazy(() =>
   import("./views/joinEvent/customer/VendorJoinedDetail")
 );
+
 const CustomerJoinEvent = React.lazy(() =>
   import("./views/joinEvent/customer")
+);
+const AdminJoinedVendorDetail = React.lazy(() =>
+  import("./views/joinEvent/admin/VendorJoinedDetail")
 );
 const AdminJoinEvent = React.lazy(() => import("./views/joinEvent/admin"));
 
@@ -101,6 +105,13 @@ const routes = [
     permission: "event-detail",
     element: AdminJoinEvent,
   },
+  {
+    path: "/admin-joined-vednor-detail/:account_id/:event_id",
+    name: "Joined Vendor Detail",
+    permission: "event-detail",
+    element: AdminJoinedVendorDetail,
+  },
+
   {
     path: "/account/profile/:account_id",
     name: "User Profile",

@@ -49,7 +49,7 @@ const JoinedVendors = ({ joinedVendors = [] }) => {
                 size="sm"
                 onClick={() =>
                   navigate(
-                    `/joined-vednor-detail/${item?.vendor_id?._id}/${event_id}`
+                    `/admin-joined-vednor-detail/${item?.vendor_id?._id}/${event_id}`
                   )
                 }
               >
