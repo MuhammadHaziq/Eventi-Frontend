@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CButton } from "@coreui/react";
 import { useNavigate, useParams } from "react-router-dom";
+import { AdminEventStatuses } from "src/utils/constants";
 const { CSmartTable } = require("@coreui/react-pro");
 
 const JoinedVendors = ({ joinedVendors = [] }) => {
@@ -12,6 +13,7 @@ const JoinedVendors = ({ joinedVendors = [] }) => {
     { key: "last_name" },
     { key: "email" },
     { key: "phone_number" },
+    { key: "event_status", label: "Event Status" },
     { key: "show_detail", label: "Detail" },
   ];
 
@@ -56,6 +58,11 @@ const JoinedVendors = ({ joinedVendors = [] }) => {
                 Detail
               </CButton>
             </td>
+          );
+        },
+        event_status: (item) => {
+          return (
+            <td className="py-2">{AdminEventStatuses(item?.event_status)}</td>
           );
         },
       }}

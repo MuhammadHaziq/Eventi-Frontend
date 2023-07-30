@@ -36,11 +36,7 @@ const ProductDetail = ({
     return imageObject?.filter((ite) => ite?._id === productId)?.[0]
       ?.product_images?.[0];
   };
-  console.log(
-    vendorEventStatus,
-    AdminEventStatuses(vendorEventStatus),
-    "vendorEventStatusvendorEventStatus"
-  );
+
   return (
     <>
       <CCard className="mb-4 p-2">

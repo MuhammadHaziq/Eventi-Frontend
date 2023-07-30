@@ -8,6 +8,7 @@ import { deleteEvent } from "src/context/EventContext/service";
 import { useAppState } from "src/context/AppContext";
 import { useNavigate } from "react-router-dom";
 import AppEventJoinButton from "src/components/AppEventJoinButton";
+import AppEventStatus from "src/components/AppEventStatus";
 const EventTable = ({
   isLoading,
   events,
@@ -20,8 +21,7 @@ const EventTable = ({
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-  const { permissions } = useAppState();
-  const navigate = useNavigate();
+  const { currentUser, permissions } = useAppState();
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
       const tableFilter = JSON.stringify(tableFilters);
@@ -29,7 +29,7 @@ const EventTable = ({
     }
   }, [tableFilterDebounce]);
 
-  const [columns] = useState([
+  let columns = [
     {
       key: "event_name",
       label: "Event Name",
@@ -95,6 +95,22 @@ const EventTable = ({
       isShow: true,
       disabled: false,
     },
+  ];
+
+  if (currentUser?.data?.user_type !== "admin") {
+    columns = [
+      ...columns,
+      {
+        key: "Event_Status",
+        label: "Event Status",
+        filter: true,
+        isShow: true,
+        disabled: false,
+      },
+    ];
+  }
+  columns = [
+    ...columns,
     {
       key: "Created_At",
       label: "Created Date",
@@ -109,12 +125,7 @@ const EventTable = ({
       isShow: true,
       disabled: false,
     },
-  ]);
-  useEffect(() => {
-    if (columns.length > 0) {
-      setFields(columns.filter((itm) => itm.isShow));
-    }
-  }, [columns]);
+  ];
 
   return (
     <>
@@ -169,6 +180,9 @@ const EventTable = ({
               </div>
             </td>
           ),
+          Event_Status: (item) => {
+            return <AppEventStatus item={item} />;
+          },
           Event_date: (item) => <td>{dateFormat(item.event_date)}</td>,
           Created_At: (item) => <td>{dateFormat(item.createdAt)}</td>,
         }}

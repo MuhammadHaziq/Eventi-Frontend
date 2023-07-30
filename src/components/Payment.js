@@ -28,7 +28,7 @@ const componentName = ({
   const [amount, setAmount] = useState();
 
   const { currentUser } = useAppState();
-  console.log(currentUser);
+
   useEffect(() => {
     if (eventDetail) {
       const vendorDetail =

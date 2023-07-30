@@ -34,7 +34,6 @@ const CustomerPayment = ({
         eventDetail?.joined_customers?.filter(
           (item) => item?.customer_id?._id === currentUser?.data?._id
         )?.[0]?.customer_id || null;
-      console.log(eventDetail?.amount, "eventDetail?.amount");
       setAmount(eventDetail?.amount || 0);
       setEmail(customerDetail?.email || "");
       setPhone(customerDetail?.phone || "");

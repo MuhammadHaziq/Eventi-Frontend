@@ -232,7 +232,7 @@ const ProductDetail = ({
     return imageObject?.filter((ite) => ite?._id === productId)?.[0]
       ?.product_images?.[0];
   };
-  console.log(selectedProducts, vendorEventStatus, "selectedProducts");
+
   return (
     <>
       <CCard className="mb-4 p-2">
@@ -414,6 +414,10 @@ const ProductDetail = ({
                           type="button"
                           size="sm"
                           className="btn btn-warning"
+                          disabled={[
+                            "Pending For Payment",
+                            "Approved",
+                          ]?.includes(vendorEventStatus)}
                           onClick={() => removeProduct(index)}
                         >
                           <CIcon icon={cilMinus} className="text-white" />

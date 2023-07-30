@@ -1,7 +1,7 @@
 import { CButton, CSpinner } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAppState } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { updateCustomerStatus } from "src/context/EventContext/service";
 const { CSmartTable } = require("@coreui/react-pro");
 
@@ -10,6 +10,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const { currentUser } = useAppState();
+  const { app_dispatch } = useAppDispatch();
   const { event_id } = useParams();
 
   const columns = [
