@@ -52,6 +52,7 @@ const CustomerPayment = ({
     setEmail("");
     setName("");
     setPhone("");
+    setAmount(0);
   };
 
   const componentProps = {

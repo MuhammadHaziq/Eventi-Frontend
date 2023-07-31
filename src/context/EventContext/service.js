@@ -63,3 +63,10 @@ export const updateVendorStatus = (data) => {
     data
   );
 };
+
+export const approvedVendorJoinEvent = (eventId, account_id, data) => {
+  return authAxios.put(
+    `/api/event/approved-vendor-status/${eventId}/${account_id}`,
+    data
+  );
+};

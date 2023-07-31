@@ -14,19 +14,22 @@ import {
   CSpinner,
 } from "@coreui/react";
 import { useAppState } from "src/context/AppContext";
+import { UserRequestEventStatuses } from "src/utils/constants";
 
 const componentName = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
   eventDetail,
-  onPropSuccess,
+  approvedEventStatus,
+  eventStatus,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [amount, setAmount] = useState();
-
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const { currentUser } = useAppState();
 
   useEffect(() => {
@@ -37,34 +40,49 @@ const componentName = ({
         )?.[0]?.vendor_id || null;
       setAmount(+eventDetail?.amount || 0);
       setEmail(vendorDetail?.email || "");
+      setPhone(vendorDetail?.phone_number || "");
       setFirstName(vendorDetail?.first_name || "");
       setLastName(vendorDetail?.last_name || "");
+      setName(
+        (vendorDetail?.first_name || "") + " " + (vendorDetail?.last_name || "")
+      );
     }
   }, [eventDetail]);
   const resetForm = () => {
     setEmail("");
     setFirstName("");
     setLastName("");
-    setAmount("");
+    setPhone("");
+    setName("");
+    setAmount(0);
   };
 
   const componentProps = {
     email,
-    amount: amount * 100,
+    amount: +amount * 100,
     currency: "ZAR",
     metadata: {
-      firstName,
-      lastName,
+      name,
+      phone,
     },
     publicKey,
     text: "Pay Now",
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
-      // alert(
-      //   `Your purchase was successful! Transaction reference: ${reference}`
-      // );
-      // resetForm();
-      onPropSuccess(reference);
+      const vendorDetail =
+        eventDetail?.joined_vendors?.filter(
+          (item) => item?.vendor_id?._id === currentUser?.data?._id
+        )?.[0]?.vendor_id || null;
+      const data = {
+        account_id: vendorDetail?._id,
+        event_id: eventDetail?._id,
+        payment_id: reference,
+        amount: +amount * 100,
+        currency: "ZAR",
+        status: UserRequestEventStatuses(eventStatus),
+      };
+      approvedEventStatus(data);
+      resetForm();
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };

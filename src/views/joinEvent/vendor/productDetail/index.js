@@ -32,6 +32,7 @@ import ProductModal from "src/views/product/ProductModal";
 import PaymentModel from "src/components/Payment";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import {
+  approvedVendorJoinEvent,
   updateJoinedEvent,
   updateJoinedVendorEvent,
   vendorJoinedEvent,
@@ -182,7 +183,7 @@ const ProductDetail = ({
       });
   };
 
-  const refTranIDFuction = (refTranID) => {
+  const refTranIDFuction = () => {
     setVisiblePaymentModel(true);
   };
 
@@ -231,6 +232,39 @@ const ProductDetail = ({
   const getFirstImage = (productId, imageObject) => {
     return imageObject?.filter((ite) => ite?._id === productId)?.[0]
       ?.product_images?.[0];
+  };
+
+  const approvedEventStatus = (data) => {
+    setIsLoading(true);
+    approvedVendorJoinEvent(event_id, account_id, data)
+      .then((response) => {
+        if (response.data.data) {
+          setVendorEventStatus(UserRequestEventStatuses(vendorEventStatus));
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({ message: err.message, color: "danger-alert" }),
+        });
+      });
   };
 
   return (
@@ -490,8 +524,8 @@ const ProductDetail = ({
                   color="success"
                   shape="rounded-0"
                   className="mt-2 text-white"
-                  // onClick={refTranIDFuction}
-                  onClick={updateEvent}
+                  onClick={refTranIDFuction}
+                  // onClick={updateEvent}
                   disabled={
                     selectedProducts?.length === 0 ||
                     isLoading ||
@@ -521,7 +555,8 @@ const ProductDetail = ({
         setVisiblePaymentModel={() => setVisiblePaymentModel(false)}
         visiblePaymentModel={visiblePaymentModel}
         eventDetail={eventDetail}
-        onPropSuccess={updateEvent}
+        approvedEventStatus={approvedEventStatus}
+        eventStatus={vendorEventStatus}
         // addNewProduct={addNewProduct}
       />
     </>
