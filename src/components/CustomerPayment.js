@@ -11,14 +11,16 @@ import {
   CModalFooter,
   CModalTitle,
   CButton,
-  CSpinner,
 } from "@coreui/react";
 import { useAppState } from "src/context/AppContext";
+import { UserRequestEventStatuses } from "src/utils/constants";
 
 const CustomerPayment = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
   eventDetail,
+  approvedEventStatus,
+  eventStatus,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const [email, setEmail] = useState("haseeb@kodxsystem.com");
@@ -36,7 +38,7 @@ const CustomerPayment = ({
         )?.[0]?.customer_id || null;
       setAmount(eventDetail?.amount || 0);
       setEmail(customerDetail?.email || "");
-      setPhone(customerDetail?.phone || "");
+      setPhone(customerDetail?.phone_number || "");
       setFirstName(customerDetail?.first_name || "");
       setLastName(customerDetail?.last_name || "");
       setName(
@@ -64,9 +66,19 @@ const CustomerPayment = ({
     text: "Pay Now",
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
-      alert(
-        `Your purchase was successful! Transaction reference: ${reference}`
-      );
+      const customerDetail =
+        eventDetail?.joined_customers?.filter(
+          (item) => item?.customer_id?._id === currentUser?.data?._id
+        )?.[0]?.customer_id || null;
+      const data = {
+        account_id: customerDetail?._id,
+        event_id: eventDetail?._id,
+        payment_id: reference,
+        amount: amount * 100,
+        currency: "ZAR",
+        status: UserRequestEventStatuses(eventStatus),
+      };
+      approvedEventStatus(data);
       resetForm();
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),

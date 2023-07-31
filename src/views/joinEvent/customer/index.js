@@ -11,7 +11,11 @@ import {
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppToast } from "src/components/AppToast";
-import { customerJoinEvent, getEvent } from "src/context/EventContext/service";
+import {
+  approvedCustomerJoinEvent,
+  customerJoinEvent,
+  getEvent,
+} from "src/context/EventContext/service";
 import AppEventDetail from "src/components/AppEventDetail";
 import "./style.scss";
 import JoinedCustomers from "./JoinedCustomer";
@@ -153,6 +157,39 @@ const CustomerJoinEvent = () => {
       });
   };
 
+  const approvedEventStatus = (data) => {
+    setIsLoading(true);
+    approvedCustomerJoinEvent(event_id, account_id, data)
+      .then((response) => {
+        if (response.data.data) {
+          setEventStatus(UserRequestEventStatuses(eventStatus));
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({ message: err.message, color: "danger-alert" }),
+        });
+      });
+  };
+
   return (
     <>
       <CRow>
@@ -225,6 +262,8 @@ const CustomerJoinEvent = () => {
           visiblePaymentModel={showPaymentModel}
           setVisiblePaymentModel={setShowPaymentModel}
           eventDetail={eventDetail}
+          approvedEventStatus={approvedEventStatus}
+          eventStatus={eventStatus}
         />
       )}
     </>
