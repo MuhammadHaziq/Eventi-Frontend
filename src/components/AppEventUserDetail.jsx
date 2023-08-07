@@ -37,7 +37,9 @@ const AppEventUserDetail = () => {
         </div>
         <div>
           <h6 className="vendarH6Info">Business Name:</h6>
-          <span className="vendarSpanInfo">{currentUser?.business_name}</span>
+          <span className="vendarSpanInfo">
+            {currentUser?.user_detail?.business_name}
+          </span>
         </div>
         <div>
           <h6 className="vendarH6Info">Email:</h6>
