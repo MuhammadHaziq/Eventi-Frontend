@@ -3,12 +3,11 @@ import CIcon from "@coreui/icons-react";
 import { CButton } from "@coreui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppState } from "src/context/AppContext";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 
 const AppEventJoinButton = ({ item, icon = false }) => {
   const { currentUser } = useAppState();
   const navigate = useNavigate();
-
   return (
     <div className="d-grid gap-2">
       <CButton
@@ -102,9 +101,11 @@ const AppEventJoinButton = ({ item, icon = false }) => {
                 ]
             )
             ?.includes(currentUser?.data?._id) ? (
-            "Event Joined"
+            // "Event Joined"
+            "View Detail"
           ) : (
-            "Request to join Event"
+            "View Detail"
+            // "Request to join Event"
           )
         ) : (
           "View Detail"

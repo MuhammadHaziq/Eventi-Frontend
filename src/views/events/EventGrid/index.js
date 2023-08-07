@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  CCard,
-  CCardBody,
-  CButton,
-  CCardGroup,
-  CContainer,
-  CRow,
-  CCol,
-} from "@coreui/react";
+import { CCard, CCardBody, CButton, CRow, CCol } from "@coreui/react";
 import { CSmartPagination } from "@coreui/react-pro";
 import AppSwiperthumbs from "src/components/AppSwiperthumbs";
 import "./style.scss";
