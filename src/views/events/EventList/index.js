@@ -24,7 +24,7 @@ const EventList = () => {
   const [visible, setVisible] = useState(false);
   const [selectProduct, setSelectedProduct] = useState("");
   const [gridView, setGridView] = useState(false);
-  const [filters, setFilters] = useState();
+  const [filters, setFilters] = useState({ reload: true });
   const { permissions } = useAppState();
   const [state, setState] = useState({
     notification: "",
@@ -141,6 +141,8 @@ const EventList = () => {
                   updateFilter={useGetData}
                   clickOnEdit={clickOnEdit}
                   clickHideModal={clickHideModal}
+                  filters={filters}
+                  setFilters={setFilters}
                 />
               ) : (
                 <EventTable
@@ -150,6 +152,7 @@ const EventList = () => {
                   updateFilter={useGetData}
                   clickOnEdit={clickOnEdit}
                   clickHideModal={clickHideModal}
+                  filters={filters}
                 />
               )}
             </CCardBody>

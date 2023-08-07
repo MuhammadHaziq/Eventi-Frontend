@@ -24,13 +24,15 @@ const EventTable = ({
   updateFilter,
   clickOnEdit,
   clickHideModal,
+  filters,
+  setFilters,
 }) => {
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
   const [showPaymentModel, setShowPaymentModel] = useState(false);
   const [eventDetail, setEventDetail] = useState(null);
-  const [eventStatus, setEventStatus] = useState("");
+  const [eventStatus, setEventStatus] = useState("Pending For Payment");
   const { app_dispatch } = useAppDispatch();
   console.log(events);
   console.log(tableMeta);
@@ -149,7 +151,6 @@ const EventTable = ({
   const payNowClick = (row) => {
     console.log("Pay Now clicked for row:", row.amount);
     setEventDetail(row);
-
     setShowPaymentModel(true);
   };
 
@@ -164,6 +165,7 @@ const EventTable = ({
               )?.[0]?.event_status || "Pending For Payment"
             )
           );
+          updateFilter({ ...filters, reload: !filters?.reload });
           app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({
