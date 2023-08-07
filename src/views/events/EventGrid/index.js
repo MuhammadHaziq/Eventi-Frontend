@@ -18,6 +18,7 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
   const { currentUser } = useAppState();
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const navigate = useNavigate();
+  console.log("event data",data);
   return (
     <>
       <CRow className="event-grid-section">
@@ -70,7 +71,7 @@ const GridView = ({ data, tableMeta, updateFilter }) => {
           </CCol>
         ))}
       </CRow>
-
+ 
       {+tableMeta?.pageCount > 1 && (
         <div className={"mt-2"}>
           <CSmartPagination

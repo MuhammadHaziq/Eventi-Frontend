@@ -30,6 +30,14 @@ const CustomerPayment = ({
   const [phone, setPhone] = useState("03224512868");
   const [amount, setAmount] = useState(0);
   const { currentUser } = useAppState();
+
+
+  console.log(visiblePaymentModel);
+  console.log(setVisiblePaymentModel);
+  console.log(eventDetail);
+  console.log(approvedEventStatus);
+  console.log(eventStatus);
+  
   useEffect(() => {
     if (eventDetail) {
       const customerDetail =

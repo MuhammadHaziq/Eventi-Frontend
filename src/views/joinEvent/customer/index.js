@@ -204,7 +204,7 @@ const CustomerJoinEvent = () => {
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
               <CContainer>
                 <CRow>
-                  <CCol>
+                  <CCol>               
                     <CButton
                       className="join-event-customer"
                       color={
@@ -235,7 +235,7 @@ const CustomerJoinEvent = () => {
               </CContainer>
             </CCardBody>
           </CCard>
-          <CCard className="mb-2">
+    {/*       <CCard className="mb-2">
             <CCardHeader>
               <strong>Joined Customers</strong>
             </CCardHeader>
@@ -244,7 +244,7 @@ const CustomerJoinEvent = () => {
                 joinedCustomers={eventDetail?.joined_customers || []}
               />
             </CCardBody>
-          </CCard>
+          </CCard> */}
           <CCard className="mb-4">
             <CCardHeader>
               <strong>Joined Vendors</strong>

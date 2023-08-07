@@ -4,7 +4,7 @@ import { CFormSelect, CFormFeedback } from "@coreui/react";
 export const GenderSelection = ({
   gender,
   handleOnChange,
-  required = true,
+  required = false,
   disabled = false,
 }) => {
   return (
@@ -23,7 +23,7 @@ export const GenderSelection = ({
         required={required}
         disabled={disabled}
       >
-        <option>Gender</option>
+        <option></option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Other">Other</option>

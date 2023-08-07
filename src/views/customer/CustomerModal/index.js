@@ -255,6 +255,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
                 name="business_name"
                 value={state.business_name}
                 onChange={handleOnChange}
+                required
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
@@ -300,6 +301,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               <GenderSelection
                 gender={state.gender}
                 handleOnChange={handleOnChange}
+                required={true}
               />
             </CCol>
             <CCol xs={12}>

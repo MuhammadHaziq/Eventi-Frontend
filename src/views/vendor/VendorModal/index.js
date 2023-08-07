@@ -246,6 +246,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                 name="business_name"
                 value={state.business_name}
                 onChange={handleOnChange}
+                required
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
@@ -291,6 +292,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
               <GenderSelection
                 gender={state.gender}
                 handleOnChange={handleOnChange}
+                required={true}
               />
             </CCol>
             <CCol md={12} className="text-end">

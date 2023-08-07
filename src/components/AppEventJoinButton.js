@@ -20,13 +20,13 @@ const AppEventJoinButton = ({ item, icon = false }) => {
                   ?.includes(currentUser?.data?._id)
                 ? `/vendor-update-event/${currentUser?.data?._id}/${item?._id}`
                 : `/vendor-join-event/${item?._id}`
-              : currentUser?.data?.user_type === "admin"
+              : currentUser?.data?.user_type === "admin" || currentUser?.data?.user_type === "customer"
               ? `/event-detail/${currentUser?.data?._id}/${item?._id}`
               : `/join-event/${currentUser?.data?._id}/${item?._id}`
           )
         }
         title={
-          currentUser?.data?.user_type !== "admin"
+          currentUser?.data?.user_type === "vendor"
             ? item[
                 currentUser?.data?.user_type === "vendor"
                   ? "joined_vendors"

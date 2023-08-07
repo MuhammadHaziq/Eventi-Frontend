@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
+import { CSmartTable, CSmartPagination, CButton } from "@coreui/react-pro";
 import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import useDebounce from "src/hooks/useDebounce";
 import { dateFormat } from "src/utils/dateFormat";
 import { deleteEvent } from "src/context/EventContext/service";
 import { useAppState } from "src/context/AppContext";
-import { useNavigate } from "react-router-dom";
 import AppEventJoinButton from "src/components/AppEventJoinButton";
 import AppEventStatus from "src/components/AppEventStatus";
+import CustomerPayment from "src/components/CustomerPayment";
+import { useNavigate } from "react-router-dom";
+import JoinedCustomers from "./../../joinEvent/customer/JoinedCustomer/index";
+
 const EventTable = ({
   isLoading,
   events,
@@ -20,8 +23,16 @@ const EventTable = ({
   const [fields, setFields] = useState([]);
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
   const [tableFilters, setTableFilter] = useState(null);
+  const [showPaymentModel, setShowPaymentModel] = useState(false);
+  const [eventDetail, setEventDetail] = useState(null);
+  console.log(events);
+  console.log(tableMeta);
+  console.log(clickOnEdit);
+  const navigate = useNavigate();
+
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const { currentUser, permissions } = useAppState();
+  console.log("hi------------", currentUser?.data.user_detail);
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
       const tableFilter = JSON.stringify(tableFilters);
@@ -96,8 +107,10 @@ const EventTable = ({
       disabled: false,
     },
   ];
-
-  if (currentUser?.data?.user_type !== "admin") {
+  if (
+    currentUser?.data?.user_type !== "admin" &&
+    currentUser?.data?.user_type !== "customer"
+  ) {
     columns = [
       ...columns,
       {
@@ -126,6 +139,18 @@ const EventTable = ({
       disabled: false,
     },
   ];
+  const payNowClick = (row) => {
+    console.log("Pay Now clicked for row:", row.amount);
+    const joined_customers = [currentUser?.data.user_detail];
+
+    const eventDetailData = {
+      amount: row.amount,
+      joined_customers: joined_customers,
+    };
+    console.log(eventDetailData);
+    setEventDetail(eventDetailData);
+    setShowPaymentModel(true);
+  };
 
   return (
     <>
@@ -158,26 +183,35 @@ const EventTable = ({
         scopedColumns={{
           Action: (item) => (
             <td>
-              <div className="d-flex gap-2">
-                {permissions?.find(
-                  (item) => item.permission === "event-edit"
-                ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
-
-                {permissions?.find(
-                  (item) => item.permission === "event-join"
-                ) && <AppEventJoinButton item={item} icon={true} />}
-                {permissions?.find(
-                  (item) => item.permission === "event-delete"
-                ) && (
-                  <AppDeleteButton
-                    title="Delete Event"
-                    message="Do you really want to delete this event?"
-                    delete_id={item._id}
-                    apiUrl={deleteEvent}
-                    clickOnDelete={clickHideModal}
-                  />
-                )}
-              </div>
+              {currentUser?.data?.user_type == "customer" ? (
+                <div>
+                  <CButton onClick={() => payNowClick(item)}>Pay Now</CButton>     
+                  <AppEventJoinButton item={item} icon={true}/>
+                </div>
+              ): (
+                  <div className="d-flex gap-2">
+                    <AppEventJoinButton item={item} icon={true} />
+                  {permissions?.find(
+                    (item) => item.permission === "event-edit"
+                  ) && (
+                    <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
+                  )}
+                  {permissions?.find(
+                    (item) => item.permission === "event-join"
+                  ) && <AppEventJoinButton item={item} icon={true} />}
+                  {permissions?.find(
+                    (item) => item.permission === "event-delete"
+                  ) && (
+                    <AppDeleteButton
+                      title="Delete Event"
+                      message="Do you really want to delete this event?"
+                      delete_id={item._id}
+                      apiUrl={deleteEvent}
+                      clickOnDelete={clickHideModal}
+                    />
+                  )}
+                </div>
+              )}
             </td>
           ),
           Event_Status: (item) => {
@@ -199,6 +233,17 @@ const EventTable = ({
             }}
           />
         </div>
+      )}
+      {showPaymentModel === true ? (
+        <CustomerPayment
+          visiblePaymentModel={showPaymentModel}
+          setVisiblePaymentModel={setShowPaymentModel}
+          eventDetail={eventDetail}
+          approvedEventStatus={""}
+          eventStatus={"Pending For Payment"}
+        />
+      ) : (
+        false
       )}
     </>
   );
