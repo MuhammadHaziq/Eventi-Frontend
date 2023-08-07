@@ -11,6 +11,7 @@ import AppEventStatus from "src/components/AppEventStatus";
 import CustomerPayment from "src/components/CustomerPayment";
 import { useNavigate } from "react-router-dom";
 import JoinedCustomers from "./../../joinEvent/customer/JoinedCustomer/index";
+import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
 
 const EventTable = ({
   isLoading,
@@ -25,6 +26,8 @@ const EventTable = ({
   const [tableFilters, setTableFilter] = useState(null);
   const [showPaymentModel, setShowPaymentModel] = useState(false);
   const [eventDetail, setEventDetail] = useState(null);
+  const [eventStatus, setEventStatus] = useState("");
+
   console.log(events);
   console.log(tableMeta);
   console.log(clickOnEdit);
@@ -141,15 +144,45 @@ const EventTable = ({
   ];
   const payNowClick = (row) => {
     console.log("Pay Now clicked for row:", row.amount);
-    const joined_customers = [currentUser?.data.user_detail];
+    setEventDetail(row);
 
-    const eventDetailData = {
-      amount: row.amount,
-      joined_customers: joined_customers,
-    };
-    console.log(eventDetailData);
-    setEventDetail(eventDetailData);
     setShowPaymentModel(true);
+  };
+
+  const approvedEventStatus = (data) => {
+    approvedCustomerJoinEvent(data?.event_id, data?.account_id, data)
+      .then((response) => {
+        if (response.data.data) {
+          setEventStatus(
+            UserRequestEventStatuses(
+              eventDetail?.joined_customers?.filter(
+                (item) => item?.customer_id === currentUser?.data?._id
+              )?.[0]?.event_status || "Pending For Payment"
+            )
+          );
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "success-alert",
+            }),
+          });
+        } else {
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({
+              message: response.data.message,
+              color: "danger-alert",
+            }),
+          });
+        }
+      })
+      .catch((err) => {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({ message: err.message, color: "danger-alert" }),
+        });
+      });
   };
 
   return (
@@ -183,35 +216,51 @@ const EventTable = ({
         scopedColumns={{
           Action: (item) => (
             <td>
-              {currentUser?.data?.user_type == "customer" ? (
-                <div>
-                  <CButton onClick={() => payNowClick(item)}>Pay Now</CButton>     
-                  <AppEventJoinButton item={item} icon={true}/>
-                </div>
-              ): (
-                  <div className="d-flex gap-2">
-                    <AppEventJoinButton item={item} icon={true} />
-                  {permissions?.find(
-                    (item) => item.permission === "event-edit"
-                  ) && (
-                    <AppEditButton onClick={clickOnEdit} edit_id={item._id} />
-                  )}
-                  {permissions?.find(
-                    (item) => item.permission === "event-join"
-                  ) && <AppEventJoinButton item={item} icon={true} />}
-                  {permissions?.find(
-                    (item) => item.permission === "event-delete"
-                  ) && (
-                    <AppDeleteButton
-                      title="Delete Event"
-                      message="Do you really want to delete this event?"
-                      delete_id={item._id}
-                      apiUrl={deleteEvent}
-                      clickOnDelete={clickHideModal}
-                    />
-                  )}
-                </div>
-              )}
+              <div className="d-flex gap-2" eventDetailData>
+                {currentUser?.data?.user_type === "customer" && (
+                  <CButton
+                    onClick={() => payNowClick(item)}
+                    color={
+                      item?.joined_customers
+                        ?.map((ite) => ite?.customer_id)
+                        .includes(currentUser?.data?._id)
+                        ? "warning"
+                        : "primary"
+                    }
+                    disabled={
+                      isLoading ||
+                      ["Request To Join", "Approved"].includes(
+                        item?.joined_customers?.filter(
+                          (item) => item?.customer_id === currentUser?.data?._id
+                        )?.[0]?.event_status || "Pending"
+                      )
+                    }
+                  >
+                    {EventStatuses(
+                      item?.joined_customers?.filter(
+                        (item) => item?.customer_id === currentUser?.data?._id
+                      )?.[0]?.event_status || "Pending For Payment"
+                    ) || "Pay Now"}
+                  </CButton>
+                )}
+                {permissions?.find(
+                  (item) => item.permission === "event-edit"
+                ) && <AppEditButton onClick={clickOnEdit} edit_id={item._id} />}
+                {permissions?.find(
+                  (item) => item.permission === "event-join"
+                ) && <AppEventJoinButton item={item} icon={true} />}
+                {permissions?.find(
+                  (item) => item.permission === "event-delete"
+                ) && (
+                  <AppDeleteButton
+                    title="Delete Event"
+                    message="Do you really want to delete this event?"
+                    delete_id={item._id}
+                    apiUrl={deleteEvent}
+                    clickOnDelete={clickHideModal}
+                  />
+                )}
+              </div>
             </td>
           ),
           Event_Status: (item) => {
@@ -239,7 +288,7 @@ const EventTable = ({
           visiblePaymentModel={showPaymentModel}
           setVisiblePaymentModel={setShowPaymentModel}
           eventDetail={eventDetail}
-          approvedEventStatus={""}
+          approvedEventStatus={approvedEventStatus}
           eventStatus={"Pending For Payment"}
         />
       ) : (

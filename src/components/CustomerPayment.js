@@ -18,9 +18,9 @@ import { UserRequestEventStatuses } from "src/utils/constants";
 const CustomerPayment = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
-  eventDetail,
   approvedEventStatus,
   eventStatus,
+  eventDetail,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const [email, setEmail] = useState("haseeb@kodxsystem.com");
@@ -31,31 +31,26 @@ const CustomerPayment = ({
   const [amount, setAmount] = useState(0);
   const { currentUser } = useAppState();
 
-
   console.log(visiblePaymentModel);
   console.log(setVisiblePaymentModel);
   console.log(eventDetail);
   console.log(approvedEventStatus);
   console.log(eventStatus);
-  
+
   useEffect(() => {
-    if (eventDetail) {
-      const customerDetail =
-        eventDetail?.joined_customers?.filter(
-          (item) => item?.customer_id?._id === currentUser?.data?._id
-        )?.[0]?.customer_id || null;
+    if (currentUser) {
       setAmount(eventDetail?.amount || 0);
-      setEmail(customerDetail?.email || "");
-      setPhone(customerDetail?.phone_number || "");
-      setFirstName(customerDetail?.first_name || "");
-      setLastName(customerDetail?.last_name || "");
+      setEmail(currentUser?.data?.email || "");
+      setPhone(currentUser?.data?.phone_number || "");
+      setFirstName(currentUser?.data?.first_name || "");
+      setLastName(currentUser?.data?.last_name || "");
       setName(
-        (customerDetail?.first_name || "") +
+        (currentUser?.data?.first_name || "") +
           " " +
-          (customerDetail?.last_name || "")
+          (currentUser?.data?.last_name || "")
       );
     }
-  }, [eventDetail]);
+  }, [currentUser]);
   const resetForm = () => {
     setEmail("");
     setName("");
@@ -75,12 +70,8 @@ const CustomerPayment = ({
     text: "Pay Now",
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
-      const customerDetail =
-        eventDetail?.joined_customers?.filter(
-          (item) => item?.customer_id?._id === currentUser?.data?._id
-        )?.[0]?.customer_id || null;
       const data = {
-        account_id: customerDetail?._id,
+        account_id: currentUser?.data?._id,
         event_id: eventDetail?._id,
         payment_id: reference,
         amount: amount * 100,
