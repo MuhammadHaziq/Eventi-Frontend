@@ -4,14 +4,18 @@ import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import useDebounce from "src/hooks/useDebounce";
 import { dateFormat } from "src/utils/dateFormat";
-import { deleteEvent } from "src/context/EventContext/service";
-import { useAppState } from "src/context/AppContext";
+import {
+  approvedCustomerJoinEvent,
+  deleteEvent,
+} from "src/context/EventContext/service";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 import AppEventJoinButton from "src/components/AppEventJoinButton";
 import AppEventStatus from "src/components/AppEventStatus";
 import CustomerPayment from "src/components/CustomerPayment";
 import { useNavigate } from "react-router-dom";
 import JoinedCustomers from "./../../joinEvent/customer/JoinedCustomer/index";
 import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
+import { AppToast } from "src/components/AppToast";
 
 const EventTable = ({
   isLoading,
@@ -27,7 +31,7 @@ const EventTable = ({
   const [showPaymentModel, setShowPaymentModel] = useState(false);
   const [eventDetail, setEventDetail] = useState(null);
   const [eventStatus, setEventStatus] = useState("");
-
+  const { app_dispatch } = useAppDispatch();
   console.log(events);
   console.log(tableMeta);
   console.log(clickOnEdit);
