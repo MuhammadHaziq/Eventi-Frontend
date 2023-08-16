@@ -12,13 +12,22 @@ const VendorEventJoin = () => {
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
   const { event_id, account_id } = useParams();
-
   const [vendorEventStatus, setVendorEventStatus] = useState("");
   const [joined_event_id, setJoinedEventId] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [eventDetail, setEventDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [productImages, setProductImages] = useState([]);
+  const date = new Date();
+  const formattedDate = date
+    .toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");
 
   const getJoinedEventDetail = useCallback(() => {
     try {
@@ -145,26 +154,33 @@ const VendorEventJoin = () => {
     }
   }, [event_id]);
 
+  console.log("End Date", eventDetail?.event_end_date);
+  console.log("Current Date", formattedDate);
   return (
     <>
       <CRow>
         <CCol>
           <CCard className="mb-4">
             <CCardHeader className="d-flex justify-content-between">
-              <strong>Vendor Join Event</strong>
+              <strong>Vendor Join Evente</strong>
             </CCardHeader>
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
-              <ProductDetail
-                joined_event_id={joined_event_id}
-                eventProducts={selectedProducts}
-                showLoading={isLoading}
-                vendorEventStatus={vendorEventStatus}
-                setVendorEventStatus={setVendorEventStatus}
-                eventDetail={eventDetail}
-                productImages={productImages}
-                setProductImages={setProductImages}
-              />
+
+              {eventDetail?.event_end_date >= formattedDate ? (
+                <ProductDetail
+                  joined_event_id={joined_event_id}
+                  eventProducts={selectedProducts}
+                  showLoading={isLoading}
+                  vendorEventStatus={vendorEventStatus}
+                  setVendorEventStatus={setVendorEventStatus}
+                  eventDetail={eventDetail}
+                  productImages={productImages}
+                  setProductImages={setProductImages}
+                />
+              ) : (
+                ""
+              )}
             </CCardBody>
           </CCard>
         </CCol>

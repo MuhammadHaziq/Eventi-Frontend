@@ -31,7 +31,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
     business_name: "",
     password: "",
     address: "",
-    date_of_birth: "",
+    // date_of_birth: "",
     gender: "",
     phone_number: "",
     user_type: "vendor",
@@ -49,7 +49,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
               email: response.data.data.email,
               business_name: response.data.data.business_name,
               address: response.data.data.address,
-              date_of_birth: response.data.data.date_of_birth,
+              // date_of_birth: response.data.data.date_of_birth,
               gender: response.data.data.gender,
               phone_number: response.data.data.phone_number,
             });
@@ -272,7 +272,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
               />
               <CFormFeedback invalid>Please enter address.</CFormFeedback>
             </CCol>
-            <CCol md={6}>
+    {/*         <CCol md={6}>
               <CFormInput
                 type="date"
                 id="validationDateOfBirth"
@@ -286,7 +286,7 @@ const VendorModal = ({ account_id, visible, setVisible }) => {
                 required
               />
               <CFormFeedback invalid>Please enter date of birth.</CFormFeedback>
-            </CCol>
+            </CCol> */}
             <CCol md={6}>
               <CFormLabel>Gender</CFormLabel>
               <GenderSelection

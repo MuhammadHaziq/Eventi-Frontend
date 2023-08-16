@@ -29,7 +29,8 @@ export const EventRegistration = () => {
   const [files, setFiles] = useState([]);
   const [state, setState] = useState({
     event_name: "",
-    event_date: null,
+    event_start_date: null,
+    event_end_date: null,
     amount: null,
     event_location: "",
     type_of_event: "",
@@ -65,7 +66,8 @@ export const EventRegistration = () => {
       try {
         const formData = new FormData();
         formData.append("event_name", state.event_name);
-        formData.append("event_date", state.event_date);
+        formData.append("event_start_date", state.event_start_date);
+        formData.append("event_end_date", state.event_end_date);
         formData.append("amount", state.amount);
         formData.append("event_location", state.event_location);
         formData.append("type_of_event", state.type_of_event);
@@ -85,7 +87,6 @@ export const EventRegistration = () => {
             }
           }
         }
-
         addEvent(formData)
           .then((response) => {
             if (response.data.statusCode === 200) {
@@ -175,8 +176,8 @@ export const EventRegistration = () => {
   return (
     <>
       <CRow>
-        <CCol xs={1}></CCol>
-        <CCol xs={10}>
+        <CCol xs={2}></CCol>
+        <CCol xs={8}>
           <CCard className="mb-4">
             <CCardHeader>
               <strong>Event Registration </strong>
@@ -203,17 +204,35 @@ export const EventRegistration = () => {
                   />
                   <CFormFeedback invalid>Looks good!</CFormFeedback>
                 </CCol>
-                <CCol md={6}>
+                <CCol md={3}>
                   <CFormInput
                     type="date"
-                    id="validationEventDate"
+                    id="validationEventStartDate"
                     floatingclassname="mb-3"
-                    label="Event Date"
-                    floatinglabel="Event Date"
-                    placeholder="Event Date"
-                    name="event_date"
+                    label="Event Start Date"
+                    floatinglabel="Event Start Date"
+                    placeholder="Event Start Date"
+                    name="event_start_date"
                     min={new Date()}
-                    defaultValue={state.event_date}
+                    defaultValue={state.event_start_date}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please enter event birth.
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={3}>
+                  <CFormInput
+                    type="date"
+                    id="validationEventEndtDate"
+                    floatingclassname="mb-3"
+                    label="Event End Date"
+                    floatinglabel="Event End Date"
+                    placeholder="Event End Date"
+                    name="event_end_date"
+                    min={new Date()}
+                    defaultValue={state.event_end_date}
                     onChange={handleOnChange}
                     required
                   />
@@ -322,7 +341,7 @@ export const EventRegistration = () => {
                       { value: "No", label: "No" },
                     ]}
                     isRequired={true}
-                    handleChange={handleOnChange}
+                    handleChange={handleOnChange} 
                     name="security"
                     placeholder="Security needs"
                     value={state.security}
@@ -341,7 +360,7 @@ export const EventRegistration = () => {
                     floatinglabel="Special requests or accommodations."
                     placeholder="Special requests or accommodations."
                     name="special_request"
-                    label="Note"
+                    label="Description"
                     defaultValue={state.special_request}
                     onChange={handleOnChange}
                     required
@@ -399,7 +418,7 @@ export const EventRegistration = () => {
             </CCardBody>
           </CCard>
         </CCol>
-        <CCol xs={1}></CCol>
+        <CCol xs={2}></CCol>
       </CRow>
     </>
   );

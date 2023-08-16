@@ -69,13 +69,13 @@ const VendorTable = ({
       isShow: true,
       disabled: false,
     },
-    {
-      key: "date_of_birth",
-      label: "Date Of Birth",
-      filter: true,
-      isShow: true,
-      disabled: false,
-    },
+    // {
+    //   key: "date_of_birth",
+    //   label: "Date Of Birth",
+    //   filter: true,
+    //   isShow: true,
+    //   disabled: false,
+    // },
     {
       key: "phone_number",
       label: "Mob Number",

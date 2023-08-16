@@ -33,6 +33,17 @@ const CustomerJoinEvent = () => {
   const [eventStatus, setEventStatus] = useState("");
   const [showPaymentModel, setShowPaymentModel] = useState(false);
 
+  const date = new Date();
+  const formattedDate = date
+    .toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");
+console.log(eventDetail);
   const getEventDetail = useCallback(() => {
     try {
       setIsLoading(true);
@@ -195,47 +206,52 @@ const CustomerJoinEvent = () => {
       <CRow>
         <CCol>
           <CCard className="mb-2">
-            <CCardHeader className="d-flex justify-content-between">
+            {/*  <CCardHeader className="d-flex justify-content-between">
               <strong>
                 <h5>Join Event Details</h5>
               </strong>
-            </CCardHeader>
+            </CCardHeader> */}
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
               <CContainer>
                 <CRow>
                   <CCol>
-                    <CButton
-                      className="join-event-customer"
-                      color={
-                        eventDetail?.joined_customers
-                          ?.map(
-                            (item) => item?.customer_id?.user_detail?.account_id
+                    {eventDetail?.event_end_date <= formattedDate ? (
+                      ""
+                    ) : (
+                      <CButton
+                        className="join-event-customer"
+                        color={
+                          eventDetail?.joined_customers
+                            ?.map(
+                              (item) =>
+                                item?.customer_id?.user_detail?.account_id
+                            )
+                            .includes(currentUser?.data?._id)
+                            ? "warning"
+                            : "primary"
+                        }
+                        onClick={() => {
+                          eventStatus === "Pending For Payment"
+                            ? setShowPaymentModel(!showPaymentModel)
+                            : joinEvent(UserRequestEventStatuses(eventStatus));
+                        }}
+                        disabled={
+                          isLoading ||
+                          ["Request To Join", "Approved"].includes(
+                            eventStatus || "Pending"
                           )
-                          .includes(currentUser?.data?._id)
-                          ? "warning"
-                          : "primary"
-                      }
-                      onClick={() => {
-                        eventStatus === "Pending For Payment"
-                          ? setShowPaymentModel(!showPaymentModel)
-                          : joinEvent(UserRequestEventStatuses(eventStatus));
-                      }}
-                      disabled={
-                        isLoading ||
-                        ["Request To Join", "Approved"].includes(
-                          eventStatus || "Pending"
-                        )
-                      }
-                    >
-                      {EventStatuses(eventStatus) || "Join Event"}
-                    </CButton>
+                        }
+                      >
+                        {EventStatuses(eventStatus) || "Join Event"}
+                      </CButton>
+                    )}
                   </CCol>
                 </CRow>
               </CContainer>
             </CCardBody>
           </CCard>
-          <CCard className="mb-2">
+          {/*    <CCard className="mb-2">
             <CCardHeader>
               <strong>Joined Customers</strong>
             </CCardHeader>
@@ -254,7 +270,7 @@ const CustomerJoinEvent = () => {
                 joinedVendors={eventDetail?.joined_vendors || []}
               />
             </CCardBody>
-          </CCard>
+          </CCard> */}
         </CCol>
       </CRow>
       {showPaymentModel && (

@@ -5,18 +5,27 @@ import {
   CCardBody,
   CRow,
   CCol,
+  CBadge,
   CCarousel,
   CCarouselItem,
   CImage,
   CContainer,
   CFormInput,
 } from "@coreui/react";
+import { dateFormatted } from "../utils/dateFormat";
 
 const AppEventDetail = ({ event_detail }) => {
   return (
     <CCard className="mb-4 p-2">
       <CCardHeader>
-        <strong>Event Detail</strong>
+        <strong>Event Detail </strong>
+        {event_detail?.event_end_date >= dateFormatted() ? (
+         ""
+        ) : (
+          <span className="mr-5">
+            <CBadge color="danger">Event Expiry</CBadge>
+          </span>
+        )}
       </CCardHeader>
       <CCardBody>
         <CContainer className="overflow-hidden mt-4">
@@ -46,10 +55,10 @@ const AppEventDetail = ({ event_detail }) => {
                 <CCol md={4}>
                   <CFormInput
                     type="text"
-                    id="event_date"
-                    name="event_date"
-                    value={event_detail?.event_date}
-                    label="Event Date"
+                    id="type_of_event"
+                    name="type_of_event"
+                    value={event_detail?.type_of_event}
+                    label="Event Type"
                     readOnly
                   />
                 </CCol>
@@ -58,13 +67,24 @@ const AppEventDetail = ({ event_detail }) => {
                 <CCol md={4}>
                   <CFormInput
                     type="text"
-                    id="type_of_event"
-                    name="type_of_event"
-                    value={event_detail?.type_of_event}
-                    label="Event Type"
+                    id="event_start_date"
+                    name="event_start_date"
+                    value={event_detail?.event_start_date}
+                    label="Event Start Date"
                     readOnly
                   />
                 </CCol>
+                <CCol md={4}>
+                  <CFormInput
+                    type="text"
+                    id="event_end_date"
+                    name="event_end_date"
+                    value={event_detail?.event_end_date}
+                    label="Event End Date"
+                    readOnly
+                  />
+                </CCol>
+
                 <CCol md={4}>
                   <CFormInput
                     type="text"
@@ -72,6 +92,18 @@ const AppEventDetail = ({ event_detail }) => {
                     name="joined_vendors"
                     value={event_detail?.joined_vendors?.length || 0}
                     label="Joined Vendors"
+                    readOnly
+                  />
+                </CCol>
+              </CRow>
+              <CRow className="mt-2 mb-2">
+                <CCol md={8}>
+                  <CFormInput
+                    type="text"
+                    id="special_request"
+                    name="special_request"
+                    value={event_detail?.special_request}
+                    label="Description"
                     readOnly
                   />
                 </CCol>
@@ -87,6 +119,7 @@ const AppEventDetail = ({ event_detail }) => {
                 </CCol>
               </CRow>
             </CCol>
+
             <CCol md={5}>
               <CCarousel
                 controls={(event_detail?.banner_images || [])?.length > 0}

@@ -14,7 +14,7 @@ import {
 } from "@coreui/react";
 import { useAppState } from "src/context/AppContext";
 import { UserRequestEventStatuses } from "src/utils/constants";
-
+import './style.scss'
 const CustomerPayment = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
@@ -31,11 +31,7 @@ const CustomerPayment = ({
   const [amount, setAmount] = useState(0);
   const { currentUser } = useAppState();
 
-  console.log(visiblePaymentModel);
-  console.log(setVisiblePaymentModel);
-  console.log(eventDetail);
-  console.log(approvedEventStatus);
-  console.log(eventStatus);
+
 
   useEffect(() => {
     if (currentUser) {
@@ -81,7 +77,7 @@ const CustomerPayment = ({
       approvedEventStatus(data);
       resetForm();
     },
-    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+    onClose: () => alert("Wait! don't go!!!!"),
   };
 
   return (
@@ -97,8 +93,9 @@ const CustomerPayment = ({
         </CModalHeader>
         <CModalBody>
           <h5>Payment Information</h5>
-
-          <CRow className="mb-3">
+          <CRow>
+            <CCol sm={7}>
+             <CRow className="mb-3">
             <CFormLabel
               htmlFor="staticEmail"
               className="col-sm-3 col-form-label"
@@ -165,7 +162,11 @@ const CustomerPayment = ({
                 plainText
               />
             </CCol>
+          </CRow></CCol>
+          <CCol sm={5}> </CCol>
           </CRow>
+         
+
           <CModalFooter>
             <PaystackButton className="paystack-button" {...componentProps} />
             <CButton

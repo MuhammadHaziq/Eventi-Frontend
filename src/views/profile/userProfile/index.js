@@ -25,6 +25,7 @@ import {
 } from "src/context/AppContext/service";
 const UserProfile = () => {
   const { account_id } = useParams();
+  console.log(account_id);
   const { currentUser, permissions } = useAppState();
   const app_dispatch = useAppDispatch();
   const [validated, setValidated] = useState(false);

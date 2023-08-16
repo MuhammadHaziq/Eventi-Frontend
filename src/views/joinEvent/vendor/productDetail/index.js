@@ -273,7 +273,7 @@ const ProductDetail = ({
         <CCardHeader>Add Products</CCardHeader>
         <CCardBody>
           <CRow>
-            <CCol>
+            <CCol> 
               <ReactSelect
                 options={dropDownProducts}
                 handleChange={(e) => setSelectedProduct(e.target.value)}

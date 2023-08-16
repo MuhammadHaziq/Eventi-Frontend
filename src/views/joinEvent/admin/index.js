@@ -8,6 +8,8 @@ import {
   CContainer,
   CButton,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilListHighPriority } from "@coreui/icons";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppToast } from "src/components/AppToast";
@@ -17,6 +19,7 @@ import "./style.scss";
 import JoinedCustomers from "./JoinedCustomer";
 import JoinedVendors from "./JoinedVendor";
 import CustomerPayment from "src/components/CustomerPayment";
+import AppEventJoinButton from "src/components/AppEventJoinButton";
 
 const AdminJoinEvent = () => {
   const { currentUser } = useAppState();
@@ -160,7 +163,10 @@ const AdminJoinEvent = () => {
     };
     return eventStatus[status] || "Request To Approved";
   };
-
+  const joinTheEventAsAVendor = () => {
+    alert("hi");
+  };
+  console.log(eventDetail);
   return (
     <>
       <CRow>
@@ -173,6 +179,18 @@ const AdminJoinEvent = () => {
             </CCardHeader>
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
+
+              {currentUser?.data?.user_type === "admin" && (
+                <CButton
+                  color="primary"
+                  onClick={() => joinTheEventAsAVendor()}
+                  size="sm"
+                >
+                  <CIcon icon={cilListHighPriority} className="text-white" />{" "}
+                  Join Event as a Vendor
+                
+                </CButton>
+              )}
               {currentUser?.data?.user_type !== "admin" && (
                 <CContainer>
                   <CRow>

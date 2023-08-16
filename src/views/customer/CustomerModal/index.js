@@ -29,6 +29,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const app_dispatch = useAppDispatch();
+  const [showToggle, setShowToggle] = useState(false);
   const [state, setState] = useState({
     first_name: "",
     last_name: "",
@@ -39,7 +40,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
     date_of_birth: "",
     gender: "",
     phone_number: "",
-    age_verification: false,
+    age_verification: true,
     user_type: "customer",
   });
 
@@ -58,8 +59,27 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               date_of_birth: response.data.data.date_of_birth || "",
               gender: response.data.data.gender || "",
               phone_number: response.data.data.phone_number || "",
-              age_verification: response.data.data.age_verification || false,
+              age_verification: response.data.data.age_verification || true,
             });
+
+            var dob = response.data.data.date_of_birth;
+            var newdob = new Date(dob);
+            var now = new Date();
+            var age = now.getFullYear() - newdob?.getFullYear();
+            if (
+              now.getMonth() < newdob.getMonth() ||
+              (now.getMonth() === newdob.getMonth() &&
+                now.getDate() < newdob.getDate())
+            ) {
+              age--;
+            }
+            // Set the message based on age
+            if (age >= 18) {
+              setShowToggle(true);
+            } else {
+              setShowToggle(false);
+            }
+
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
@@ -150,6 +170,37 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
   };
 
   const handleOnChange = (e) => {
+    if (e.target.name === "date_of_birth") {
+      var dob = e.target.value;
+      var newdob = new Date(dob);
+      var now = new Date();
+      var age = now.getFullYear() - newdob?.getFullYear();
+      if (
+        now.getMonth() < newdob.getMonth() ||
+        (now.getMonth() === newdob.getMonth() &&
+          now.getDate() < newdob.getDate())
+      ) {
+        age--;
+      }
+      // Set the message based on age
+      if (age >= 18) {
+        setShowToggle(true);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({ message: "You can join! You age 18+", color: "success-alert" }),
+        });
+      } else {
+        setShowToggle(false);
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: "Sorry, you can't join. This website requires you to be 18 years or older to enter.",
+            color: "danger-alert",
+          }),
+        });
+      }
+    }
+
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
@@ -179,7 +230,6 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
             onSubmit={handleSubmit}
           >
             {/*<h1>{customer_id ? "Edit" : "Add"} Customer</h1>*/}
-
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -282,6 +332,14 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               <CFormFeedback invalid>Please enter address.</CFormFeedback>
             </CCol>
             <CCol md={6}>
+              <CFormLabel>Gender</CFormLabel>
+              <GenderSelection
+                gender={state.gender}
+                handleOnChange={handleOnChange}
+                required={true}
+              />
+            </CCol>{" "}
+            <CCol md={6}>
               <CFormInput
                 type="date"
                 id="validationDateOfBirth"
@@ -296,42 +354,39 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               />
               <CFormFeedback invalid>Please enter date of birth.</CFormFeedback>
             </CCol>
-            <CCol md={6}>
-              <CFormLabel>Gender</CFormLabel>
-              <GenderSelection
-                gender={state.gender}
-                handleOnChange={handleOnChange}
-                required={true}
-              />
-            </CCol>
-            <CCol xs={12}>
-              <CFormLabel>Age Verification</CFormLabel>
-              <CFormSwitch
-                label="Are you over 18+ years old?"
-                id="age_verification"
-                defaultChecked={state.age_verification}
-                onChange={(e) =>
-                  setState({
-                    ...state,
-                    age_verification: !state.age_verification,
-                  })
-                }
-              />
-            </CCol>
-            <CCol className="text-end">
+            {showToggle === true ? (
+              <CCol xs={12}>
+                <CFormLabel>Age Verification</CFormLabel>
+                <CFormSwitch
+                  label="Are you over 18+ years old?"
+                  id="age_verification"
+                  defaultChecked={state.age_verification}
+                  disabled
+                  onChange={(e) =>
+                    setState({
+                      ...state,
+                      age_verification: !state.age_verification,
+                    })
+                  }
+                />
+              </CCol>
+            ) : (
+              ""
+            )}
+            <CCol className="mt-5 text-end">
               <CButton
-                size="lg"
+                size="md"
                 color="success"
                 variant="outline"
                 type="submit"
-                disabled={isLoading}
+                disabled={showToggle === true ? isLoading : true}
               >
                 {isLoading ? <CSpinner /> : "Save"}
               </CButton>
               <CButton
                 style={{ marginLeft: "10px" }}
                 color="dark"
-                size="lg"
+                size="md"
                 variant="outline"
                 onClick={setVisible}
                 disabled={isLoading}

@@ -15,7 +15,7 @@ import {
 } from "@coreui/react";
 import { useAppState } from "src/context/AppContext";
 import { UserRequestEventStatuses } from "src/utils/constants";
-
+import "./style.scss";
 const componentName = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
@@ -100,7 +100,6 @@ const componentName = ({
         </CModalHeader>
         <CModalBody>
           <h5>Payment Information</h5>
-
           <CRow className="mb-3">
             <CFormLabel
               htmlFor="staticEmail"

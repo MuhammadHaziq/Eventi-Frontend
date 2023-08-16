@@ -7,3 +7,4 @@ export const login = (data) => {
 export const signUp = (data) => {
   return axios.post("/api/account", data);
 };
+ 

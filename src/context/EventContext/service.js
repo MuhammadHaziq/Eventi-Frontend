@@ -11,7 +11,7 @@ export const getEvents = (filters) => {
 export const deleteEvent = (id) => {
   return authAxios.delete(`/api/event/${id}`);
 };
-
+ 
 export const getEvent = (id) => {
   return authAxios.get(`/api/event/${id}`);
 };

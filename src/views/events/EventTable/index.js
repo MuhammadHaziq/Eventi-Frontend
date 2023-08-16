@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { CSmartTable, CSmartPagination, CButton } from "@coreui/react-pro";
+import {
+  CSmartTable,
+  CSmartPagination,
+  CButton,
+  CBadge,
+  CRow,
+  CCol,
+} from "@coreui/react-pro";
 import AppDeleteButton from "src/components/AppDeleteButton";
 import AppEditButton from "src/components/AppEditButton";
 import useDebounce from "src/hooks/useDebounce";
-import { dateFormat } from "src/utils/dateFormat";
+import { dateFormat, dateFormatted } from "src/utils/dateFormat";
 import {
   approvedCustomerJoinEvent,
   deleteEvent,
@@ -16,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import JoinedCustomers from "./../../joinEvent/customer/JoinedCustomer/index";
 import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
 import { AppToast } from "src/components/AppToast";
+import ReactSelect from "src/components/Inputs/ReactSelect";
 
 const EventTable = ({
   isLoading,
@@ -33,61 +41,81 @@ const EventTable = ({
   const [showPaymentModel, setShowPaymentModel] = useState(false);
   const [eventDetail, setEventDetail] = useState(null);
   const [eventStatus, setEventStatus] = useState("Pending For Payment");
+  const [status, setState] = useState("");
+
   const { app_dispatch } = useAppDispatch();
-  console.log(events);
-  console.log(tableMeta);
-  console.log(clickOnEdit);
+  console.log(dateFormatted());
+
+  const eventExpiry = events?.map((itm) => {
+    return itm?.event_end_date >= dateFormatted() ? (
+      <span className="mr-5">
+        <CBadge color="danger">Event Expiry</CBadge>
+      </span>
+    ) : (
+      ""
+    );
+  });
+
   const navigate = useNavigate();
 
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const { currentUser, permissions } = useAppState();
-  console.log("hi------------", currentUser?.data.user_detail);
   useEffect(() => {
     if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
       const tableFilter = JSON.stringify(tableFilters);
       updateFilter({ tableFilters: tableFilter });
     }
   }, [tableFilterDebounce]);
+  useEffect(() => {
+    updateFilter({ status: status });
+  }, [status]);
 
   let columns = [
     {
       key: "event_name",
-      label: "Event Name",
+      label: " Name",
       filter: true,
       isShow: true,
       disabled: false,
     },
     {
       key: "event_location",
-      label: "Event Location",
+      label: " Location",
       filter: true,
       isShow: true,
       disabled: false,
     },
     {
-      key: "Event_date",
-      label: "Event Date",
+      key: "event_start_date",
+      label: " Start Date",
+      filter: false,
+      isShow: true,
+      disabled: false,
+    },
+    {
+      key: "event_end_date",
+      label: " End Date",
       filter: false,
       isShow: true,
       disabled: false,
     },
     {
       key: "amount",
-      label: "Event Amount",
+      label: " Amount",
       filter: false,
       isShow: true,
       disabled: false,
     },
     {
       key: "type_of_event",
-      label: "Type Of Event",
+      label: " Type",
       filter: true,
       isShow: true,
       disabled: false,
     },
     {
       key: "phone_number",
-      label: "Mob Number",
+      label: "Mob No",
       filter: true,
       isShow: true,
       disabled: false,
@@ -110,21 +138,21 @@ const EventTable = ({
     },
     {
       key: "special_request",
-      label: "Special Request",
+      label: "Description",
       filter: true,
       isShow: true,
       disabled: false,
     },
   ];
   if (
-    currentUser?.data?.user_type !== "admin" &&
+    currentUser?.data?.user_type === "admin" &&
     currentUser?.data?.user_type !== "customer"
   ) {
     columns = [
       ...columns,
       {
         key: "Event_Status",
-        label: "Event Status",
+        label: "Status",
         filter: true,
         isShow: true,
         disabled: false,
@@ -133,13 +161,6 @@ const EventTable = ({
   }
   columns = [
     ...columns,
-    {
-      key: "Created_At",
-      label: "Created Date",
-      filter: false,
-      isShow: true,
-      disabled: false,
-    },
     {
       key: "Action",
       label: "Action",
@@ -191,8 +212,41 @@ const EventTable = ({
       });
   };
 
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    console.log(value);
+    setState(value);
+  };
+
   return (
     <>
+      <CRow>
+        <CCol md={4}>
+          <ReactSelect
+            id="validationSelectStatus"
+            floatinglabel="Select Status"
+            options={[
+              {
+                label: "Pending for Payment",
+                value: "Pending For Payment",
+              },
+              {
+                label: "Approved",
+                value: "Approved",
+              },
+              {
+                label: "Request to join",
+                value: "Request To Join",
+              },
+            ]}
+            isRequired={true}
+            handleChange={handleOnChange}
+            placeholder="Select Status"
+            value={status}
+            label="Select Status"
+          />
+        </CCol>
+      </CRow>
       <CSmartTable
         columns={columns}
         loading={isLoading}

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { CCard, CCardBody, CButton, CRow, CCol } from "@coreui/react";
+import {
+  CCard,
+  CCardBody,
+  CButton,
+  CRow,
+  CCol,
+  CBadge,
+  CCallout,
+} from "@coreui/react";
 import { CSmartPagination } from "@coreui/react-pro";
 import AppSwiperthumbs from "src/components/AppSwiperthumbs";
 import "./style.scss";
@@ -18,6 +26,17 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
   const [eventStatus, setEventStatus] = useState("Pending For Payment");
   const { app_dispatch } = useAppDispatch();
 
+  const date = new Date();
+  const formattedDate = date
+    .toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");
+  console.log(formattedDate);
   const navigate = useNavigate();
   console.log("event data", data);
 
@@ -95,17 +114,29 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                 <span className="vendarSpanInfo">{item?.amount}</span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Date:</h6>
-                <span className="vendarSpanInfo">{item?.event_date}</span>
+                <h6 className="vendarH6Info">Event Start Date:</h6>
+                <span className="vendarSpanInfo">{item?.event_start_date}</span>
               </div>
               <div>
+                <h6 className="vendarH6Info">Event End Date:</h6>
+                <span className="vendarSpanInfo">
+                  {item?.event_end_date >= formattedDate ? (
+                    item?.event_end_date
+                  ) : (
+                    <span className="mr-5">
+                      <CBadge color="danger">Event Expiry</CBadge>
+                    </span>
+                  )}
+                </span>
+              </div>
+              {/*  <div>
                 <h6 className="vendarH6Info">Mob Number:</h6>
                 <span className="vendarSpanInfo">{item?.phone_number}</span>
               </div>
               <div>
                 <h6 className="vendarH6Info">Event Type:</h6>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
-              </div>
+              </div> */}
               <div
                 className="mx-3"
                 style={{ marginTop: "10px", marginBottom: "10px" }}
@@ -117,27 +148,36 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   className="d-grid gap-2 mx-3"
                   style={{ marginTop: "10px", marginBottom: "10px" }}
                 >
-                  <CButton
-                    onClick={() => payNowClick(item)}
-                    color={
-                      item?.joined_customers
-                        ?.map((ite) => ite?.customer_id)
-                        .includes(currentUser?.data?._id)
-                        ? "warning"
-                        : "primary"
-                    }
-                    disabled={["Request To Join", "Approved"].includes(
-                      item?.joined_customers?.filter(
-                        (item) => item?.customer_id === currentUser?.data?._id
-                      )?.[0]?.event_status || "Pending"
-                    )}
-                  >
-                    {EventStatuses(
-                      item?.joined_customers?.filter(
-                        (item) => item?.customer_id === currentUser?.data?._id
-                      )?.[0]?.event_status || "Pending For Payment"
-                    ) || "Pay Now"}
-                  </CButton>
+                  {item?.event_end_date >= formattedDate ? (
+                    <CButton
+                      onClick={() => payNowClick(item)}
+                      color={
+                        item?.joined_customers
+                          ?.map((ite) => ite?.customer_id)
+                          .includes(currentUser?.data?._id)
+                          ? "warning"
+                          : "primary"
+                      }
+                      disabled={["Request To Join", "Approved"].includes(
+                        item?.joined_customers?.filter(
+                          (item) => item?.customer_id === currentUser?.data?._id
+                        )?.[0]?.event_status || "Pending"
+                      )}
+                    >
+                      {EventStatuses(
+                        item?.joined_customers?.filter(
+                          (item) => item?.customer_id === currentUser?.data?._id
+                        )?.[0]?.event_status || "Pending For Payment"
+                      ) || "Pay Now"}
+                    </CButton>
+                  ) : (
+                    <CCallout
+                      style={{ marginTop: "-10px", marginBottom: "-10px" }}
+                      color="danger"
+                    >
+                      We are currently unable to offer this event
+                    </CCallout>
+                  )}
                 </div>
               )}
             </CCard>

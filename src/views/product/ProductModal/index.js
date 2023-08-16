@@ -45,6 +45,7 @@ const ProductModal = ({
   const [state, setState] = useState({
     product_name: "",
     product_quantity: null,
+    product_points: null,
     product_price: null,
   });
 
@@ -81,6 +82,7 @@ const ProductModal = ({
             setState({
               product_name: response.data.data.product_name,
               product_quantity: response.data.data.product_quantity,
+              product_points: response.data.data.product_points,
               product_price: response.data.data.product_price,
             });
             setFiles([
@@ -156,6 +158,7 @@ const ProductModal = ({
         formData.append("product_name", state.product_name);
         formData.append("product_price", state.product_price);
         formData.append("product_quantity", state.product_quantity);
+        formData.append("product_points", state.product_points);
         formData.append("removed_files", JSON.stringify(removedFiles));
         formData.append(
           "vendor_account_id",
@@ -341,9 +344,24 @@ const ProductModal = ({
               />
               <CFormFeedback valid>Looks good!</CFormFeedback>
             </CCol>
+            <CCol md={12}>
+              <CFormInput
+                type="number"
+                id="floatingInputValid2"
+                floatingclassname="mb-3"
+                floatinglabel="Product points"
+                label="Product points"
+                placeholder="Product points"
+                name="product_points"
+                value={state.product_points}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback valid>Looks good!</CFormFeedback>
+            </CCol>
             {currentUser?.data?.user_type === "admin" ? (
               <CCol md={12}>
-                <ReactSelect
+                <ReactSelect 
                   isSearchable={true}
                   options={dropDownVendors}
                   handleChange={(e) => setSelectedVendors(e.target.value)}

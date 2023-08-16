@@ -33,7 +33,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   const [, setImages] = useState([]);
   const [state, setState] = useState({
     event_name: "",
-    event_date: null,
+    event_start_date: null,
+    event_end_date: null,
     amount: "",
     event_location: "",
     type_of_event: "",
@@ -53,7 +54,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
           if (response.data.data) {
             setState({
               event_name: response.data.data.event_name || "",
-              event_date: response.data.data.event_date || "",
+              event_start_date: response.data.data.event_start_date || "",
+              event_end_date: response.data.data.event_end_date || "",
               amount: response.data.data.amount || "",
               event_location: response.data.data.event_location || "",
               vendor_id: response.data.data.vendor_id || "",
@@ -118,7 +120,8 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       event.stopPropagation();
       const formData = new FormData();
       formData.append("event_name", state.event_name);
-      formData.append("event_date", state.event_date);
+      formData.append("event_start_date", state.event_start_date);
+      formData.append("event_end_date", state.event_end_date);
       formData.append("amount", state.amount);
       formData.append("event_location", state.event_location);
       formData.append("type_of_event", state.type_of_event);
@@ -279,7 +282,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               />
               <CFormFeedback invalid>Looks good!</CFormFeedback>
             </CCol>
-            <CCol md={6} className="mt-5">
+            <CCol md={3} className="mt-5">
               <CInputGroup>
                 <CFormInput
                   type="date"
@@ -287,14 +290,31 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                   floatingclassname="mb-3"
                   floatinglabel="Event Date"
                   placeholder="Event Date"
-                  name="event_date"
-                  value={state.event_date}
+                  name="event_start_date"
+                  value={state.event_start_date}
                   onChange={handleOnChange}
                   required
                 />
                 <CFormFeedback invalid>Please enter event date.</CFormFeedback>
               </CInputGroup>
             </CCol>
+            <CCol md={3} className="mt-5">
+              <CInputGroup>
+                <CFormInput
+                  type="date"
+                  id="validationEventEndDate"
+                  floatingclassname="mb-3"
+                  floatinglabel="Event End Date"
+                  placeholder="Event End Date"
+                  name="event_end_date"
+                  value={state.event_end_date}
+                  onChange={handleOnChange}
+                  required
+                />
+                <CFormFeedback invalid>Please enter event date.</CFormFeedback>
+              </CInputGroup>
+            </CCol>
+
             <CCol md={6}>
               <CFormInput
                 type="number"
@@ -387,7 +407,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 Please provide a Audio/visual equipment needs
               </CFormFeedback>
             </CCol>
-            <CCol md={6}>
+            <CCol md={6}> 
               <ReactSelect
                 id="validationSecurityNeeds"
                 floatinglabel="Security needs"
@@ -395,7 +415,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                   { value: "Yes", label: "Yes" },
                   { value: "No", label: "No" },
                 ]}
-                isRequired={true}
+                isRequired={true} 
                 handleChange={handleOnChange}
                 name="security"
                 placeholder="Security needs"
@@ -427,7 +447,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 name="special_request"
                 value={state.special_request}
                 onChange={handleOnChange}
-                label="Note"
+                label="Description"
                 required
               />
               <CFormFeedback invalid>
