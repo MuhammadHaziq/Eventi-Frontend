@@ -354,7 +354,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               />
               <CFormFeedback invalid>Please enter date of birth.</CFormFeedback>
             </CCol>
-            {showToggle === true ? (
+            {/* {showToggle === true ? (
               <CCol xs={12}>
                 <CFormLabel>Age Verification</CFormLabel>
                 <CFormSwitch
@@ -372,8 +372,8 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
               </CCol>
             ) : (
               ""
-            )}
-            <CCol className="mt-5 text-end">
+            )} */}
+            <CCol className="mt-5 text-end" md={12}>
               <CButton
                 size="md"
                 color="success"

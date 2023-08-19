@@ -49,12 +49,12 @@ const AppEventUserDetail = () => {
           <h6 className="vendarH6Info">Phone:</h6>
           <span className="vendarSpanInfo">{currentUser?.phone_number}</span>
         </div>
-        <div>
+        {/* <div>
           <h6 className="vendarH6Info">Status:</h6>
           <span className="vendarSpanInfo">
-            {currentUser?.user_type === "vendor" ? "Vendor" : "-"}
+            {currentUser?.joined_vendors?.event_status}
           </span>
-        </div>
+        </div> */}
       </CCardBody>
     </CCard>
   );

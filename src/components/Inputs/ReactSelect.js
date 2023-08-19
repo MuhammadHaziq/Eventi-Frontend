@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { CFormLabel } from "@coreui/react";
+import { CFormLabel, CFormFeedback } from "@coreui/react";
 
 const ReactSelect = ({
   options = [],

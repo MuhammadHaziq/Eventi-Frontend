@@ -11,6 +11,7 @@ const CustomerTable = ({
   tableMeta,
   updateFilter,
   clickOnEdit,
+  clickOnUpdatePoints,
   clickHideModal,
 }) => {
   const [fields, setFields] = useState([]);
@@ -49,22 +50,8 @@ const CustomerTable = ({
       disabled: false,
     },
     {
-      key: "business_name",
-      label: "Busniess Name",
-      filter: true,
-      isShow: true,
-      disabled: false,
-    },
-    {
-      key: "address",
-      label: "Address",
-      filter: true,
-      isShow: true,
-      disabled: false,
-    },
-    {
-      key: "age_verification",
-      label: "Age Verification",
+      key: "points_available",
+      label: "Points Available",
       filter: true,
       isShow: true,
       disabled: false,
@@ -144,10 +131,16 @@ const CustomerTable = ({
                 {permissions?.find(
                   (item) => item.permission === "customer-edit"
                 ) && (
+                  <>
+                  <AppEditButton
+                    onClick={clickOnUpdatePoints}
+                    edit_id={item.account_id}
+                  />
                   <AppEditButton
                     onClick={clickOnEdit}
                     edit_id={item.account_id}
                   />
+                  </>
                 )}
                 {permissions?.find(
                   (item) => item.permission === "customer-delete"

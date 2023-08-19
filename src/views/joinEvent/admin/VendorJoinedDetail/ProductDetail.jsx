@@ -41,6 +41,7 @@ const ProductDetail = ({
   const app_dispatch = useAppDispatch();
   useEffect(() => {
     if (joined_event_id) {
+      console.log(eventProducts)
       setSelectedProducts(eventProducts);
     }
   }, [joined_event_id]);
@@ -134,6 +135,7 @@ const ProductDetail = ({
                           className="form-control"
                           rows="4"
                           placeholder="Item"
+                          disabled
                           value={item?.product_name}
                           readOnly
                         ></CFormInput>
@@ -143,6 +145,7 @@ const ProductDetail = ({
                           name="product_description"
                           className="form-control"
                           rows="4"
+                          disabled
                           placeholder="Description"
                           value={item?.product_description}
                           readOnly
@@ -153,6 +156,7 @@ const ProductDetail = ({
                           type="number"
                           id="qty"
                           text="Unit"
+                          disabled
                           name="product_quantity"
                           value={item?.product_quantity}
                           readOnly
@@ -163,6 +167,7 @@ const ProductDetail = ({
                           type="number"
                           id="rate"
                           text="Rate"
+                          disabled
                           name="product_rate"
                           value={item?.product_rate}
                           readOnly
@@ -173,6 +178,7 @@ const ProductDetail = ({
                           type="number"
                           id="amount"
                           text="Amount"
+                          disabled
                           name="product_amount"
                           value={item?.product_amount}
                           readOnly

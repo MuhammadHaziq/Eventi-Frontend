@@ -75,13 +75,13 @@ const Dashboard = () => {
             const { user_detail } = response?.data?.data?.data || {};
             // console.log(user_detail);
             setCurData(user_detail)
-            app_dispatch({
-              type: "SHOW_RESPONSE",
-              toast: AppToast({
-                message: response.data.message,
-                color: "success-alert",
-              }),
-            });
+            // app_dispatch({
+            //   type: "SHOW_RESPONSE",
+            //   toast: AppToast({
+            //     message: response.data.message,
+            //     color: "success-alert",
+            //   }),
+            // });
           } else {
             app_dispatch({
               type: "SHOW_RESPONSE",

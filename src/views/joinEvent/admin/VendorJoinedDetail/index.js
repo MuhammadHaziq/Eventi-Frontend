@@ -26,7 +26,9 @@ const VendorJoinedDetail = () => {
       setIsLoading(true);
       getJoinedVendor(account_id, event_id)
         .then((response) => {
+          
           if (response.data.data) {
+            
             setJoinedEventId(response?.data?.data?._id);
             setEventDetail(response.data.data?.event_detail || null);
             setSelectedProducts(
@@ -36,8 +38,8 @@ const VendorJoinedDetail = () => {
                   product_name: item?.product_name,
                   product_description: item?.product_description,
                   product_quantity: item?.product_quantity || 1,
-                  product_rate: item?.product_price || 1,
-                  product_amount: item?.product_amount,
+                  product_rate: item?.product_rate || 1,
+                  product_amount: item?.product_quantity * item?.product_amount,
                 };
               })
             );

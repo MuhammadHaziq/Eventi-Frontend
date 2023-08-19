@@ -13,12 +13,15 @@ import AppProgress from "src/components/AppProgress";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { useQuery } from "@tanstack/react-query";
 import CustomerModal from "../CustomerModal";
+import Points from "../CustomerModal/points";
 import { AppToast } from "src/components/AppToast";
+
 export const CustomerList = () => {
   const app_dispatch = useAppDispatch();
   const [selectCustomer, setSelectedCustomer] = useState("");
   const [filters, setFilters] = useState();
   const [visible, setVisible] = useState(false);
+  const [pointsVisible, setPointsVisible] = useState(false);
   const { permissions } = useAppState();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -48,12 +51,17 @@ export const CustomerList = () => {
 
   const clickOnEdit = (id) => {
     setSelectedCustomer(id);
+    setPointsVisible(true);
+  };
+  const clickOnUpdatePoints = (id) => {
+    setSelectedCustomer(id);
     setVisible(true);
   };
 
   const clickHideModal = () => {
     setSelectedCustomer("");
     setVisible(false);
+    setPointsVisible(false);
     setFilters({ ...filters, update: !filters?.update });
   };
 
@@ -90,6 +98,7 @@ export const CustomerList = () => {
                 tableMeta={data?.data?.data?.meta || null}
                 updateFilter={useGetData}
                 clickOnEdit={clickOnEdit}
+                clickOnUpdatePoints={clickOnUpdatePoints}
                 clickHideModal={clickHideModal}
               />
             </CCardBody>
@@ -100,6 +109,13 @@ export const CustomerList = () => {
         <CustomerModal
           setVisible={clickHideModal}
           visible={visible}
+          customer_id={selectCustomer}
+        />
+      )}
+      {pointsVisible && (
+        <Points
+          setVisible={clickHideModal}
+          visible={pointsVisible}
           customer_id={selectCustomer}
         />
       )}

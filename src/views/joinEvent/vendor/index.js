@@ -169,6 +169,7 @@ const VendorEventJoin = () => {
 
               {eventDetail?.event_end_date >= formattedDate ? (
                 <ProductDetail
+                  isAdmin={false}
                   joined_event_id={joined_event_id}
                   eventProducts={selectedProducts}
                   showLoading={isLoading}

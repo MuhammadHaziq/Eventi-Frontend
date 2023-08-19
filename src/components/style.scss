@@ -4,6 +4,7 @@
   font-size: 10px;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
+  white-space: nowrap;
   background-color: #2262c2;
   font-weight: bold;
   color: #e0eafc;
@@ -14,6 +15,17 @@
     margin-top: 0px
 }
 
+.appheaderdropdown {
+	display: flex;
+	align-items: center;
+}
+.handle-logo {
+	width: 200px;
+	height: 50px;
+	// margin-top: -10px;
+	object-fit: cover;
+	// aspect-ratio: 4/3;
+}
 
 .card .qr-box {
 	position: relative;

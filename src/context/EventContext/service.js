@@ -11,7 +11,7 @@ export const getEvents = (filters) => {
 export const deleteEvent = (id) => {
   return authAxios.delete(`/api/event/${id}`);
 };
- 
+
 export const getEvent = (id) => {
   return authAxios.get(`/api/event/${id}`);
 };
@@ -43,11 +43,16 @@ export const customerJoinEvent = (eventId, account_id, data) => {
   return authAxios.put(`/api/event/${eventId}/${account_id}`, data);
 };
 
-export const approvedCustomerJoinEvent = (eventId, account_id, data) => {
-  return authAxios.put(
-    `/api/event/approved-customer-status/${eventId}/${account_id}`,
-    data
-  );
+export const approvedCustomerJoinEvent = async (eventId, account_id, data) => {
+  try {
+    return await authAxios.put(
+      `/api/event/approved-customer-status/${eventId}/${account_id}`,
+      data
+    );
+  } catch (e) {
+    console.log(e.message);
+    return null
+  }
 };
 
 export const updateCustomerStatus = (eventId, customer_id, data) => {

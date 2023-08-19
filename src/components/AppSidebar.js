@@ -15,11 +15,11 @@ import { AppSidebarNav } from './AppSidebarNav'
 // import { logoNegative } from 'src/assets/brand/logo-negative'
 // import { sygnet } from 'src/assets/brand/sygnet'
 
-import logo from 'src/assets/logs/Eventsrack - BLACK.png'
+import logo from 'src/assets/logs/Eventsrack-white.png'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
-
+import "./style.scss"
 // sidebar nav config
 import navigation from '../_nav'
 import { useAppDispatch, useAppState } from 'src/context/AppContext'
@@ -40,7 +40,7 @@ const AppSidebar = () => {
         <img
           src={logo}
           alt="kyrio POS"
-          className="c-sidebar-brand-full"
+          className="c-sidebar-brand-full handle-logo"
           height="22%"
           width="90%"
           style={{ position: 'absolute' }}

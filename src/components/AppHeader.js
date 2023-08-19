@@ -11,9 +11,9 @@ import CIcon from '@coreui/icons-react'
 import { cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
-import { logo } from 'src/assets/brand/logo'
+import logo from '../assets/logs/Eventsrack-black.png'
 import {useAppState, useAppDispatch} from 'src/context/AppContext'
-
+import "./style.scss"
 const AppHeader = () => {
   const dispatch = useAppDispatch()
   const {sidebarShow} = useAppState()
@@ -27,7 +27,11 @@ const AppHeader = () => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CIcon icon={logo} height={48} alt="Logo" />
+        <img
+          src={logo}
+          alt="kyrio POS"
+          className="c-sidebar-brand-full handle-logo"
+        />
         </CHeaderBrand>
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />

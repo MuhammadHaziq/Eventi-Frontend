@@ -1,5 +1,23 @@
 import authAxios from "src/utils/axios";
 
+export const allEventCustomers = async () => {
+  try {
+    const response = await authAxios.get("/api/event/allevents");
+    if (response.status === 200) {
+      return { status: true, data: response?.data?.data }
+    } else {
+      return { status: false, message: response.data.message }
+    }
+  
+  } catch(e){
+    return { status: false, message: e.message}
+  }
+};
+export const updateCustomerPoints = (data) => {
+  console.log(data)
+  return authAxios.post('/api/event/updatepoints', data);
+};
+
 export const getCustomers = (filters) => {
   return authAxios.get("/api/customer", { params: filters });
 };
@@ -16,3 +34,5 @@ export const updateCustomer = (data) => {
   delete data.password;
   return authAxios.put(`/api/customer/${data.customerId}`, data);
 };
+
+

@@ -19,17 +19,24 @@ import "./style.scss";
 import JoinedCustomers from "./JoinedCustomer";
 import JoinedVendors from "./JoinedVendor";
 import CustomerPayment from "src/components/CustomerPayment";
-import AppEventJoinButton from "src/components/AppEventJoinButton";
+import ProductDetail from "../vendor/productDetail";
+// import AppEventJoinButton from "src/components/AppEventJoinButton";
+import { dateFormatted } from "../../../utils/dateFormat";
 
 const AdminJoinEvent = () => {
   const { currentUser } = useAppState();
   const navigate = useNavigate();
   const app_dispatch = useAppDispatch();
   const { event_id, account_id } = useParams();
+  const [joined_event_id, setJoinedEventId] = useState("");
+  const [vendorEventStatus, setVendorEventStatus] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [productImages, setProductImages] = useState([]);
   const [eventDetail, setEventDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [eventStatus, setEventStatus] = useState("");
   const [showPaymentModel, setShowPaymentModel] = useState(false);
+  const [reload, setReload] = useState(false);
 
   const getEventDetail = useCallback(() => {
     try {
@@ -86,6 +93,13 @@ const AdminJoinEvent = () => {
       getEventDetail(event_id);
     }
   }, [event_id]);
+  
+  useEffect(() => {
+    if (reload && event_id) {
+      setReload(false);
+      getEventDetail(event_id);
+    }
+  }, [reload]);
 
   const joinEvent = (status) => {
     setIsLoading(true);
@@ -122,38 +136,38 @@ const AdminJoinEvent = () => {
       });
   };
 
-  const unJoinEvent = () => {
-    setIsLoading(true);
-    customerJoinEvent(event_id, account_id, { status: "remove" })
-      .then((response) => {
-        if (response.data.data) {
-          app_dispatch({
-            type: "SHOW_RESPONSE",
-            toast: AppToast({
-              message: response.data.message,
-              color: "success-alert",
-            }),
-          });
-          navigate("/event-list");
-        } else {
-          app_dispatch({
-            type: "SHOW_RESPONSE",
-            toast: AppToast({
-              message: response.data.message,
-              color: "danger-alert",
-            }),
-          });
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        app_dispatch({
-          type: "SHOW_RESPONSE",
-          toast: AppToast({ message: err.message, color: "danger-alert" }),
-        });
-      });
-  };
+  // const unJoinEvent = () => {
+  //   setIsLoading(true);
+  //   customerJoinEvent(event_id, account_id, { status: "remove" })
+  //     .then((response) => {
+  //       if (response.data.data) {
+  //         app_dispatch({
+  //           type: "SHOW_RESPONSE",
+  //           toast: AppToast({
+  //             message: response.data.message,
+  //             color: "success-alert",
+  //           }),
+  //         });
+  //         navigate("/event-list");
+  //       } else {
+  //         app_dispatch({
+  //           type: "SHOW_RESPONSE",
+  //           toast: AppToast({
+  //             message: response.data.message,
+  //             color: "danger-alert",
+  //           }),
+  //         });
+  //       }
+  //       setIsLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setIsLoading(false);
+  //       app_dispatch({
+  //         type: "SHOW_RESPONSE",
+  //         toast: AppToast({ message: err.message, color: "danger-alert" }),
+  //       });
+  //     });
+  // };
 
   const getNextStatusForEvent = (status) => {
     const eventStatus = {
@@ -163,10 +177,6 @@ const AdminJoinEvent = () => {
     };
     return eventStatus[status] || "Request To Approved";
   };
-  const joinTheEventAsAVendor = () => {
-    alert("hi");
-  };
-  console.log(eventDetail);
   return (
     <>
       <CRow>
@@ -180,17 +190,6 @@ const AdminJoinEvent = () => {
             <CCardBody>
               {eventDetail && <AppEventDetail event_detail={eventDetail} />}
 
-              {currentUser?.data?.user_type === "admin" && (
-                <CButton
-                  color="primary"
-                  onClick={() => joinTheEventAsAVendor()}
-                  size="sm"
-                >
-                  <CIcon icon={cilListHighPriority} className="text-white" />{" "}
-                  Join Event as a Vendor
-                
-                </CButton>
-              )}
               {currentUser?.data?.user_type !== "admin" && (
                 <CContainer>
                   <CRow>
@@ -224,6 +223,29 @@ const AdminJoinEvent = () => {
                     </CCol>
                   </CRow>
                 </CContainer>
+              )}
+            </CCardBody>
+          </CCard>
+          <CCard className="mb-2">
+            <CCardHeader>
+              <strong>Join as Vendor</strong>
+            </CCardHeader>
+            <CCardBody>
+            {eventDetail?.event_end_date >= dateFormatted() ? (
+                <ProductDetail
+                  isAdmin={true}
+                  setReload={setReload}
+                  joined_event_id={joined_event_id}
+                  eventProducts={selectedProducts}
+                  showLoading={isLoading}
+                  vendorEventStatus={vendorEventStatus}
+                  setVendorEventStatus={setVendorEventStatus}
+                  eventDetail={eventDetail}
+                  productImages={productImages}
+                  setProductImages={setProductImages}
+                />
+              ) : (
+                ""
               )}
             </CCardBody>
           </CCard>

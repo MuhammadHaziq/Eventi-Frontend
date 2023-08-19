@@ -52,10 +52,10 @@ const ProductModal = ({
   const getVendorProducts = React.useCallback(() => {
     vendorDropDown()
       .then((response) => {
-        if (response.data.data) {
-          setVendors(response?.data.data);
+        if (response.data) {
+          setVendors(response?.data);
           setDropDownVendors(
-            response?.data?.data?.map((item) => {
+            response?.data?.map((item) => {
               return {
                 value: item?.account_id,
                 label: (item?.first_name || "") + " " + (item?.last_name || ""),
@@ -145,10 +145,21 @@ const ProductModal = ({
       event.stopPropagation();
       return false;
     }
-
-    if (form.checkValidity() === false) {
+    const admins = !["admin"].includes(currentUser?.data?.user_type)
+    ? currentUser?.data?._id
+    : selectedVendors
+    if (form.checkValidity() === false || !admins) {
       event.preventDefault();
       event.stopPropagation();
+      if(!admins){
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: dropDownVendors?.length > 0 ? "Select vendor" : "Create Vendor First",
+            color: "danger-alert",
+          }),
+        });
+      }
     } else {
       event.preventDefault();
       event.stopPropagation();

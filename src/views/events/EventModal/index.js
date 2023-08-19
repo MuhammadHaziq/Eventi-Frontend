@@ -37,6 +37,10 @@ const EventModal = ({ eventId, visible, setVisible }) => {
     event_end_date: null,
     amount: "",
     event_location: "",
+    points_percent: null,
+    joined_customers: [],
+    joined_vendors: [],
+    points_percent: null,
     type_of_event: "",
     expected_attendence: "",
     phone_number: "",
@@ -57,6 +61,9 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               event_start_date: response.data.data.event_start_date || "",
               event_end_date: response.data.data.event_end_date || "",
               amount: response.data.data.amount || "",
+              joined_customers: response.data.data.joined_customers || "",
+              joined_vendors: response.data.data.joined_vendors || "",
+              points_percent: response.data.data.points_percent || "",
               event_location: response.data.data.event_location || "",
               vendor_id: response.data.data.vendor_id || "",
               type_of_event: response.data.data.type_of_event || "",
@@ -123,6 +130,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       formData.append("event_start_date", state.event_start_date);
       formData.append("event_end_date", state.event_end_date);
       formData.append("amount", state.amount);
+      formData.append("points_percent", state.points_percent);
       formData.append("event_location", state.event_location);
       formData.append("type_of_event", state.type_of_event);
       formData.append("expected_attendence", state.expected_attendence);
@@ -248,6 +256,12 @@ const EventModal = ({ eventId, visible, setVisible }) => {
     ]);
     setFiles(files?.filter((item) => item.name !== fileName));
   };
+  const getPoints = () => {
+    return state.points_percent ? ((state.points_percent/100) * state.amount).toFixed(2) : 0;
+  };
+  const isAllowedToChange = () => {
+    return state.joined_customers.length <= 0 && state.joined_vendors.length <= 0;
+  };
 
   return (
     <>
@@ -324,6 +338,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 placeholder="Amount"
                 name="amount"
                 label="Amount"
+                disabled={!isAllowedToChange()}
                 defaultValue={state.amount}
                 onChange={handleOnChange}
                 required
@@ -422,21 +437,31 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 value={state.security}
                 label="Security"
               />
-              {/* <CFormInput
-                type="text"
-                id="validationSecurityNeeds"
-                floatingclassname="mb-3"
-                floatinglabel="Security needs"
-                placeholder="Security needs"
-                name="security"
-                value={state.security}
-                onChange={handleOnChange}
-                required
-              /> */}
               <CFormFeedback invalid>
                 Please provide a Security needs
               </CFormFeedback>
             </CCol>
+            <CCol md={6}>
+                  <CFormInput
+                    type="text"
+                    id="points_percent"
+                    floatingclassname="mb-3"
+                    floatinglabel="Points Percentage"
+                    placeholder="Points Percentage"
+                    label="Points Percentage %"
+                    name="points_percent"
+                    disabled={!isAllowedToChange()}
+                    defaultValue={state.points_percent}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a Points Percentage
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={12}>
+                  Customer will receive <strong>{ getPoints() }</strong> points
+                </CCol>
             <CCol md={12}>
               <CFormTextarea
                 rows={2}

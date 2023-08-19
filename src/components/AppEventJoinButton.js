@@ -43,7 +43,7 @@ const AppEventJoinButton = ({ item, icon = false }) => {
               ? currentUser?.data?.user_type === "vendor"
                 ? "Update Event"
                 : "Un Join Event"
-              : "Request To Join Event"
+              : "Request To Join Event Approved"
             : "View Detail"
         }
         update_event={

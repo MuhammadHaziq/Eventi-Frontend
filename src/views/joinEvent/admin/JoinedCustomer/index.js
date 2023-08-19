@@ -1,4 +1,4 @@
-import { CButton, CSpinner } from "@coreui/react";
+import { CBadge, CButton, CSpinner } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
@@ -25,6 +25,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
       key: "last_name",
     },
     { key: "email" },
+    { key: "points_available", label: "Points" },
     { key: "phone_number" },
 
     {
@@ -105,7 +106,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
         Action: (item) => (
           <td>
             {currentUser?.data?.user_type === "admin" && (
-              <CButton
+              <CBadge
                 className="join-event-customer"
                 color={"primary"}
                 onClick={() => {
@@ -127,7 +128,7 @@ const JoinedCustomers = ({ joinedCustomers = [] }) => {
                 ) : (
                   AdminEventStatuses(item?.event_status) || "Join Event"
                 )}
-              </CButton>
+              </CBadge>
             )}
           </td>
         ),

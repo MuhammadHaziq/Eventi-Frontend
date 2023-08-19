@@ -21,6 +21,7 @@ import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import ReactSelect from "src/components/Inputs/ReactSelect";
 import UploadImage from "src/components/Image/UploadImage";
+import "./index.scss";
 
 export const EventRegistration = () => {
   const [validated, setValidated] = useState(false);
@@ -32,6 +33,7 @@ export const EventRegistration = () => {
     event_start_date: null,
     event_end_date: null,
     amount: null,
+    points_percent: null,
     event_location: "",
     type_of_event: "",
     expected_attendence: "",
@@ -69,6 +71,7 @@ export const EventRegistration = () => {
         formData.append("event_start_date", state.event_start_date);
         formData.append("event_end_date", state.event_end_date);
         formData.append("amount", state.amount);
+        formData.append("points_percent", state.points_percent);
         formData.append("event_location", state.event_location);
         formData.append("type_of_event", state.type_of_event);
         formData.append("expected_attendence", state.expected_attendence);
@@ -171,6 +174,9 @@ export const EventRegistration = () => {
 
   const handleOnRemove = (fileName) => {
     setFiles(files?.filter((item) => item.name !== fileName));
+  };
+  const getPoints = () => {
+    return state.points_percent ? ((state.points_percent/100) * state.amount).toFixed(2) : 0;
   };
 
   return (
@@ -351,6 +357,26 @@ export const EventRegistration = () => {
                   <CFormFeedback invalid>
                     Please provide a Security needs
                   </CFormFeedback>
+                </CCol>
+                <CCol md={6}>
+                  <CFormInput
+                    type="text"
+                    id="points_percent"
+                    floatingclassname="mb-3"
+                    floatinglabel="Points Percentage"
+                    placeholder="Points Percentage"
+                    label="Points Percentage %"
+                    name="points_percent"
+                    defaultValue={state.points_percent}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a Points Percentage
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={12}>
+                  Customer will receive <strong>{ getPoints() }</strong> points
                 </CCol>
                 <CCol md={12}>
                   <CFormTextarea

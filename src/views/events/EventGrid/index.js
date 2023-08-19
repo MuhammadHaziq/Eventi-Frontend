@@ -46,10 +46,10 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
     setShowPaymentModel(true);
   };
 
-  const approvedEventStatus = (data) => {
-    approvedCustomerJoinEvent(data?.event_id, data?.account_id, data)
-      .then((response) => {
-        if (response.data.data) {
+  const approvedEventStatus = async (data) => {
+    try {
+    const response = await approvedCustomerJoinEvent(data?.event_id, data?.account_id, data);
+        if (response?.data?.data) {
           setEventStatus(
             UserRequestEventStatuses(
               eventDetail?.joined_customers?.filter(
@@ -61,7 +61,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
           app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({
-              message: response.data.message,
+              message: response?.data?.message,
               color: "success-alert",
             }),
           });
@@ -69,18 +69,14 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
           app_dispatch({
             type: "SHOW_RESPONSE",
             toast: AppToast({
-              message: response.data.message,
+              message: response?.data?.message,
               color: "danger-alert",
             }),
           });
         }
-      })
-      .catch((err) => {
-        app_dispatch({
-          type: "SHOW_RESPONSE",
-          toast: AppToast({ message: err.message, color: "danger-alert" }),
-        });
-      });
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   return (

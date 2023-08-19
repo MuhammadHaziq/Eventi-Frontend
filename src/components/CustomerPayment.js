@@ -4,17 +4,21 @@ import {
   CFormLabel,
   CFormInput,
   CCol,
-  CRow,
+  CSpinner,
   CModal,
   CModalBody,
   CModalHeader,
   CModalFooter,
   CModalTitle,
   CButton,
+  CFormFeedback,
 } from "@coreui/react";
 import { useAppState } from "src/context/AppContext";
 import { UserRequestEventStatuses } from "src/utils/constants";
-import './style.scss'
+import { Paystack } from "./eventi";
+import ReactSelect from "./Inputs/ReactSelect";
+import "./style.scss";
+
 const CustomerPayment = ({
   visiblePaymentModel,
   setVisiblePaymentModel,
@@ -23,18 +27,27 @@ const CustomerPayment = ({
   eventDetail,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
-  const [email, setEmail] = useState("haseeb@kodxsystem.com");
-  const [name, setName] = useState("Haseeb");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("03224512868");
+  const [phone, setPhone] = useState("");
   const [amount, setAmount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentError, setPaymentError] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
   const { currentUser } = useAppState();
 
-
+  const changePaymentMethod = (e) => {
+    setPaymentError(false);
+    setPaymentMethod(e.target.value);
+  };
 
   useEffect(() => {
     if (currentUser) {
+      if(currentUser?.data?.user_type === "customer" ){
+        setPaymentMethod("Paystack")
+      }
       setAmount(eventDetail?.amount || 0);
       setEmail(currentUser?.data?.email || "");
       setPhone(currentUser?.data?.phone_number || "");
@@ -53,7 +66,9 @@ const CustomerPayment = ({
     setPhone("");
     setAmount(0);
   };
-
+  const getPoints = () => {
+    return ((eventDetail?.points_percent / 100) * amount).toFixed(2);
+  };
   const componentProps = {
     email,
     amount: amount * 100,
@@ -66,18 +81,53 @@ const CustomerPayment = ({
     text: "Pay Now",
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
+      setIsPaying(true);
+
       const data = {
         account_id: currentUser?.data?._id,
         event_id: eventDetail?._id,
         payment_id: reference,
+        payment_method: paymentMethod,
+        points_available: getPoints(),
         amount: amount * 100,
         currency: "ZAR",
         status: UserRequestEventStatuses(eventStatus),
       };
-      approvedEventStatus(data);
+      payNowPaystack(data);
       resetForm();
     },
-    onClose: () => alert("Wait! don't go!!!!"),
+    onClose: () => console.log("Wait! don't go!!!!"),
+  };
+  const uuid = () => {
+    return "xxxxxxxx".replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+  const showError = () => {
+    setPaymentError(true);
+  };
+  const payNowPaystack = async (data) => {
+    await approvedEventStatus(data);
+    setIsPaying(false);
+    setVisiblePaymentModel(false);
+  };
+  const payNowCash = async () => {
+    setIsPaying(true);
+    const data = {
+      account_id: currentUser?.data?._id,
+      event_id: eventDetail?._id,
+      payment_id: uuid(),
+      payment_method: paymentMethod,
+      points_available: getPoints(),
+      amount: amount * 100,
+      currency: "ZAR",
+      status: UserRequestEventStatuses(eventStatus),
+    };
+    await approvedEventStatus(data);
+    setIsPaying(false);
+    setVisiblePaymentModel(false);
   };
 
   return (
@@ -85,90 +135,62 @@ const CustomerPayment = ({
       <CModal
         backdrop="static"
         visible={visiblePaymentModel}
-        onClick={() => setVisiblePaymentModel(!visiblePaymentModel)}
+        onClose={() => setVisiblePaymentModel(!visiblePaymentModel)}
         size="lg"
       >
         <CModalHeader>
-          <CModalTitle> Payment</CModalTitle>
+          <CModalTitle> Payment Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h5>Payment Information</h5>
-          <CRow>
-            <CCol sm={7}>
-             <CRow className="mb-3">
-            <CFormLabel
-              htmlFor="staticEmail"
-              className="col-sm-3 col-form-label"
-            >
-              <strong>Email :</strong>
-            </CFormLabel>
-            <CCol sm={6}>
-              <CFormInput
-                type="text"
-                id="staticEmail"
-                readOnly
-                plainText
-                value={email}
+          {currentUser?.data?.user_type !== "customer" ? (
+            <CCol md={6} className="pb-4">
+              <ReactSelect
+                id="validationPaymentMethod"
+                floatinglabel="Payment method"
+                options={[
+                  { value: "Cash", label: "Cash" },
+                  { value: "Paystack", label: "Paystack" },
+                ]}
+                isRequired={true}
+                handleChange={changePaymentMethod}
+                name="paymentMethod"
+                placeholder="Payment method"
+                value={paymentMethod}
+                label="Select Payment Method"
               />
+              {paymentError ? (
+                <CFormFeedback style={{ color: "red" }}>
+                  Please provide a Payment method
+                </CFormFeedback>
+              ) : (
+                ""
+              )}
             </CCol>
-          </CRow>
-          <CRow className="mb-3">
-            <CFormLabel
-              htmlFor="inputPassword"
-              className="col-sm-3 col-form-label"
-            >
-              <strong>First Name :</strong>
-            </CFormLabel>
-            <CCol sm={6}>
-              <CFormInput
-                type="text"
-                id="staticFirstName"
-                defaultValue={firstName}
-                readOnly
-                plainText
-              />
-            </CCol>
-          </CRow>
-          <CRow className="mb-3">
-            <CFormLabel
-              htmlFor="inputPassword"
-              className="col-sm-3 col-form-label"
-            >
-              <strong>Last Name :</strong>
-            </CFormLabel>
-            <CCol sm={6}>
-              <CFormInput
-                type="text"
-                id="staticLastName"
-                defaultValue={lastName}
-                readOnly
-                plainText
-              />
-            </CCol>
-          </CRow>
-          <CRow className="mb-3">
-            <CFormLabel
-              htmlFor="inputPassword"
-              className="col-sm-3 col-form-label"
-            >
-              <strong>Amount :</strong>
-            </CFormLabel>
-            <CCol sm={6}>
-              <CFormInput
-                type="text"
-                id="staticAmount"
-                value={amount}
-                readOnly
-                plainText
-              />
-            </CCol>
-          </CRow></CCol>
-          <CCol sm={5}> </CCol>
-          </CRow>
-         
+          ) : (
+            ""
+          )}
+          <Paystack
+            email={email}
+            firstName={firstName}
+            lastName={lastName}
+            amount={amount}
+          />
 
           <CModalFooter>
-            <PaystackButton className="paystack-button" {...componentProps} />
+            {currentUser?.data?.user_type !== "customer" ? 
+              paymentMethod == "Paystack" ? (
+                <PaystackButton className="paystack-button" {...componentProps} />
+              ) : paymentMethod == "Cash" ? (
+                <CButton className="paystack-button" onClick={payNowCash}>
+                  {isPaying ? <CSpinner /> : "Pay Now"}
+                </CButton>
+              ) : (
+                <CButton className="paystack-button" onClick={showError}>
+                  Pay Now
+                </CButton>
+              )
+          : <PaystackButton className="paystack-button" {...componentProps} />}
+              
             <CButton
               style={{ marginLeft: "10px" }}
               color="dark"
