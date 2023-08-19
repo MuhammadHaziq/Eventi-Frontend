@@ -13,14 +13,16 @@ import {
   CFormInput,
 } from "@coreui/react";
 import { dateFormatted } from "../utils/dateFormat";
+import AddTricketMembers from "../views/ticket/AddTicket/AddTricketMembers";
 
 const AppEventDetail = ({ event_detail }) => {
+  console.log("Event Amount....",event_detail.amount); 
   return (
     <CCard className="mb-4 p-2">
       <CCardHeader>
         <strong>Event Detail </strong>
         {event_detail?.event_end_date >= dateFormatted() ? (
-         ""
+          ""
         ) : (
           <span className="mr-5">
             <CBadge color="danger">Event Expiry</CBadge>
@@ -145,6 +147,12 @@ const AppEventDetail = ({ event_detail }) => {
                   </CCarouselItem>
                 )}
               </CCarousel>
+            </CCol>
+          </CRow>
+          <CRow className="mt-4">
+            <CCol md="12">
+              <strong>Customer Register Members List</strong>
+              <AddTricketMembers />
             </CCol>
           </CRow>
         </CContainer>
