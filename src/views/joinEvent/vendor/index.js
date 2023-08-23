@@ -165,7 +165,7 @@ const VendorEventJoin = () => {
               <strong>Vendor Join Evente</strong>
             </CCardHeader>
             <CCardBody>
-              {eventDetail && <AppEventDetail event_detail={eventDetail} />}
+              {eventDetail && <AppEventDetail event_detail={eventDetail} userData={currentUser} />}
 
               {eventDetail?.event_end_date >= formattedDate ? (
                 <ProductDetail

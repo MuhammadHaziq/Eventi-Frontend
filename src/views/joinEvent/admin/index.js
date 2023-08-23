@@ -188,7 +188,7 @@ const AdminJoinEvent = () => {
               </strong>
             </CCardHeader>
             <CCardBody>
-              {eventDetail && <AppEventDetail event_detail={eventDetail} />}
+              {eventDetail && <AppEventDetail event_detail={eventDetail} userData={currentUser}  />}
 
               {currentUser?.data?.user_type !== "admin" && (
                 <CContainer>

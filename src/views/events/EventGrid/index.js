@@ -25,7 +25,6 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
   const [eventDetail, setEventDetail] = useState(null);
   const [eventStatus, setEventStatus] = useState("Pending For Payment");
   const { app_dispatch } = useAppDispatch();
-
   const date = new Date();
   const formattedDate = date
     .toLocaleDateString("en-GB", {
@@ -48,32 +47,36 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
 
   const approvedEventStatus = async (data) => {
     try {
-    const response = await approvedCustomerJoinEvent(data?.event_id, data?.account_id, data);
-        if (response?.data?.data) {
-          setEventStatus(
-            UserRequestEventStatuses(
-              eventDetail?.joined_customers?.filter(
-                (item) => item?.customer_id === currentUser?.data?._id
-              )?.[0]?.event_status || "Pending For Payment"
-            )
-          );
-          updateFilter({ ...filters, reload: !filters?.reload });
-          app_dispatch({
-            type: "SHOW_RESPONSE",
-            toast: AppToast({
-              message: response?.data?.message,
-              color: "success-alert",
-            }),
-          });
-        } else {
-          app_dispatch({
-            type: "SHOW_RESPONSE",
-            toast: AppToast({
-              message: response?.data?.message,
-              color: "danger-alert",
-            }),
-          });
-        }
+      const response = await approvedCustomerJoinEvent(
+        data?.event_id,
+        data?.account_id,
+        data
+      );
+      if (response?.data?.data) {
+        setEventStatus(
+          UserRequestEventStatuses(
+            eventDetail?.joined_customers?.filter(
+              (item) => item?.customer_id === currentUser?.data?._id
+            )?.[0]?.event_status || "Pending For Payment"
+          )
+        );
+        updateFilter({ ...filters, reload: !filters?.reload });
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: response?.data?.message,
+            color: "success-alert",
+          }),
+        });
+      } else {
+        app_dispatch({
+          type: "SHOW_RESPONSE",
+          toast: AppToast({
+            message: response?.data?.message,
+            color: "danger-alert",
+          }),
+        });
+      }
     } catch (e) {
       console.log(e.message);
     }
@@ -84,7 +87,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
       <CRow className="event-grid-section">
         {(data || [])?.map((item, index) => (
           <CCol md={4} key={index}>
-            <CCard className="mb-4">
+            <CCard className="mb-4 event-card">
               <CCardBody
                 style={{
                   width: "100%",
@@ -98,24 +101,40 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
               </CCardBody>
               <hr></hr>
               <div>
-                <h6 className="vendarH6Info">Event Name:</h6>
-                <span className="vendarSpanInfo">{item?.event_name}</span>
+                <h6 className="event-card-header vendarH6Info">Event Name:</h6>
+                <span className="event-card-text vendarSpanInfo">
+                  {item?.event_name}
+                </span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Location:</h6>
-                <span className="vendarSpanInfo">{item?.event_location}</span>
+                <h6 className="event-card-header vendarH6Info">
+                  Event Location:
+                </h6>
+                <span className="event-card-text vendarSpanInfo">
+                  {item?.event_location}
+                </span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Amount:</h6>
-                <span className="vendarSpanInfo">{item?.amount}</span>
+                <h6 className="event-card-header vendarH6Info">
+                  Event Amount:
+                </h6>
+                <span className="event-card-text vendarSpanInfo">
+                  {item?.amount}
+                </span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event Start Date:</h6>
-                <span className="vendarSpanInfo">{item?.event_start_date}</span>
+                <h6 className="event-card-header vendarH6Info">
+                  Event Start Date:
+                </h6>
+                <span className="event-card-text vendarSpanInfo">
+                  {item?.event_start_date}
+                </span>
               </div>
               <div>
-                <h6 className="vendarH6Info">Event End Date:</h6>
-                <span className="vendarSpanInfo">
+                <h6 className="event-card-header vendarH6Info">
+                  Event End Date:
+                </h6>
+                <span className="event-card-text vendarSpanInfo">
                   {item?.event_end_date >= formattedDate ? (
                     item?.event_end_date
                   ) : (
@@ -133,10 +152,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                 <h6 className="vendarH6Info">Event Type:</h6>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div> */}
-              <div
-                className="mx-3"
-                style={{ marginTop: "10px", marginBottom: "10px" }}
-              >
+              <div className="event-card-join-button">
                 <AppEventJoinButton item={item} />
               </div>
               {currentUser?.data?.user_type === "customer" && (

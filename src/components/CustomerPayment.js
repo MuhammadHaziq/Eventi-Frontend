@@ -16,8 +16,10 @@ import {
 import { useAppState } from "src/context/AppContext";
 import { UserRequestEventStatuses } from "src/utils/constants";
 import { Paystack } from "./eventi";
+import { CNav, CNavItem, CNavLink } from "@coreui/react";
 import ReactSelect from "./Inputs/ReactSelect";
 import "./style.scss";
+import { useNavigate } from "react-router-dom";
 
 const CustomerPayment = ({
   visiblePaymentModel,
@@ -37,7 +39,7 @@ const CustomerPayment = ({
   const [paymentError, setPaymentError] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const { currentUser } = useAppState();
-
+const navigate = useNavigate();
   const changePaymentMethod = (e) => {
     setPaymentError(false);
     setPaymentMethod(e.target.value);
@@ -45,8 +47,8 @@ const CustomerPayment = ({
 
   useEffect(() => {
     if (currentUser) {
-      if(currentUser?.data?.user_type === "customer" ){
-        setPaymentMethod("Paystack")
+      if (currentUser?.data?.user_type === "customer") {
+        setPaymentMethod("Paystack");
       }
       setAmount(eventDetail?.amount || 0);
       setEmail(currentUser?.data?.email || "");
@@ -176,10 +178,41 @@ const CustomerPayment = ({
             amount={amount}
           />
 
+          console.log(eventDetail);
+          {currentUser?.data?.user_type == "customer" ? (
+            <CNav>
+              <CNavItem>
+                <CNavLink active>
+                  *Note If you want buy more Ticket for this Event{" "}
+                  <b>
+                  <span onClick={() => navigate(`/ticket/${eventDetail?._id}`)}>
+                    <u>Please Click here</u>
+                  </span>
+                  </b>
+                </CNavLink>
+              </CNavItem>
+            </CNav>
+          ) : (
+            ""
+          )}
+
           <CModalFooter>
-            {currentUser?.data?.user_type !== "customer" ? 
+            {/*  <CButton
+              style={{ marginLeft: "10px" }}
+              color="info"
+              size="lg"
+              variant="outline"
+              onClick={() => setVisiblePaymentModel(!visiblePaymentModel)}
+            >
+              If you want buy more Ticket Please Click here
+            </CButton> */}
+
+            {currentUser?.data?.user_type !== "customer" ? (
               paymentMethod == "Paystack" ? (
-                <PaystackButton className="paystack-button" {...componentProps} />
+                <PaystackButton
+                  className="paystack-button"
+                  {...componentProps}
+                />
               ) : paymentMethod == "Cash" ? (
                 <CButton className="paystack-button" onClick={payNowCash}>
                   {isPaying ? <CSpinner /> : "Pay Now"}
@@ -189,8 +222,9 @@ const CustomerPayment = ({
                   Pay Now
                 </CButton>
               )
-          : <PaystackButton className="paystack-button" {...componentProps} />}
-              
+            ) : (
+              <PaystackButton className="paystack-button" {...componentProps} />
+            )}
             <CButton
               style={{ marginLeft: "10px" }}
               color="dark"

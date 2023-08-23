@@ -1,6 +1,7 @@
 function TableRows({ rowsData, deleteTableRows, handleChange }) {
   return rowsData.map((data, index) => {
-    const { firstName, lastName, emailAddress, phone } = data;
+    const { firstName, lastName, emailAddress, phone } = data; 
+   
     return (
       <tr key={index}>
         <td>

@@ -43,7 +43,6 @@ const CustomerJoinEvent = () => {
     .split("/")
     .reverse()
     .join("-");
-console.log(eventDetail);
   const getEventDetail = useCallback(() => {
     try {
       setIsLoading(true);
@@ -212,8 +211,8 @@ console.log(eventDetail);
               </strong>
             </CCardHeader> */}
             <CCardBody>
-              {eventDetail && <AppEventDetail event_detail={eventDetail} />}
-              <CContainer>
+              {eventDetail && <AppEventDetail event_detail={eventDetail} userData={currentUser}/>}
+               <CContainer>
                 <CRow>
                   <CCol>
                     {eventDetail?.event_end_date <= formattedDate ? (
@@ -248,7 +247,7 @@ console.log(eventDetail);
                     )}
                   </CCol>
                 </CRow>
-              </CContainer>
+           </CContainer>
             </CCardBody>
           </CCard>
           {/*    <CCard className="mb-2">

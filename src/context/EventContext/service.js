@@ -51,7 +51,7 @@ export const approvedCustomerJoinEvent = async (eventId, account_id, data) => {
     );
   } catch (e) {
     console.log(e.message);
-    return null
+    return null;
   }
 };
 
@@ -75,3 +75,26 @@ export const approvedVendorJoinEvent = (eventId, account_id, data) => {
     data
   );
 };
+
+export const AddTicket = async (
+  CurrentuserDataID,
+  account_id,
+  data
+) => {
+  console.log(CurrentuserDataID);
+  console.log(data);
+  console.log(account_id);
+  return;
+  try {
+    return await authAxios.put(
+      `/api/event/customer-reg-member`,
+      data,
+      CurrentuserDataID,
+      account_id
+    );
+  } catch (e) {
+    console.log(e.message);
+    return null;
+  }
+};
+ 

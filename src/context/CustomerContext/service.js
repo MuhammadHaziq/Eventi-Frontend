@@ -14,7 +14,6 @@ export const allEventCustomers = async () => {
   }
 };
 export const updateCustomerPoints = (data) => {
-  console.log(data)
   return authAxios.post('/api/event/updatepoints', data);
 };
 

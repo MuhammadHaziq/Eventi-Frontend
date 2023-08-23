@@ -13,10 +13,9 @@ import {
   CFormInput,
 } from "@coreui/react";
 import { dateFormatted } from "../utils/dateFormat";
-import AddTricketMembers from "../views/ticket/AddTicket/AddTricketMembers";
 
-const AppEventDetail = ({ event_detail }) => {
-  console.log("Event Amount....",event_detail.amount); 
+const AppEventDetail = ({ event_detail, userData }) => {
+  
   return (
     <CCard className="mb-4 p-2">
       <CCardHeader>
@@ -148,13 +147,7 @@ const AppEventDetail = ({ event_detail }) => {
                 )}
               </CCarousel>
             </CCol>
-          </CRow>
-          <CRow className="mt-4">
-            <CCol md="12">
-              <strong>Customer Register Members List</strong>
-              <AddTricketMembers />
-            </CCol>
-          </CRow>
+          </CRow>   
         </CContainer>
       </CCardBody>
     </CCard>

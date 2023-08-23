@@ -109,13 +109,11 @@ const Points = ({ visible, setVisible }) => {
     }
   };
   const handleOnChangeCustomer = (e) => {
-    console.log(state.selectedEvent);
     const { value } = e.target;
     if (value) {
       const customerDetail = state.event?.joined_customers.find(
         (item) => item._id === value
       );
-      console.log(customerDetail);
       setState({ ...state, selectedCustomer: value, customer: customerDetail });
     } else {
       setState({
@@ -127,7 +125,6 @@ const Points = ({ visible, setVisible }) => {
     }
   };
   const getAllCustomers = async () => {
-    console.log("got it");
     const response = await allEventCustomers();
     if (response?.status) {
       setEvents(response?.data);

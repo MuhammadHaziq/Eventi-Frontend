@@ -5,6 +5,7 @@ const EventRegistration = React.lazy(() =>
 );
 const CustomerList = React.lazy(() => import("./views/customer"));
 const AdminList = React.lazy(() => import("./views/admin"));
+const Ticket = React.lazy(() => import("./views/ticket"));
 const VendorList = React.lazy(() => import("./views/vendor"));
 const ProductList = React.lazy(() => import("./views/product"));
 const EventList = React.lazy(() => import("./views/events/EventList"));
@@ -14,7 +15,6 @@ const UserProfile = React.lazy(() => import("./views/profile/userProfile"));
 const VendorJoinedDetail = React.lazy(() =>
   import("./views/joinEvent/customer/VendorJoinedDetail")
 );
-
 const CustomerJoinEvent = React.lazy(() =>
   import("./views/joinEvent/customer")
 );
@@ -98,6 +98,12 @@ const routes = [
     name: "Admin List",
     permission: "admin-list",
     element: AdminList,
+  },
+  {
+    path: "/ticket/:event_id",
+    name: "Ticket",
+    permission:"ticket",
+    element: Ticket,
   },
   {
     path: "/event-detail/:account_id/:event_id",
