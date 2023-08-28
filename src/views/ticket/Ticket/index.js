@@ -1,5 +1,7 @@
 import { useState } from "react";
 import TableRows from "../TableRow";
+import { CButton } from "@coreui/react";
+
 import { addProduct } from "src/context/ProductContext/service";
 
 const Ticket = ({ data, eventDetail }) => {
@@ -30,7 +32,10 @@ const Ticket = ({ data, eventDetail }) => {
   };
   console.log("Row Data-----", rowsData);
 
-  
+  const handleSubmit = (event) => {
+    alert("The name you entered was");
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -51,19 +56,14 @@ const Ticket = ({ data, eventDetail }) => {
                   </button>
                 </th>
               </tr>
-              <tr>
-                <th>
-                  <td>
-                    <input type="submit"></input>
-                  </td>
-                </th>
-              </tr>
+             
             </thead>
             <tbody>
               <TableRows
                 rowsData={rowsData}
                 deleteTableRows={deleteTableRows}
                 handleChange={handleChange}
+                handleSubmit={handleSubmit}
               />
             </tbody>
           </table>

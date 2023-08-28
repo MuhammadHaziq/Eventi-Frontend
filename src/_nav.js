@@ -85,8 +85,12 @@ let _nav = [
       },
     ],
   },
-
-  
-
+    {
+    component: CNavItem,
+    name: "Payment History",
+    permission: "customer-payment-history",
+    to: "/customer-payment-history",
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
 ];
 export default _nav;

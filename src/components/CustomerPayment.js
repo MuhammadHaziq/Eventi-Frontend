@@ -177,8 +177,6 @@ const navigate = useNavigate();
             lastName={lastName}
             amount={amount}
           />
-
-          console.log(eventDetail);
           {currentUser?.data?.user_type == "customer" ? (
             <CNav>
               <CNavItem>

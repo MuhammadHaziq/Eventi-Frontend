@@ -219,7 +219,7 @@ const CustomerModal = ({ customer_id, visible, setVisible }) => {
         onClose={setVisible}
         size="lg"
       >
-        <CModalHeader>
+        <CModalHeader> 
           <CModalTitle>{customer_id ? "Edit" : "Add"} Customer</CModalTitle>
         </CModalHeader>
         <CModalBody>
