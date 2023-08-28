@@ -18,6 +18,7 @@ const VendorEventJoin = () => {
   const [eventDetail, setEventDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [productImages, setProductImages] = useState([]);
+  const [reload, setReload] = useState(false);
   const date = new Date();
   const formattedDate = date
     .toLocaleDateString("en-GB", {
@@ -154,8 +155,13 @@ const VendorEventJoin = () => {
     }
   }, [event_id]);
 
-  console.log("End Date", eventDetail?.event_end_date);
-  console.log("Current Date", formattedDate);
+  useEffect(() => {
+    if (reload && event_id) {
+      setReload(false);
+      getEventDetail(event_id);
+    }
+  }, [reload]);
+
   return (
     <>
       <CRow>
@@ -170,6 +176,7 @@ const VendorEventJoin = () => {
               {eventDetail?.event_end_date >= formattedDate ? (
                 <ProductDetail
                   isAdmin={false}
+                  setReload={setReload}
                   joined_event_id={joined_event_id}
                   eventProducts={selectedProducts}
                   showLoading={isLoading}
