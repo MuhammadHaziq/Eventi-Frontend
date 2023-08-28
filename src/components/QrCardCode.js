@@ -37,7 +37,7 @@ alert("Download Pending...")
   // handleQrReset();
   // setDownloaded(true);
 };
-console.log(getCurDate?._id);
+console.log(getCurDate);
   noImg
     ? (imgCustom = null)
     : customImg

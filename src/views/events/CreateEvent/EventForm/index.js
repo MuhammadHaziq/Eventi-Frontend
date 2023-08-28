@@ -360,7 +360,7 @@ export const EventRegistration = () => {
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
-                    type="text"
+                    type="number"
                     id="points_percent"
                     floatingclassname="mb-3"
                     floatinglabel="Points Percentage"

@@ -14,13 +14,14 @@ import {
 } from "@coreui/react";
 import { dateFormatted } from "../utils/dateFormat";
 
-const AppEventDetail = ({ event_detail }) => {
+const AppEventDetail = ({ event_detail, userData }) => {
+  
   return (
     <CCard className="mb-4 p-2">
       <CCardHeader>
         <strong>Event Detail </strong>
         {event_detail?.event_end_date >= dateFormatted() ? (
-         ""
+          ""
         ) : (
           <span className="mr-5">
             <CBadge color="danger">Event Expiry</CBadge>
@@ -146,7 +147,7 @@ const AppEventDetail = ({ event_detail }) => {
                 )}
               </CCarousel>
             </CCol>
-          </CRow>
+          </CRow>   
         </CContainer>
       </CCardBody>
     </CCard>
