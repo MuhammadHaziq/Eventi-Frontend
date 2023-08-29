@@ -105,9 +105,12 @@ const Payment = ({
         status: UserRequestEventStatuses(eventStatus),
       };
       approvedEventStatus(data);
-      resetForm();
+      setVisiblePaymentModel(false)
+      // resetForm();
     },
-    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+    onClose: () => {
+      setVisiblePaymentModel(false)
+    },
   };
   const uuid = () => {
     return "xxxxxxxx".replace(/[xy]/g, function (c) {

@@ -41,6 +41,7 @@ export const EventRegistration = () => {
     equipments: "",
     security: "",
     special_request: "",
+    no_of_tickets: 0,
   });
   const [agree, setAgree] = useState(false);
   const app_dispatch = useAppDispatch();
@@ -71,6 +72,7 @@ export const EventRegistration = () => {
         formData.append("event_start_date", state.event_start_date);
         formData.append("event_end_date", state.event_end_date);
         formData.append("amount", state.amount);
+        formData.append("no_of_tickets", state.no_of_tickets);
         formData.append("points_percent", state.points_percent);
         formData.append("event_location", state.event_location);
         formData.append("type_of_event", state.type_of_event);
@@ -176,7 +178,9 @@ export const EventRegistration = () => {
     setFiles(files?.filter((item) => item.name !== fileName));
   };
   const getPoints = () => {
-    return state.points_percent ? ((state.points_percent/100) * state.amount).toFixed(2) : 0;
+    return state.points_percent
+      ? ((state.points_percent / 100) * state.amount).toFixed(2)
+      : 0;
   };
 
   return (
@@ -347,7 +351,7 @@ export const EventRegistration = () => {
                       { value: "No", label: "No" },
                     ]}
                     isRequired={true}
-                    handleChange={handleOnChange} 
+                    handleChange={handleOnChange}
                     name="security"
                     placeholder="Security needs"
                     value={state.security}
@@ -376,7 +380,24 @@ export const EventRegistration = () => {
                   </CFormFeedback>
                 </CCol>
                 <CCol md={12}>
-                  Customer will receive <strong>{ getPoints() }</strong> points
+                  Customer will receive <strong>{getPoints()}</strong> points
+                </CCol>
+                <CCol md={6}>
+                  <CFormInput
+                    type="number"
+                    id="no_of_tickets"
+                    floatingclassname="mb-3"
+                    floatinglabel="No Of Tickets"
+                    placeholder="No Of Tickets"
+                    label="No Of Tickets"
+                    name="no_of_tickets"
+                    defaultValue={state.no_of_tickets}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a No Of Tickets
+                  </CFormFeedback>
                 </CCol>
                 <CCol md={12}>
                   <CFormTextarea

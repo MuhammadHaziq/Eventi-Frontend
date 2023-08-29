@@ -169,6 +169,20 @@ const CustomerJoinEvent = () => {
 
   const approvedEventStatus = (data) => {
     setIsLoading(true);
+    data = {
+      ...data,
+      attendess: JSON.stringify([
+        {
+          account_id: currentUser?.data?._id,
+          event_id: event_id,
+          first_name: currentUser?.data?.first_name,
+          last_name: currentUser?.data?.last_name,
+          email: currentUser?.data?.email,
+          phone_number: currentUser?.data?.phone_number,
+        },
+      ]),
+      no_of_tickets_sold: +eventDetail?.no_of_tickets_sold + 1,
+    };
     approvedCustomerJoinEvent(event_id, account_id, data)
       .then((response) => {
         if (response.data.data) {
@@ -211,8 +225,13 @@ const CustomerJoinEvent = () => {
               </strong>
             </CCardHeader> */}
             <CCardBody>
-              {eventDetail && <AppEventDetail event_detail={eventDetail} userData={currentUser}/>}
-               <CContainer>
+              {eventDetail && (
+                <AppEventDetail
+                  event_detail={eventDetail}
+                  userData={currentUser}
+                />
+              )}
+              <CContainer>
                 <CRow>
                   <CCol>
                     {eventDetail?.event_end_date <= formattedDate ? (
@@ -247,7 +266,7 @@ const CustomerJoinEvent = () => {
                     )}
                   </CCol>
                 </CRow>
-           </CContainer>
+              </CContainer>
             </CCardBody>
           </CCard>
           {/*    <CCard className="mb-2">
