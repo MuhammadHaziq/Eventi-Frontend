@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import TableRows from "../TableRow";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
-import { CButton, CCallout } from "@coreui/react";
+import { CButton, CCallout, CFormSelect } from "@coreui/react";
 import { UserRequestEventStatuses } from "src/utils/constants";
 import { approvedCustomerJoinEvent } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +10,6 @@ import { PaystackButton } from "react-paystack";
 import { getAttendes } from "src/context/AppContext/service";
 const Ticket = ({ data, eventDetail }) => {
   const navigate = useNavigate();
-  console.log("Ticket Data --------", data);
-  console.log("Event Detail Data --------", eventDetail);
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
   /** Card States */
@@ -20,6 +18,8 @@ const Ticket = ({ data, eventDetail }) => {
   const [phone, setPhone] = useState("");
 
   const [allAttendes, setAllAttendes] = useState([]);
+  const [attende, setAttende] = useState("");
+  const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const date = new Date();
   const formattedDate = date
     .toLocaleDateString("en-GB", {
@@ -31,15 +31,15 @@ const Ticket = ({ data, eventDetail }) => {
     .reverse()
     .join("-");
   const [rowsData, setRowsData] = useState([]);
-  const [attendShow, setAttendShow] = useState(true);
-  const addTableRows = () => {
+
+  const addTableRows = (data) => {
     const rowsInput = {
       account_id: currentUser?.data?._id,
       event_id: eventDetail?._id,
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone_number: "",
+      first_name: data?.first_name || "",
+      last_name: data?.last_name || "",
+      email: data?.email || "",
+      phone_number: data?.phone_number || "",
       disable: false,
     };
     const diff = eventDetail?.no_of_tickets - eventDetail?.no_of_tickets_sold;
@@ -104,6 +104,13 @@ const Ticket = ({ data, eventDetail }) => {
     setRowsData(rowsInput);
   };
 
+  const handleOnChangeAttende = (e) => {
+    setAttende(e.target.value);
+    if (+e.target.value !== 0) {
+      addTableRows(allAttendes?.find((item) => item?._id === e.target.value));
+    }
+  };
+
   const approvedEventStatus = async (data) => {
     data = {
       ...data,
@@ -145,7 +152,6 @@ const Ticket = ({ data, eventDetail }) => {
       (eventDetail?.amount * (rowsData?.length || 1))
     ).toFixed(2);
   };
-  const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
 
   const componentProps = {
     email,
@@ -186,6 +192,23 @@ const Ticket = ({ data, eventDetail }) => {
   return (
     <div className="container">
       <div className="row">
+        {allAttendes?.length > 0 && (
+          <div className="col-sm-4">
+            <CFormSelect
+              size="lg"
+              className="mb-3"
+              aria-label="Large select example"
+              onChange={(e) => handleOnChangeAttende(e)}
+            >
+              <option value="0">Select Attende</option>
+              {allAttendes?.map((item) => (
+                <option value={item?._id}>
+                  {(item?.first_name || "") + " " + (item?.last_name || "")}
+                </option>
+              ))}
+            </CFormSelect>
+          </div>
+        )}
         <div className="col-sm-12">
           <table className="table">
             <thead>
@@ -213,6 +236,7 @@ const Ticket = ({ data, eventDetail }) => {
             </tbody>
           </table>
         </div>
+
         <div className="col-sm-12">
           <div
             className="d-grid gap-2 mx-3"
@@ -265,29 +289,6 @@ const Ticket = ({ data, eventDetail }) => {
                 <PaystackButton {...componentProps} />
               )
             ) : (
-              // <CButton
-              //   onClick={() => payNowClick(eventDetail)}
-              //   color={
-              //     eventDetail?.joined_customers
-              //       ?.map((ite) => ite?.customer_id)
-              //       .includes(currentUser?.data?._id)
-              //       ? "warning"
-              //       : "primary"
-              //   }
-              //   disabled={["Request To Join", "Approved"].includes(
-              //     eventDetail?.joined_customers?.filter(
-              //       (eventDetail) =>
-              //         eventDetail?.customer_id === currentUser?.data?._id
-              //     )?.[0]?.event_status || "Pending"
-              //   )}
-              // >
-              //   {EventStatuses(
-              //     eventDetail?.joined_customers?.filter(
-              //       (eventDetail) =>
-              //         eventDetail?.customer_id === currentUser?.data?._id
-              //     )?.[0]?.event_status || "Pending For Payment"
-              //   ) || "Pay Now"}
-              // </CButton>
               <CCallout
                 style={{ marginTop: "-10px", marginBottom: "-10px" }}
                 color="danger"
