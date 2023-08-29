@@ -18,8 +18,6 @@ const Ticket = ({ data, eventDetail }) => {
   /** Card States */
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
 
   const [showPaymentModel, setShowPaymentModel] = useState(false);
@@ -75,8 +73,6 @@ const Ticket = ({ data, eventDetail }) => {
       ]);
       setEmail(currentUser?.data?.email || "");
       setPhone(currentUser?.data?.phone_number || "");
-      setFirstName(currentUser?.data?.first_name || "");
-      setLastName(currentUser?.data?.last_name || "");
       setName(
         (currentUser?.data?.first_name || "") +
           " " +
@@ -168,7 +164,7 @@ const Ticket = ({ data, eventDetail }) => {
 
   const componentProps = {
     email,
-    amount: eventDetail?.amount * (rowsData?.length || 1),
+    amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
     currency: "ZAR",
     metadata: {
       name,
@@ -238,7 +234,51 @@ const Ticket = ({ data, eventDetail }) => {
             style={{ marginTop: "10px", marginBottom: "10px" }}
           >
             {eventDetail?.event_end_date >= formattedDate ? (
-              <PaystackButton className="paystack-button" {...componentProps} />
+              rowsData?.filter((item) => !item.first_name)?.length > 0 ? (
+                <CButton
+                  color={
+                    eventDetail?.joined_customers
+                      ?.map((ite) => ite?.customer_id)
+                      .includes(currentUser?.data?._id)
+                      ? "warning"
+                      : "primary"
+                  }
+                  onClick={() =>
+                    app_dispatch({
+                      type: "SHOW_RESPONSE",
+                      toast: AppToast({
+                        message: "Please Add First Name",
+                        color: "danger-alert",
+                      }),
+                    })
+                  }
+                >{`Pay Now ${
+                  eventDetail?.amount * (rowsData?.length || 1)
+                }`}</CButton>
+              ) : rowsData?.filter((item) => !item.phone_number)?.length > 0 ? (
+                <CButton
+                  color={
+                    eventDetail?.joined_customers
+                      ?.map((ite) => ite?.customer_id)
+                      .includes(currentUser?.data?._id)
+                      ? "warning"
+                      : "primary"
+                  }
+                  onClick={() =>
+                    app_dispatch({
+                      type: "SHOW_RESPONSE",
+                      toast: AppToast({
+                        message: "Please Add Phone Number",
+                        color: "danger-alert",
+                      }),
+                    })
+                  }
+                >{`Pay Now ${
+                  eventDetail?.amount * (rowsData?.length || 1)
+                }`}</CButton>
+              ) : (
+                <PaystackButton {...componentProps} />
+              )
             ) : (
               // <CButton
               //   onClick={() => payNowClick(eventDetail)}
