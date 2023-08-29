@@ -3,12 +3,11 @@ import TableRows from "../TableRow";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import { CButton, CCallout } from "@coreui/react";
-import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
+import { UserRequestEventStatuses } from "src/utils/constants";
 import { approvedCustomerJoinEvent } from "src/context/EventContext/service";
-import CustomerPayment from "src/components/CustomerPayment";
 import { useNavigate } from "react-router-dom";
 import { PaystackButton } from "react-paystack";
-
+import { getAttendes } from "src/context/AppContext/service";
 const Ticket = ({ data, eventDetail }) => {
   const navigate = useNavigate();
   console.log("Ticket Data --------", data);
@@ -20,7 +19,7 @@ const Ticket = ({ data, eventDetail }) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
 
-  const [showPaymentModel, setShowPaymentModel] = useState(false);
+  const [allAttendes, setAllAttendes] = useState([]);
   const date = new Date();
   const formattedDate = date
     .toLocaleDateString("en-GB", {
@@ -57,6 +56,15 @@ const Ticket = ({ data, eventDetail }) => {
     return false;
   };
 
+  const getAllAttendess = async () => {
+    try {
+      const response = await getAttendes();
+      setAllAttendes(response?.data?.data || []);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   useEffect(() => {
     if (currentUser && currentUser?.data) {
       setRowsData([
@@ -79,6 +87,7 @@ const Ticket = ({ data, eventDetail }) => {
           (currentUser?.data?.last_name || "")
       );
     }
+    getAllAttendess();
   }, [currentUser]);
 
   const deleteTableRows = (index) => {
@@ -94,32 +103,7 @@ const Ticket = ({ data, eventDetail }) => {
     setRowsData(rowsInput);
   };
 
-  const payNowClick = (row) => {
-    console.log("Pay Now clicked for row:", row.amount);
-    setShowPaymentModel(true);
-  };
-
   const approvedEventStatus = async (data) => {
-    if (rowsData?.filter((item) => !item.first_name)?.length > 0) {
-      app_dispatch({
-        type: "SHOW_RESPONSE",
-        toast: AppToast({
-          message: "Please Add First Name",
-          color: "danger-alert",
-        }),
-      });
-      return false;
-    }
-    if (rowsData?.filter((item) => !item.email)?.length > 0) {
-      app_dispatch({
-        type: "SHOW_RESPONSE",
-        toast: AppToast({
-          message: "Please Add Email",
-          color: "danger-alert",
-        }),
-      });
-      return false;
-    }
     data = {
       ...data,
       attendess: JSON.stringify(rowsData),
@@ -313,17 +297,6 @@ const Ticket = ({ data, eventDetail }) => {
           </div>
         </div>
       </div>
-      {/* {showPaymentModel === true ? (
-        <CustomerPayment
-          visiblePaymentModel={showPaymentModel}
-          setVisiblePaymentModel={setShowPaymentModel}
-          eventDetail={eventDetail}
-          approvedEventStatus={approvedEventStatus}
-          eventStatus={"Pending For Payment"}
-        />
-      ) : (
-        false
-      )} */}
     </div>
   );
 };
