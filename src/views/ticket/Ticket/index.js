@@ -3,16 +3,25 @@ import TableRows from "../TableRow";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import { CButton, CCallout } from "@coreui/react";
-import { EventStatuses } from "src/utils/constants";
+import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
 import { approvedCustomerJoinEvent } from "src/context/EventContext/service";
 import CustomerPayment from "src/components/CustomerPayment";
 import { useNavigate } from "react-router-dom";
+import { PaystackButton } from "react-paystack";
+
 const Ticket = ({ data, eventDetail }) => {
   const navigate = useNavigate();
   console.log("Ticket Data --------", data);
   console.log("Event Detail Data --------", eventDetail);
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
+  /** Card States */
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+
   const [showPaymentModel, setShowPaymentModel] = useState(false);
   const date = new Date();
   const formattedDate = date
@@ -64,6 +73,15 @@ const Ticket = ({ data, eventDetail }) => {
         },
         ...rowsData,
       ]);
+      setEmail(currentUser?.data?.email || "");
+      setPhone(currentUser?.data?.phone_number || "");
+      setFirstName(currentUser?.data?.first_name || "");
+      setLastName(currentUser?.data?.last_name || "");
+      setName(
+        (currentUser?.data?.first_name || "") +
+          " " +
+          (currentUser?.data?.last_name || "")
+      );
     }
   }, [currentUser]);
 
@@ -140,6 +158,50 @@ const Ticket = ({ data, eventDetail }) => {
     }
   };
 
+  const getPoints = () => {
+    return (
+      (eventDetail?.points_percent / 100) *
+      (eventDetail?.amount * (rowsData?.length || 1))
+    ).toFixed(2);
+  };
+  const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
+
+  const componentProps = {
+    email,
+    amount: eventDetail?.amount * (rowsData?.length || 1),
+    currency: "ZAR",
+    metadata: {
+      name,
+      phone,
+    },
+    publicKey,
+    className: `${
+      eventDetail?.joined_customers
+        ?.map((ite) => ite?.customer_id)
+        .includes(currentUser?.data?._id)
+        ? "btn btn-warning"
+        : "btn btn-primary"
+    }`,
+    text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
+    // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
+    onSuccess: ({ reference }) => {
+      const data = {
+        account_id: currentUser?.data?._id,
+        event_id: eventDetail?._id,
+        payment_id: reference,
+        payment_method: paymentMethod,
+        points_available: getPoints(),
+        amount: eventDetail?.amount * (rowsData?.length || 1),
+        currency: "ZAR",
+        status: UserRequestEventStatuses(eventStatus),
+      };
+      approvedEventStatus(data);
+      // payNowPaystack(data);
+      // resetForm();
+    },
+    onClose: () => console.log("Wait! don't go!!!!"),
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -176,30 +238,31 @@ const Ticket = ({ data, eventDetail }) => {
             style={{ marginTop: "10px", marginBottom: "10px" }}
           >
             {eventDetail?.event_end_date >= formattedDate ? (
-              <CButton
-                onClick={() => payNowClick(eventDetail)}
-                color={
-                  eventDetail?.joined_customers
-                    ?.map((ite) => ite?.customer_id)
-                    .includes(currentUser?.data?._id)
-                    ? "warning"
-                    : "primary"
-                }
-                disabled={["Request To Join", "Approved"].includes(
-                  eventDetail?.joined_customers?.filter(
-                    (eventDetail) =>
-                      eventDetail?.customer_id === currentUser?.data?._id
-                  )?.[0]?.event_status || "Pending"
-                )}
-              >
-                {EventStatuses(
-                  eventDetail?.joined_customers?.filter(
-                    (eventDetail) =>
-                      eventDetail?.customer_id === currentUser?.data?._id
-                  )?.[0]?.event_status || "Pending For Payment"
-                ) || "Pay Now"}
-              </CButton>
+              <PaystackButton className="paystack-button" {...componentProps} />
             ) : (
+              // <CButton
+              //   onClick={() => payNowClick(eventDetail)}
+              //   color={
+              //     eventDetail?.joined_customers
+              //       ?.map((ite) => ite?.customer_id)
+              //       .includes(currentUser?.data?._id)
+              //       ? "warning"
+              //       : "primary"
+              //   }
+              //   disabled={["Request To Join", "Approved"].includes(
+              //     eventDetail?.joined_customers?.filter(
+              //       (eventDetail) =>
+              //         eventDetail?.customer_id === currentUser?.data?._id
+              //     )?.[0]?.event_status || "Pending"
+              //   )}
+              // >
+              //   {EventStatuses(
+              //     eventDetail?.joined_customers?.filter(
+              //       (eventDetail) =>
+              //         eventDetail?.customer_id === currentUser?.data?._id
+              //     )?.[0]?.event_status || "Pending For Payment"
+              //   ) || "Pay Now"}
+              // </CButton>
               <CCallout
                 style={{ marginTop: "-10px", marginBottom: "-10px" }}
                 color="danger"
@@ -210,7 +273,7 @@ const Ticket = ({ data, eventDetail }) => {
           </div>
         </div>
       </div>
-      {showPaymentModel === true ? (
+      {/* {showPaymentModel === true ? (
         <CustomerPayment
           visiblePaymentModel={showPaymentModel}
           setVisiblePaymentModel={setShowPaymentModel}
@@ -220,7 +283,7 @@ const Ticket = ({ data, eventDetail }) => {
         />
       ) : (
         false
-      )}
+      )} */}
     </div>
   );
 };

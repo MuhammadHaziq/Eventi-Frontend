@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PaystackButton } from "react-paystack";
 import {
-  CFormLabel,
-  CFormInput,
   CCol,
   CSpinner,
   CModal,
@@ -39,7 +37,7 @@ const CustomerPayment = ({
   const [paymentError, setPaymentError] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const { currentUser } = useAppState();
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const changePaymentMethod = (e) => {
     setPaymentError(false);
     setPaymentMethod(e.target.value);
@@ -73,7 +71,7 @@ const navigate = useNavigate();
   };
   const componentProps = {
     email,
-    amount: amount * 100,
+    amount: amount,
     currency: "ZAR",
     metadata: {
       name,
@@ -91,7 +89,7 @@ const navigate = useNavigate();
         payment_id: reference,
         payment_method: paymentMethod,
         points_available: getPoints(),
-        amount: amount * 100,
+        amount: amount,
         currency: "ZAR",
         status: UserRequestEventStatuses(eventStatus),
       };
@@ -110,11 +108,13 @@ const navigate = useNavigate();
   const showError = () => {
     setPaymentError(true);
   };
+
   const payNowPaystack = async (data) => {
     await approvedEventStatus(data);
     setIsPaying(false);
     setVisiblePaymentModel(false);
   };
+
   const payNowCash = async () => {
     setIsPaying(true);
     const data = {
@@ -123,7 +123,7 @@ const navigate = useNavigate();
       payment_id: uuid(),
       payment_method: paymentMethod,
       points_available: getPoints(),
-      amount: amount * 100,
+      amount: amount,
       currency: "ZAR",
       status: UserRequestEventStatuses(eventStatus),
     };
@@ -183,9 +183,11 @@ const navigate = useNavigate();
                 <CNavLink active>
                   *Note If you want buy more Ticket for this Event{" "}
                   <b>
-                  <span onClick={() => navigate(`/ticket/${eventDetail?._id}`)}>
-                    <u>Please Click here</u>
-                  </span>
+                    <span
+                      onClick={() => navigate(`/ticket/${eventDetail?._id}`)}
+                    >
+                      <u>Please Click here</u>
+                    </span>
                   </b>
                 </CNavLink>
               </CNavItem>
