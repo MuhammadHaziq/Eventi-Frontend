@@ -55,7 +55,7 @@ const CustomerPayment = () => {
 
   const [columns] = useState([
     {
-      key: "",
+      key: "eventName",
       label: "Event Name",
       filter: true,
       isShow: true,
@@ -86,7 +86,8 @@ const CustomerPayment = () => {
   return (
     <>
       <CRow>
-        <CCol>
+        <CCol md={2}></CCol>
+        <CCol md={8}>
           <CCard className="mb-2">
             <CCardHeader className="d-flex justify-content-between">
               <strong>
@@ -120,7 +121,15 @@ const CustomerPayment = () => {
                 onSorterChange={(sorter) => {
                   updateFilter({ sort: JSON.stringify(sorter) });
                 }}
-                scopedColumns={{}}
+                scopedColumns={{
+                  eventName: (item) => (
+                    <td>
+                      <div className="d-flex gap-2">
+                        {item?.event_id?.event_name}
+                      </div>
+                    </td>
+                  ),
+                }}
               />
               {/*   {+tableMeta?.pageCount > 1 && (
         <div className={"mt-2"}>
@@ -138,6 +147,7 @@ const CustomerPayment = () => {
             </CCardBody>
           </CCard>
         </CCol>
+        <CCol md={2}></CCol>;
       </CRow>
     </>
   );
