@@ -82,7 +82,7 @@ const Payment = ({
   const componentProps = {
     email,
     amount: +amount * 100,
-    currency: "NGN",
+    currency: "ZAR",
     metadata: {
       name,
       phone,
@@ -101,7 +101,7 @@ const Payment = ({
         event_id: eventDetail?._id,
         payment_id: reference,
         amount: +amount * 100,
-        currency: "NGN",
+        currency: "ZAR",
         status: UserRequestEventStatuses(eventStatus),
       };
       approvedEventStatus(data);
@@ -126,10 +126,10 @@ const Payment = ({
       account_id: vendor?.account_id,
       event_id: eventDetail?._id,
       products: selectedProducts,
-      payment_metNGN: paymentMethod,
+      payment_metZAR: paymentMethod,
       payment_id: uuid(),
       amount: +amount * 100,
-      currency: "NGN",
+      currency: "ZAR",
       status: UserRequestEventStatuses('Approved'),
     };
     await approvedEventStatus(data);

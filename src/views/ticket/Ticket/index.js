@@ -150,13 +150,13 @@ const Ticket = ({ data, eventDetail }) => {
     return (
       (eventDetail?.points_percent / 100) *
       (eventDetail?.amount * (rowsData?.length || 1))
-    ).toFixed(2);
+    ).toFixed(2)
   };
 
   const componentProps = {
     email,
     amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
-    currency: "NGN",
+    currency: "ZAR",
     metadata: {
       name,
       phone,
@@ -173,13 +173,13 @@ const Ticket = ({ data, eventDetail }) => {
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
       const data = {
-        account_id: currentUser?.data?._id,
+        account_id:ZARrrentUser?.data?._id,
         event_id: eventDetail?._id,
         payment_id: reference,
         payment_method: paymentMethod,
         points_available: getPoints(),
         amount: eventDetail?.amount * (rowsData?.length || 1),
-        currency: "NGN",
+        currency: "ZAR",
         status: UserRequestEventStatuses(eventStatus),
       };
       approvedEventStatus(data);

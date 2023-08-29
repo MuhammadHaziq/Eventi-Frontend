@@ -72,8 +72,8 @@ const CustomerPayment = ({
   };
   const componentProps = {
     email,
-    amount: amount * 100,
-    currency: "NGN",
+    amount: amount,
+    currency: "ZAR",
     metadata: {
       name,
       phone,
@@ -91,7 +91,7 @@ const CustomerPayment = ({
         payment_method: paymentMethod,
         points_available: getPoints(),
         amount: amount,
-        currency: "NGN",
+        currency: "ZAR",
         status: UserRequestEventStatuses(eventStatus),
       };
       payNowPaystack(data);
@@ -125,7 +125,7 @@ const CustomerPayment = ({
       payment_method: paymentMethod,
       points_available: getPoints(),
       amount: amount,
-      currency: "NGN",
+      currency: "ZAR",
       status: UserRequestEventStatuses(eventStatus),
     };
     await approvedEventStatus(data);
