@@ -25,7 +25,6 @@ const CustomerPayment = () => {
   const tableFilterDebounce = useDebounce(tableFilters, 300);
 
   const account_id = currentUser?.data?.user_detail?.account_id;
-
   const { data, error, isFetching, isLoading, isError } = useQuery(
     ["CustomersPayment"],
     () => customerPaymentHistory(account_id),
@@ -51,11 +50,12 @@ const CustomerPayment = () => {
     setFilters({ ...filters, ...filterDatas });
   };
 
-  console.log(data?.data?.data);
+  const eventNames = data?.data.data.map((event) => event.event_id.event_name);
+  console.log(eventNames);
 
   const [columns] = useState([
     {
-      key: "event_name",
+      key: "",
       label: "Event Name",
       filter: true,
       isShow: true,
@@ -97,9 +97,9 @@ const CustomerPayment = () => {
               <CSmartTable
                 columns={columns}
                 loading={false}
-                  items={data?.data?.data?.take}
+                items={data?.data?.data}
                 fields={fields}
-                  itemsPerPage={data?.data?.data?.take}
+                itemsPerPage={data?.data?.data?.take}
                 itemsPerPageSelect
                 sorter={"true"}
                 hover={"true"}

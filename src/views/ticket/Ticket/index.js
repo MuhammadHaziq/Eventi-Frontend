@@ -25,6 +25,7 @@ const Ticket = ({ data, eventDetail }) => {
     .reverse()
     .join("-");
   const [rowsData, setRowsData] = useState([]);
+  const [attendShow, setAttendShow] = useState(true)
   const addTableRows = () => {
     const rowsInput = {
       account_id: currentUser?.data?._id,
@@ -212,11 +213,12 @@ const Ticket = ({ data, eventDetail }) => {
       </div>
       {showPaymentModel === true ? (
         <CustomerPayment
-          visiblePaymentModel={showPaymentModel}
-          setVisiblePaymentModel={setShowPaymentModel}
-          eventDetail={eventDetail}
-          approvedEventStatus={approvedEventStatus}
-          eventStatus={"Pending For Payment"}
+        visiblePaymentModel={showPaymentModel}
+        setVisiblePaymentModel={setShowPaymentModel}
+        eventDetail={eventDetail}
+        approvedEventStatus={approvedEventStatus}
+        eventStatus={"Pending For Payment"}
+        setAttendShow={attendShow}
         />
       ) : (
         false

@@ -27,6 +27,7 @@ const CustomerPayment = ({
   approvedEventStatus,
   eventStatus,
   eventDetail,
+  setAttendShow,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const [email, setEmail] = useState("");
@@ -39,7 +40,7 @@ const CustomerPayment = ({
   const [paymentError, setPaymentError] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const { currentUser } = useAppState();
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const changePaymentMethod = (e) => {
     setPaymentError(false);
     setPaymentMethod(e.target.value);
@@ -74,7 +75,7 @@ const navigate = useNavigate();
   const componentProps = {
     email,
     amount: amount * 100,
-    currency: "ZAR",
+    currency: "NGN",
     metadata: {
       name,
       phone,
@@ -92,7 +93,7 @@ const navigate = useNavigate();
         payment_method: paymentMethod,
         points_available: getPoints(),
         amount: amount * 100,
-        currency: "ZAR",
+        currency: "NGN",
         status: UserRequestEventStatuses(eventStatus),
       };
       payNowPaystack(data);
@@ -124,7 +125,7 @@ const navigate = useNavigate();
       payment_method: paymentMethod,
       points_available: getPoints(),
       amount: amount * 100,
-      currency: "ZAR",
+      currency: "NGN",
       status: UserRequestEventStatuses(eventStatus),
     };
     await approvedEventStatus(data);
@@ -177,21 +178,32 @@ const navigate = useNavigate();
             lastName={lastName}
             amount={amount}
           />
-          {currentUser?.data?.user_type == "customer" ? (
-            <CNav>
-              <CNavItem>
-                <CNavLink active>
-                  *Note If you want buy more Ticket for this Event{" "}
-                  <b>
-                  <span onClick={() => navigate(`/ticket/${eventDetail?._id}`)}>
-                    <u>Please Click here</u>
-                  </span>
-                  </b>
-                </CNavLink>
-              </CNavItem>
-            </CNav>
-          ) : (
+
+          {setAttendShow === true ? (
             ""
+          ) : (
+            <div>
+              {currentUser?.data?.user_type == "customer" ? (
+                <CNav>
+                  <CNavItem>
+                    <CNavLink active>
+                      *Note If you want buy more Ticket for this Event{" "}
+                      <b>
+                        <span
+                          onClick={() =>
+                            navigate(`/ticket/${eventDetail?._id}`)
+                          }
+                        >
+                          <u>Please Click here</u>
+                        </span>
+                      </b>
+                    </CNavLink>
+                  </CNavItem>
+                </CNav>
+              ) : (
+                ""
+              )}
+            </div>
           )}
 
           <CModalFooter>

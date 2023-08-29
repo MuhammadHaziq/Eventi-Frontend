@@ -85,7 +85,8 @@ const CustomerTable = ({
       disabled: false,
     },
   ]);
-
+  console.log("Customer Data -----------------------",customers);
+  console.log("Customer Data Table------------------",tableMeta);
   useEffect(() => {
     if (columns.length > 0) {
       setFields(columns.filter((itm) => itm.isShow));
@@ -132,14 +133,14 @@ const CustomerTable = ({
                   (item) => item.permission === "customer-edit"
                 ) && (
                   <>
-                  <AppEditButton
-                    onClick={clickOnUpdatePoints}
-                    edit_id={item.account_id}
-                  />
-                  <AppEditButton
-                    onClick={clickOnEdit}
-                    edit_id={item.account_id}
-                  />
+                    <AppEditButton
+                      onClick={clickOnUpdatePoints}
+                      edit_id={item.account_id}
+                    />
+                    <AppEditButton
+                      onClick={clickOnEdit}
+                      edit_id={item.account_id}
+                    />
                   </>
                 )}
                 {permissions?.find(
