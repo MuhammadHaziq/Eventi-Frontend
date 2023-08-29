@@ -41,8 +41,9 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
 
   const payNowClick = (row) => {
     console.log("Pay Now clicked for row:", row.amount);
-    setEventDetail(row);
-    setShowPaymentModel(true);
+    // setEventDetail(row);
+    // setShowPaymentModel(true);
+    navigate(`/ticket/${row?._id}`);
   };
 
   const approvedEventStatus = async (data) => {
