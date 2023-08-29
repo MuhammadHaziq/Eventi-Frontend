@@ -146,15 +146,18 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                     </span>
                   )}
                 </span>
-              </div>
+              </div> 
               <div className="qr-event">
                 <h6 className="event-card-header vendarH6Info">Event QR:</h6>
                 <span className="event-card-text vendarSpanInfo">
                   <QrCode
-                    size={80}
+                    size={100}
                     value={
-                      currentUser?.data?._id
-                        ? currentUser?.data?._id
+                      item?._id
+                        ? JSON.stringify([
+                           { event_id: item?._id},
+                            {account_id: currentUser?.data?._id},
+                        ])
                         : "No Data Found"
                     }
                     level="H"
