@@ -153,11 +153,8 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   <QrCode
                     size={50}
                     value={
-                      item?._id
-                        ? JSON.stringify({
-                            event_id: item?._id,
-                            account_id: currentUser?.data?._id,
-                          })
+                      currentUser?.data?._id
+                        ? currentUser?.data?._id
                         : "No Data Found"
                     }
                     level="H"
