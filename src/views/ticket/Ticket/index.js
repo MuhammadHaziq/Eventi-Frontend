@@ -171,7 +171,7 @@ const Ticket = ({ data, eventDetail }) => {
     }`,
     text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
-    onSuccess: ({ reference }) => {
+    onSuccess: async ({ reference }) => {
       const data = {
         account_id: currentUser?.data?._id,
         event_id: eventDetail?._id,
@@ -182,7 +182,7 @@ const Ticket = ({ data, eventDetail }) => {
         currency: "NGN",
         status: UserRequestEventStatuses(eventStatus),
       };
-      approvedEventStatus(data);
+      await approvedEventStatus(data);
       // payNowPaystack(data);
       // resetForm();
     },
@@ -264,7 +264,7 @@ const Ticket = ({ data, eventDetail }) => {
                 >{`Pay Now ${
                   eventDetail?.amount * (rowsData?.length || 1)
                 }`}</CButton>
-              ) : rowsData?.filter((item) => !item.phone_number)?.length > 0 ? (
+              ) : rowsData?.filter((item) => !item.email)?.length > 0 ? (
                 <CButton
                   color={
                     eventDetail?.joined_customers
@@ -277,7 +277,7 @@ const Ticket = ({ data, eventDetail }) => {
                     app_dispatch({
                       type: "SHOW_RESPONSE",
                       toast: AppToast({
-                        message: "Please Add Phone Number",
+                        message: "Please Add Email",
                         color: "danger-alert",
                       }),
                     })
@@ -289,6 +289,7 @@ const Ticket = ({ data, eventDetail }) => {
                 <PaystackButton {...componentProps} />
               )
             ) : (
+              // <PaystackButton {...componentProps} />
               <CCallout
                 style={{ marginTop: "-10px", marginBottom: "-10px" }}
                 color="danger"
