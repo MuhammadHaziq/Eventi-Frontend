@@ -146,7 +146,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                     </span>
                   )}
                 </span>
-              </div>
+              </div> 
               <div className="qr-event">
                 <h6 className="event-card-header vendarH6Info">Event QR:</h6>
                 <span className="event-card-text vendarSpanInfo">
