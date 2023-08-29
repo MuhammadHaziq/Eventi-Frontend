@@ -11,6 +11,7 @@ function QrCardCode({
   customImg,
   noImg,
   handleQrReset,
+  size = 250,
 }) {
   let imgCustom = undefined;
   const [downloaded, setDownloaded] = useState(false);
@@ -22,22 +23,22 @@ function QrCardCode({
   }, [downloaded]);
 
   const downloadQrCode = (e) => {
-  e.preventDefault();
-alert("Download Pending...")
-  // const qrCanvas = qrRef.current.querySelector("canvas"),
-  //   qrImage = qrCanvas.toDataURL("image/png"),
-  //   qrAnchor = document.createElement("a"),
-  //   fileName = url.replace(httpRgx, "").trim();
-  // qrAnchor.href = qrImage;
-  // qrAnchor.download = fileName + "_QrCode.png";
-  // document.body.appendChild(qrAnchor);
-  // qrAnchor.click();
-  // document.body.removeChild(qrAnchor);
+    e.preventDefault();
+    alert("Download Pending...");
+    // const qrCanvas = qrRef.current.querySelector("canvas"),
+    //   qrImage = qrCanvas.toDataURL("image/png"),
+    //   qrAnchor = document.createElement("a"),
+    //   fileName = url.replace(httpRgx, "").trim();
+    // qrAnchor.href = qrImage;
+    // qrAnchor.download = fileName + "_QrCode.png";
+    // document.body.appendChild(qrAnchor);
+    // qrAnchor.click();
+    // document.body.removeChild(qrAnchor);
 
-  // handleQrReset();
-  // setDownloaded(true);
-};
-console.log(getCurDate);
+    // handleQrReset();
+    // setDownloaded(true);
+  };
+  console.log(getCurDate);
   noImg
     ? (imgCustom = null)
     : customImg
@@ -48,7 +49,7 @@ console.log(getCurDate);
     <article className="card">
       <div className="qr-box" ref={qrRef} style={{ backgroundColor: bgColor }}>
         <QrCode
-          size={250}
+          size={size}
           value={getCurDate ? getCurDate?._id : "No Data Found"}
           bgColor={bgColor}
           fgColor={qrColor}
@@ -62,16 +63,15 @@ console.log(getCurDate);
           }}
         />
       </div>
-      
+
       {/*   <CButton onClick={downloadQrCode}>
           <span>Download now</span>
          <img src="./logo-apple-icon192.png" alt="Travolgi" /> 
         </CButton>
   
         {downloaded && <p className="success-msg">Qr Code downloaded.</p>} */}
-      
-      </article>
-      );
-    }
-    
-    export default QrCardCode;
+    </article>
+  );
+}
+
+export default QrCardCode;

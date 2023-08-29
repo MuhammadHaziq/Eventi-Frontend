@@ -41,9 +41,13 @@
 .event-card-text {
   font-size: 0.9rem;
   color: #555;
-   max-width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
 }
 
 .event-card-join-button {
   margin-top: auto;
+}
+.qr-event {
+  display: flex;
+  align-items: center;
 }
