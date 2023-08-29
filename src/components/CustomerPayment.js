@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PaystackButton } from "react-paystack";
 import {
-  CFormLabel,
-  CFormInput,
   CCol,
   CSpinner,
   CModal,
@@ -92,7 +90,7 @@ const CustomerPayment = ({
         payment_id: reference,
         payment_method: paymentMethod,
         points_available: getPoints(),
-        amount: amount * 100,
+        amount: amount,
         currency: "NGN",
         status: UserRequestEventStatuses(eventStatus),
       };
@@ -111,11 +109,13 @@ const CustomerPayment = ({
   const showError = () => {
     setPaymentError(true);
   };
+
   const payNowPaystack = async (data) => {
     await approvedEventStatus(data);
     setIsPaying(false);
     setVisiblePaymentModel(false);
   };
+
   const payNowCash = async () => {
     setIsPaying(true);
     const data = {
@@ -124,7 +124,7 @@ const CustomerPayment = ({
       payment_id: uuid(),
       payment_method: paymentMethod,
       points_available: getPoints(),
-      amount: amount * 100,
+      amount: amount,
       currency: "NGN",
       status: UserRequestEventStatuses(eventStatus),
     };

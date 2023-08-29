@@ -3,17 +3,23 @@ import TableRows from "../TableRow";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import { CButton, CCallout } from "@coreui/react";
-import { EventStatuses } from "src/utils/constants";
+import { UserRequestEventStatuses } from "src/utils/constants";
 import { approvedCustomerJoinEvent } from "src/context/EventContext/service";
-import CustomerPayment from "src/components/CustomerPayment";
 import { useNavigate } from "react-router-dom";
+import { PaystackButton } from "react-paystack";
+import { getAttendes } from "src/context/AppContext/service";
 const Ticket = ({ data, eventDetail }) => {
   const navigate = useNavigate();
   console.log("Ticket Data --------", data);
   console.log("Event Detail Data --------", eventDetail);
   const { currentUser } = useAppState();
   const app_dispatch = useAppDispatch();
-  const [showPaymentModel, setShowPaymentModel] = useState(false);
+  /** Card States */
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [allAttendes, setAllAttendes] = useState([]);
   const date = new Date();
   const formattedDate = date
     .toLocaleDateString("en-GB", {
@@ -25,7 +31,7 @@ const Ticket = ({ data, eventDetail }) => {
     .reverse()
     .join("-");
   const [rowsData, setRowsData] = useState([]);
-  const [attendShow, setAttendShow] = useState(true)
+  const [attendShow, setAttendShow] = useState(true);
   const addTableRows = () => {
     const rowsInput = {
       account_id: currentUser?.data?._id,
@@ -51,6 +57,15 @@ const Ticket = ({ data, eventDetail }) => {
     return false;
   };
 
+  const getAllAttendess = async () => {
+    try {
+      const response = await getAttendes();
+      setAllAttendes(response?.data?.data || []);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   useEffect(() => {
     if (currentUser && currentUser?.data) {
       setRowsData([
@@ -65,7 +80,15 @@ const Ticket = ({ data, eventDetail }) => {
         },
         ...rowsData,
       ]);
+      setEmail(currentUser?.data?.email || "");
+      setPhone(currentUser?.data?.phone_number || "");
+      setName(
+        (currentUser?.data?.first_name || "") +
+          " " +
+          (currentUser?.data?.last_name || "")
+      );
     }
+    getAllAttendess();
   }, [currentUser]);
 
   const deleteTableRows = (index) => {
@@ -81,32 +104,7 @@ const Ticket = ({ data, eventDetail }) => {
     setRowsData(rowsInput);
   };
 
-  const payNowClick = (row) => {
-    console.log("Pay Now clicked for row:", row.amount);
-    setShowPaymentModel(true);
-  };
-
   const approvedEventStatus = async (data) => {
-    if (rowsData?.filter((item) => !item.first_name)?.length > 0) {
-      app_dispatch({
-        type: "SHOW_RESPONSE",
-        toast: AppToast({
-          message: "Please Add First Name",
-          color: "danger-alert",
-        }),
-      });
-      return false;
-    }
-    if (rowsData?.filter((item) => !item.email)?.length > 0) {
-      app_dispatch({
-        type: "SHOW_RESPONSE",
-        toast: AppToast({
-          message: "Please Add Email",
-          color: "danger-alert",
-        }),
-      });
-      return false;
-    }
     data = {
       ...data,
       attendess: JSON.stringify(rowsData),
@@ -139,6 +137,50 @@ const Ticket = ({ data, eventDetail }) => {
     } catch (e) {
       console.log(e.message);
     }
+  };
+
+  const getPoints = () => {
+    return (
+      (eventDetail?.points_percent / 100) *
+      (eventDetail?.amount * (rowsData?.length || 1))
+    ).toFixed(2);
+  };
+  const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
+
+  const componentProps = {
+    email,
+    amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
+    currency: "ZAR",
+    metadata: {
+      name,
+      phone,
+    },
+    publicKey,
+    className: `${
+      eventDetail?.joined_customers
+        ?.map((ite) => ite?.customer_id)
+        .includes(currentUser?.data?._id)
+        ? "btn btn-warning"
+        : "btn btn-primary"
+    }`,
+    text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
+    // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
+    onSuccess: ({ reference }) => {
+      const data = {
+        account_id: currentUser?.data?._id,
+        event_id: eventDetail?._id,
+        payment_id: reference,
+        payment_method: paymentMethod,
+        points_available: getPoints(),
+        amount: eventDetail?.amount * (rowsData?.length || 1),
+        currency: "ZAR",
+        status: UserRequestEventStatuses(eventStatus),
+      };
+      approvedEventStatus(data);
+      // payNowPaystack(data);
+      // resetForm();
+    },
+    onClose: () => console.log("Wait! don't go!!!!"),
   };
 
   return (
@@ -177,30 +219,75 @@ const Ticket = ({ data, eventDetail }) => {
             style={{ marginTop: "10px", marginBottom: "10px" }}
           >
             {eventDetail?.event_end_date >= formattedDate ? (
-              <CButton
-                onClick={() => payNowClick(eventDetail)}
-                color={
-                  eventDetail?.joined_customers
-                    ?.map((ite) => ite?.customer_id)
-                    .includes(currentUser?.data?._id)
-                    ? "warning"
-                    : "primary"
-                }
-                disabled={["Request To Join", "Approved"].includes(
-                  eventDetail?.joined_customers?.filter(
-                    (eventDetail) =>
-                      eventDetail?.customer_id === currentUser?.data?._id
-                  )?.[0]?.event_status || "Pending"
-                )}
-              >
-                {EventStatuses(
-                  eventDetail?.joined_customers?.filter(
-                    (eventDetail) =>
-                      eventDetail?.customer_id === currentUser?.data?._id
-                  )?.[0]?.event_status || "Pending For Payment"
-                ) || "Pay Now"}
-              </CButton>
+              rowsData?.filter((item) => !item.first_name)?.length > 0 ? (
+                <CButton
+                  color={
+                    eventDetail?.joined_customers
+                      ?.map((ite) => ite?.customer_id)
+                      .includes(currentUser?.data?._id)
+                      ? "warning"
+                      : "primary"
+                  }
+                  onClick={() =>
+                    app_dispatch({
+                      type: "SHOW_RESPONSE",
+                      toast: AppToast({
+                        message: "Please Add First Name",
+                        color: "danger-alert",
+                      }),
+                    })
+                  }
+                >{`Pay Now ${
+                  eventDetail?.amount * (rowsData?.length || 1)
+                }`}</CButton>
+              ) : rowsData?.filter((item) => !item.phone_number)?.length > 0 ? (
+                <CButton
+                  color={
+                    eventDetail?.joined_customers
+                      ?.map((ite) => ite?.customer_id)
+                      .includes(currentUser?.data?._id)
+                      ? "warning"
+                      : "primary"
+                  }
+                  onClick={() =>
+                    app_dispatch({
+                      type: "SHOW_RESPONSE",
+                      toast: AppToast({
+                        message: "Please Add Phone Number",
+                        color: "danger-alert",
+                      }),
+                    })
+                  }
+                >{`Pay Now ${
+                  eventDetail?.amount * (rowsData?.length || 1)
+                }`}</CButton>
+              ) : (
+                <PaystackButton {...componentProps} />
+              )
             ) : (
+              // <CButton
+              //   onClick={() => payNowClick(eventDetail)}
+              //   color={
+              //     eventDetail?.joined_customers
+              //       ?.map((ite) => ite?.customer_id)
+              //       .includes(currentUser?.data?._id)
+              //       ? "warning"
+              //       : "primary"
+              //   }
+              //   disabled={["Request To Join", "Approved"].includes(
+              //     eventDetail?.joined_customers?.filter(
+              //       (eventDetail) =>
+              //         eventDetail?.customer_id === currentUser?.data?._id
+              //     )?.[0]?.event_status || "Pending"
+              //   )}
+              // >
+              //   {EventStatuses(
+              //     eventDetail?.joined_customers?.filter(
+              //       (eventDetail) =>
+              //         eventDetail?.customer_id === currentUser?.data?._id
+              //     )?.[0]?.event_status || "Pending For Payment"
+              //   ) || "Pay Now"}
+              // </CButton>
               <CCallout
                 style={{ marginTop: "-10px", marginBottom: "-10px" }}
                 color="danger"
@@ -211,18 +298,6 @@ const Ticket = ({ data, eventDetail }) => {
           </div>
         </div>
       </div>
-      {showPaymentModel === true ? (
-        <CustomerPayment
-        visiblePaymentModel={showPaymentModel}
-        setVisiblePaymentModel={setShowPaymentModel}
-        eventDetail={eventDetail}
-        approvedEventStatus={approvedEventStatus}
-        eventStatus={"Pending For Payment"}
-        setAttendShow={attendShow}
-        />
-      ) : (
-        false
-      )}
     </div>
   );
 };

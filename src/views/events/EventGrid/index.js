@@ -8,6 +8,7 @@ import {
   CBadge,
   CCallout,
 } from "@coreui/react";
+import QrCode from "qrcode.react";
 import { CSmartPagination } from "@coreui/react-pro";
 import AppSwiperthumbs from "src/components/AppSwiperthumbs";
 import "./style.scss";
@@ -18,6 +19,7 @@ import { EventStatuses, UserRequestEventStatuses } from "src/utils/constants";
 import { AppToast } from "src/components/AppToast";
 import { approvedCustomerJoinEvent } from "src/context/EventContext/service";
 import CustomerPayment from "src/components/CustomerPayment";
+
 const GridView = ({ data, tableMeta, updateFilter, filters }) => {
   const { currentUser } = useAppState();
   const [currentPage, setActivePage] = useState(tableMeta?.page || 1);
@@ -143,6 +145,24 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                       <CBadge color="danger">Event Expiry</CBadge>
                     </span>
                   )}
+                </span>
+              </div>
+              <div className="qr-event">
+                <h6 className="event-card-header vendarH6Info">Event QR:</h6>
+                <span className="event-card-text vendarSpanInfo">
+                  <QrCode
+                    size={50}
+                    value={
+                      item?._id
+                        ? {
+                            event_id: item?._id,
+                            account_id: currentUser?.data?._id,
+                          }
+                        : "No Data Found"
+                    }
+                    level="H"
+                    includeMargin
+                  />
                 </span>
               </div>
               {/*  <div>
