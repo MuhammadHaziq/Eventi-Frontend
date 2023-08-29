@@ -9,9 +9,49 @@ import {
   CContainer,
   CButton,
 } from "@coreui/react";
+import useDebounce from "src/hooks/useDebounce";
+import { customerPaymentHistory } from "src/context/CustomerContext/service";
+import { AppToast } from "src/components/AppToast";
+import { useQuery } from "@tanstack/react-query";
+import { useAppDispatch, useAppState } from "src/context/AppContext";
 
 const CustomerPayment = () => {
+  const { currentUser } = useAppState();
   const [fields, setFields] = useState([]);
+  const [tableFilters, setTableFilter] = useState(null);
+  const [filters, setFilters] = useState();
+  const app_dispatch = useAppDispatch();
+
+  const tableFilterDebounce = useDebounce(tableFilters, 300);
+
+  const account_id = currentUser?.data?.user_detail?.account_id;
+
+  const { data, error, isFetching, isLoading, isError } = useQuery(
+    ["CustomersPayment"],
+    () => customerPaymentHistory(account_id),
+    {
+      onError: (error) => {
+        app_dispatch({
+          type: "SHOW_MESSAGE",
+          toast: AppToast({
+            message: error.response?.data?.message,
+            color: "dangar-alert",
+          }),
+        });
+      },
+      keepPreviousData: false,
+      staleTime: 5000,
+      retryOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
+
+  const useGetData = (filterDatas) => {
+    setFilters({ ...filters, ...filterDatas });
+  };
+
+  console.log(data?.data?.data);
 
   const [columns] = useState([
     {
@@ -36,6 +76,13 @@ const CustomerPayment = () => {
     }
   }, [columns]);
 
+  useEffect(() => {
+    if (tableFilterDebounce && Object.keys(tableFilterDebounce)?.length > 0) {
+      const tableFilter = JSON.stringify(tableFilters);
+      updateFilter({ tableFilters: tableFilter });
+    }
+  }, [tableFilterDebounce]);
+
   return (
     <>
       <CRow>
@@ -50,9 +97,9 @@ const CustomerPayment = () => {
               <CSmartTable
                 columns={columns}
                 loading={false}
-                //   items={customers}
+                  items={data?.data?.data?.take}
                 fields={fields}
-                //   itemsPerPage={tableMeta?.take}
+                  itemsPerPage={data?.data?.data?.take}
                 itemsPerPageSelect
                 sorter={"true"}
                 hover={"true"}

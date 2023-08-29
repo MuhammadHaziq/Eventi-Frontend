@@ -24,8 +24,8 @@ export const getCustomers = (filters) => {
 export const deleteCustomer = (id) => {
   return authAxios.delete(`/api/customer/${id}`);
 };
-export const customerPaymentHistory = (id) => {
-  return authAxios.get(`/api/customer/custPaymentHistory/${id}`);
+export const customerPaymentHistory = (account_id) => {
+  return authAxios.get(`/api/customer/history/${account_id}`);
 };
 
 export const getCustomer = (id) => {
