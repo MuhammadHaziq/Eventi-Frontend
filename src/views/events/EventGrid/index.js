@@ -109,13 +109,13 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   {item?.event_name}
                 </span>
               </div>
-              <div>
+              <div className='divStyle'>
                 <h6 className="event-card-header vendarH6Info">
                   Event Location:
                 </h6>
                 <span className="event-card-text vendarSpanInfo">
                   {item?.event_location}
-                </span>
+                </span> 
               </div>
               <div>
                 <h6 className="event-card-header vendarH6Info">
@@ -151,7 +151,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                 <h6 className="event-card-header vendarH6Info">Event QR:</h6>
                 <span className="event-card-text vendarSpanInfo">
                   <QrCode
-                    size={50}
+                    size={80}
                     value={
                       item?._id
                         ? {
