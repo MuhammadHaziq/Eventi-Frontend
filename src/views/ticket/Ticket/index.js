@@ -16,6 +16,7 @@ const Ticket = ({ data, eventDetail }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [isPaying, setIsPaying] = useState(false);
 
   const [allAttendes, setAllAttendes] = useState([]);
   const [attende, setAttende] = useState("");
@@ -111,6 +112,12 @@ const Ticket = ({ data, eventDetail }) => {
     }
   };
 
+  const payNowPaystack = async (data) => {
+ 
+    await approvedEventStatus(data);
+    setIsPaying(false);
+  };
+
   const approvedEventStatus = async (data) => {
     data = {
       ...data,
@@ -150,13 +157,13 @@ const Ticket = ({ data, eventDetail }) => {
     return (
       (eventDetail?.points_percent / 100) *
       (eventDetail?.amount * (rowsData?.length || 1))
-    ).toFixed(2)
+    ).toFixed(2);
   };
 
   const componentProps = {
     email,
     amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
-    currency: "ZAR",
+    currency: "NGN",
     metadata: {
       name,
       phone,
@@ -171,19 +178,25 @@ const Ticket = ({ data, eventDetail }) => {
     }`,
     text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
-    onSuccess: async ({ reference }) => {
+    onSuccess: ({ reference }) => {
+
+      setIsPaying(true);
       const data = {
-        account_id:ZARrrentUser?.data?._id,
+        account_id: currentUser?.data?._id,
         event_id: eventDetail?._id,
         payment_id: reference,
-        payment_method: paymentMethod,
+        payment_method: "Paystack",
         points_available: getPoints(),
         amount: eventDetail?.amount * (rowsData?.length || 1),
-        currency: "ZAR",
-        status: UserRequestEventStatuses(eventStatus),
+        currency: "NGN",
+        status: UserRequestEventStatuses(eventDetail?.joined_customers?.filter(
+                (item) =>
+                  item?.customer_id?.user_detail?.account_id ===
+                  currentUser?.data?._id
+              )?.[0]?.event_status || "Pending For Payment"),
       };
-      await approvedEventStatus(data);
-      // payNowPaystack(data);
+      //  approvedEventStatus(data);
+      payNowPaystack(data);
       // resetForm();
     },
     onClose: () => console.log("Wait! don't go!!!!"),
