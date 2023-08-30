@@ -113,7 +113,6 @@ const Ticket = ({ data, eventDetail }) => {
   };
 
   const payNowPaystack = async (data) => {
- 
     await approvedEventStatus(data);
     setIsPaying(false);
   };
@@ -163,7 +162,7 @@ const Ticket = ({ data, eventDetail }) => {
   const componentProps = {
     email,
     amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
-    currency: "NGN",
+    currency: "ZAR",
     metadata: {
       name,
       phone,
@@ -179,7 +178,6 @@ const Ticket = ({ data, eventDetail }) => {
     text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
-
       setIsPaying(true);
       const data = {
         account_id: currentUser?.data?._id,
@@ -188,12 +186,14 @@ const Ticket = ({ data, eventDetail }) => {
         payment_method: "Paystack",
         points_available: getPoints(),
         amount: eventDetail?.amount * (rowsData?.length || 1),
-        currency: "NGN",
-        status: UserRequestEventStatuses(eventDetail?.joined_customers?.filter(
-                (item) =>
-                  item?.customer_id?.user_detail?.account_id ===
-                  currentUser?.data?._id
-              )?.[0]?.event_status || "Pending For Payment"),
+        currency: "ZAR",
+        status: UserRequestEventStatuses(
+          eventDetail?.joined_customers?.filter(
+            (item) =>
+              item?.customer_id?.user_detail?.account_id ===
+              currentUser?.data?._id
+          )?.[0]?.event_status || "Pending For Payment"
+        ),
       };
       //  approvedEventStatus(data);
       payNowPaystack(data);

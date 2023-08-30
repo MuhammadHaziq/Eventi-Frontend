@@ -108,6 +108,7 @@ const Dashboard = () => {
       });
     }
   }, [account_id]);
+
   useEffect(() => {
     if (account_id) {
       getAccountDetail();
@@ -257,7 +258,7 @@ const Dashboard = () => {
           <CCardBody>
             <CRow>
               <CCol sm={5}>
-                  {/* <h4 id="traffic" className="card-title mb-0">
+                {/* <h4 id="traffic" className="card-title mb-0">
                   Customer QR Code
                 </h4>
                  <div className="small text-medium-emphasis">
@@ -284,7 +285,7 @@ const Dashboard = () => {
             </CRow>
             <CRow>
               <CCol>
-               {/*  <QrCode getCurDate={getCurDate} /> */}
+                {/*  <QrCode getCurDate={getCurDate} /> */}
                 <DashboardTable />
               </CCol>
               <CCol sm={12}></CCol>
@@ -587,7 +588,7 @@ const Dashboard = () => {
         </CCol>
       </CRow> */}
     </>
-  )
-}
+  );
+};
 
 export default Dashboard;

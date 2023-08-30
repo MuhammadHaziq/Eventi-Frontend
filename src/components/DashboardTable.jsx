@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
 import {
   CCol,
@@ -6,7 +6,6 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
-  CContainer,
   CButton,
 } from "@coreui/react";
 import useDebounce from "src/hooks/useDebounce";
@@ -15,18 +14,18 @@ import { AppToast } from "src/components/AppToast";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import QrCode from "qrcode.react";
-
+import { Link } from "react-router-dom";
 const DashboardTable = () => {
   const { currentUser } = useAppState();
   const [fields, setFields] = useState([]);
-   const [tableFilters, setTableFilter] = useState(null);
-   const [downloaded, setDownloaded] = useState(false);
+  const [tableFilters, setTableFilter] = useState(null);
+  const [downloaded, setDownloaded] = useState(false);
   const [filters, setFilters] = useState();
   const app_dispatch = useAppDispatch();
 
   const tableFilterDebounce = useDebounce(tableFilters, 300);
-const httpRgx = /^https?:\/\//;
-const qrRef = useRef();
+  const httpRgx = /^https?:\/\//;
+  const qrRef = useRef(null);
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -96,6 +95,13 @@ const qrRef = useRef();
       isShow: true,
       disabled: false,
     },
+    {
+      key: "View_Attendes",
+      label: "Attendes",
+      filter: false,
+      isShow: true,
+      disabled: false,
+    },
   ]);
 
   useEffect(() => {
@@ -111,18 +117,26 @@ const qrRef = useRef();
     }
   }, [tableFilterDebounce]);
 
-  const downloadQrCode = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (downloaded) {
+      const msg = setTimeout(() => setDownloaded(false), 3500);
+      return () => clearTimeout(msg);
+    }
+  }, [downloaded]);
 
+  const downloadQrCode = (e, eventName) => {
+    e.preventDefault();
     const qrCanvas = qrRef.current.querySelector("canvas"),
       qrImage = qrCanvas.toDataURL("image/png"),
       qrAnchor = document.createElement("a"),
-      fileName = account_id.replace(httpRgx, "").trim();
+      fileName = eventName;
+    // url.replace(httpRgx, "").trim();
     qrAnchor.href = qrImage;
     qrAnchor.download = fileName + "_QrCode.png";
     document.body.appendChild(qrAnchor);
     qrAnchor.click();
     document.body.removeChild(qrAnchor);
+
     setDownloaded(true);
   };
 
@@ -145,10 +159,10 @@ const qrRef = useRef();
                 itemsPerPage={data?.data?.data?.take}
                 itemsPerPageSelect
                 sorter={"true"}
-                hover={"true"}
+                // hover={"true"}
                 outlined={"true"}
                 tableProps={{
-                  hover: true,
+                  // hover: true,
                   responsive: true,
                 }}
                 columnFilter={{
@@ -173,26 +187,51 @@ const qrRef = useRef();
                   ),
 
                   QR: (item) => (
-                    <span className="event-card-text vendarSpanInfo">
-                      <QrCode
-                        size={50}
-                        value={
-                          item?._id
-                            ? JSON.stringify([
-                                { event_id: item?._id },
-                                { account_id: currentUser?.data?._id },
-                              ])
-                            : "No Data Found"
-                        }
-                        level="H"
-                        includeMargin
-                      />
-                    </span>
+                    <td>
+                      <span
+                        className="event-card-text vendarSpanInfo"
+                        ref={qrRef}
+                      >
+                        <QrCode
+                          size={50}
+                          value={
+                            item?._id
+                              ? JSON.stringify([
+                                  { event_id: item?._id },
+                                  { account_id: currentUser?.data?._id },
+                                ])
+                              : "No Data Found"
+                          }
+                          level="H"
+                          includeMargin
+                        />
+                      </span>
+                    </td>
                   ),
                   QRDownload: (item) => (
-                    <div>
-                      <CButton onClick={downloadQrCode}>Download</CButton>
-                    </div>
+                    <td>
+                      <div>
+                        <CButton
+                          onClick={(e) =>
+                            downloadQrCode(e, item?.event_id?.event_name)
+                          }
+                        >
+                          Download
+                        </CButton>
+                      </div>
+                    </td>
+                  ),
+                  View_Attendes: (item) => (
+                    <td>
+                      <div>
+                        <Link
+                          to={`/attends/${currentUser?.data?._id}/${item?.event_id?._id}`}
+                          target="_blank"
+                        >
+                          <CButton>Attendes</CButton>
+                        </Link>
+                      </div>
+                    </td>
                   ),
                 }}
               />
