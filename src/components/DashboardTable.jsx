@@ -74,7 +74,7 @@ const DashboardTable = () => {
       disabled: false,
     },
     {
-      key: "amount",
+      key: "attendes",
       label: "No of Tickets",
       filter: false,
       isShow: true,
@@ -185,7 +185,7 @@ const DashboardTable = () => {
                       </div>
                     </td>
                   ),
-
+                  attendes: (item) => <td>{item?.attendes?.length || 0}</td>,
                   QR: (item) => (
                     <td>
                       <span
