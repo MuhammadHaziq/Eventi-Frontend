@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { CSmartTable, CSmartPagination } from "@coreui/react-pro";
 import {
   CCol,
@@ -14,15 +14,19 @@ import { customerPaymentHistory } from "src/context/CustomerContext/service";
 import { AppToast } from "src/components/AppToast";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
+import QrCode from "qrcode.react";
 
-const CustomerPayment = () => {
+const DashboardTable = () => {
   const { currentUser } = useAppState();
   const [fields, setFields] = useState([]);
-  const [tableFilters, setTableFilter] = useState(null);
+   const [tableFilters, setTableFilter] = useState(null);
+   const [downloaded, setDownloaded] = useState(false);
   const [filters, setFilters] = useState();
   const app_dispatch = useAppDispatch();
 
   const tableFilterDebounce = useDebounce(tableFilters, 300);
+const httpRgx = /^https?:\/\//;
+const qrRef = useRef();
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -46,24 +50,48 @@ const CustomerPayment = () => {
     }
   );
 
-  // const useGetData = (filterDatas) => {
-  //   setFilters({ ...filters, ...filterDatas });
-  // };
+  //   const useGetData = (filterDatas) => {
+  //     setFilters({ ...filters, ...filterDatas });
+  //   };
 
-  const eventNames = data?.data?.data?.map((event) => event.event_id.event_name);
+  const eventNames = data?.data?.data?.map(
+    (event) => event.event_id.event_name
+  );
   console.log(eventNames);
 
   const [columns] = useState([
     {
+      key: "QR",
+      label: "Event QR",
+      filter: false,
+      isShow: true,
+      disabled: false,
+    },
+    {
       key: "eventName",
-      label: "Event Name",
+      label: "Joined Events",
       filter: true,
       isShow: true,
       disabled: false,
     },
     {
       key: "amount",
+      label: "No of Tickets",
+      filter: false,
+      isShow: true,
+      disabled: false,
+    },
+    {
+      key: "amount",
       label: "Amount",
+      filter: false,
+      isShow: true,
+      disabled: false,
+    },
+
+    {
+      key: "QRDownload",
+      label: "QR Download",
       filter: false,
       isShow: true,
       disabled: false,
@@ -83,15 +111,29 @@ const CustomerPayment = () => {
     }
   }, [tableFilterDebounce]);
 
+  const downloadQrCode = (e) => {
+    e.preventDefault();
+
+    const qrCanvas = qrRef.current.querySelector("canvas"),
+      qrImage = qrCanvas.toDataURL("image/png"),
+      qrAnchor = document.createElement("a"),
+      fileName = account_id.replace(httpRgx, "").trim();
+    qrAnchor.href = qrImage;
+    qrAnchor.download = fileName + "_QrCode.png";
+    document.body.appendChild(qrAnchor);
+    qrAnchor.click();
+    document.body.removeChild(qrAnchor);
+    setDownloaded(true);
+  };
+
   return (
     <>
       <CRow>
-        <CCol md={2}></CCol>
-        <CCol md={8}>
+        <CCol md={12}>
           <CCard className="mb-2">
             <CCardHeader className="d-flex justify-content-between">
               <strong>
-                <h5>Payment History</h5>
+                <h5>Join Event List</h5>
               </strong>
             </CCardHeader>
             <CCardBody>
@@ -129,6 +171,29 @@ const CustomerPayment = () => {
                       </div>
                     </td>
                   ),
+
+                  QR: (item) => (
+                    <span className="event-card-text vendarSpanInfo">
+                      <QrCode
+                        size={50}
+                        value={
+                          item?._id
+                            ? JSON.stringify([
+                                { event_id: item?._id },
+                                { account_id: currentUser?.data?._id },
+                              ])
+                            : "No Data Found"
+                        }
+                        level="H"
+                        includeMargin
+                      />
+                    </span>
+                  ),
+                  QRDownload: (item) => (
+                    <div>
+                      <CButton onClick={downloadQrCode}>Download</CButton>
+                    </div>
+                  ),
                 }}
               />
               {/*   {+tableMeta?.pageCount > 1 && (
@@ -147,10 +212,9 @@ const CustomerPayment = () => {
             </CCardBody>
           </CCard>
         </CCol>
-        <CCol md={2}></CCol>;
       </CRow>
     </>
   );
 };
 
-export default CustomerPayment;
+export default DashboardTable;
