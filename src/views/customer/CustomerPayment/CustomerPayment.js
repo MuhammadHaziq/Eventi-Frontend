@@ -50,7 +50,7 @@ const CustomerPayment = () => {
     setFilters({ ...filters, ...filterDatas });
   };
 
-  const eventNames = data?.data.data.map((event) => event.event_id.event_name);
+  const eventNames = data?.data?.data?.map((event) => event.event_id.event_name);
   console.log(eventNames);
 
   const [columns] = useState([
