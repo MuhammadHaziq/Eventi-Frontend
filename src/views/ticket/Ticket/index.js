@@ -162,7 +162,7 @@ const Ticket = ({ data, eventDetail }) => {
   const componentProps = {
     email,
     amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
-    currency: "NGN",
+    currency: "ZAR",
     metadata: {
       name,
       phone,
@@ -186,7 +186,7 @@ const Ticket = ({ data, eventDetail }) => {
         payment_method: "Paystack",
         points_available: getPoints(),
         amount: eventDetail?.amount * (rowsData?.length || 1),
-        currency: "NGN",
+        currency: "ZAR",
         status: UserRequestEventStatuses(
           eventDetail?.joined_customers?.filter(
             (item) =>

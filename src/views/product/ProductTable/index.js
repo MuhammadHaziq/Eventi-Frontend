@@ -48,7 +48,7 @@ const ProductTable = ({
       disabled: false,
     },
     {
-      key: "product_price",
+      key: "productPrice",
       label: "Price",
       filter: true,
       isShow: true,
@@ -138,6 +138,11 @@ const ProductTable = ({
                   clickOnDelete={clickHideModal}
                 />
               </div>
+            </td>
+          ),
+          productPrice: (item) => (
+            <td>
+              {item.product_price+" "+"NGN"}
             </td>
           ),
         }}

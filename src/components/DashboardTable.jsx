@@ -7,6 +7,11 @@ import {
   CCardBody,
   CCardHeader,
   CButton,
+  CModal,
+  CModalHeader,
+  CModalBody,
+  CModalFooter,
+  CModalTitle,
 } from "@coreui/react";
 import useDebounce from "src/hooks/useDebounce";
 import { customerPaymentHistory } from "src/context/CustomerContext/service";
@@ -15,17 +20,23 @@ import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
 import QrCode from "qrcode.react";
 import { Link } from "react-router-dom";
+import CIcon from "@coreui/icons-react";
+import { cilQrCode } from "@coreui/icons";
+
 const DashboardTable = () => {
   const { currentUser } = useAppState();
   const [fields, setFields] = useState([]);
   const [tableFilters, setTableFilter] = useState(null);
   const [downloaded, setDownloaded] = useState(false);
   const [filters, setFilters] = useState();
+  const [visible, setVisible] = useState(false);
+
   const app_dispatch = useAppDispatch();
 
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const httpRgx = /^https?:\/\//;
-  const qrRef = useRef(null);
+const qrRef = useRef(null);
+
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -68,7 +79,7 @@ const DashboardTable = () => {
     },
     {
       key: "eventName",
-      label: "Joined Events",
+      label: "Joined Events Name",
       filter: true,
       isShow: true,
       disabled: false,
@@ -81,7 +92,7 @@ const DashboardTable = () => {
       disabled: false,
     },
     {
-      key: "amount",
+      key: "Amount",
       label: "Amount",
       filter: false,
       isShow: true,
@@ -126,8 +137,8 @@ const DashboardTable = () => {
 
   const downloadQrCode = (e, eventName) => {
     e.preventDefault();
-    const qrCanvas = qrRef.current.querySelector("canvas"),
-      qrImage = qrCanvas.toDataURL("image/png"),
+    const qrCanvas = qrRef.current?.querySelector("#canvas"),
+      qrImage = qrCanvas?.toDataURL("image/png"),
       qrAnchor = document.createElement("a"),
       fileName = eventName;
     // url.replace(httpRgx, "").trim();
@@ -144,7 +155,7 @@ const DashboardTable = () => {
     <>
       <CRow>
         <CCol md={12}>
-          <CCard className="mb-2">
+          <CCard className="mb-1">
             <CCardHeader className="d-flex justify-content-between">
               <strong>
                 <h5>Join Event List</h5>
@@ -178,6 +189,13 @@ const DashboardTable = () => {
                   updateFilter({ sort: JSON.stringify(sorter) });
                 }}
                 scopedColumns={{
+                  Amount: (item) => (
+                    <td>
+                      <div className="d-flex gap-2">
+                        {item.amount + " " + "NGN"}
+                      </div>
+                    </td>
+                  ),
                   eventName: (item) => (
                     <td>
                       <div className="d-flex gap-2">
@@ -188,24 +206,51 @@ const DashboardTable = () => {
                   attendes: (item) => <td>{item?.attendes?.length || 0}</td>,
                   QR: (item) => (
                     <td>
-                      <span
-                        className="event-card-text vendarSpanInfo"
-                        ref={qrRef}
+                      <CIcon
+                        onClick={() => setVisible(!visible)}
+                        icon={cilQrCode}
+                        size="xxl"
+                      />
+
+                      <CModal
+                        backdrop="static"
+                        visible={visible}
+                        onClose={() => setVisible(false)}
                       >
-                        <QrCode
-                          size={50}
-                          value={
-                            item?._id
-                              ? JSON.stringify([
-                                  { event_id: item?._id },
-                                  { account_id: currentUser?.data?._id },
-                                ])
-                              : "No Data Found"
-                          }
-                          level="H"
-                          includeMargin
-                        />
-                      </span>
+                        <CModalHeader>
+                          <CModalTitle>QR Code</CModalTitle>
+                        </CModalHeader>
+                        <CModalBody>
+                          <td>
+                            <span
+                              className="event-card-text vendarSpanInfo"
+                              ref={qrRef}
+                            >
+                              <QrCode
+                                size={250}
+                                value={
+                                  item?._id
+                                    ? JSON.stringify([
+                                        { event_id: item?._id },
+                                        { account_id: currentUser?.data?._id },
+                                      ])
+                                    : "No Data Found"
+                                }
+                                // level="H"
+                                includeMargin
+                              />
+                            </span>
+                          </td>
+                        </CModalBody>
+                        <CModalFooter>
+                          <CButton
+                            color="secondary"
+                            onClick={() => setVisible(false)}
+                          >
+                            Close
+                          </CButton>
+                        </CModalFooter>
+                      </CModal>
                     </td>
                   ),
                   QRDownload: (item) => (

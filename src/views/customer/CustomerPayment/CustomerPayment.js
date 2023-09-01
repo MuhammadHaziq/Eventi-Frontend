@@ -50,7 +50,9 @@ const CustomerPayment = () => {
   //   setFilters({ ...filters, ...filterDatas });
   // };
 
-  const eventNames = data?.data?.data?.map((event) => event.event_id.event_name);
+  const eventNames = data?.data?.data?.map(
+    (event) => event.event_id.event_name
+  );
   console.log(eventNames);
 
   const [columns] = useState([
@@ -62,7 +64,7 @@ const CustomerPayment = () => {
       disabled: false,
     },
     {
-      key: "amount",
+      key: "Amount",
       label: "Amount",
       filter: false,
       isShow: true,
@@ -126,6 +128,13 @@ const CustomerPayment = () => {
                     <td>
                       <div className="d-flex gap-2">
                         {item?.event_id?.event_name}
+                      </div>
+                    </td>
+                  ),
+                  Amount: (item) => (
+                    <td>
+                      <div className="d-flex gap-2">
+                        {item.amount + " " + "NGN"}
                       </div>
                     </td>
                   ),

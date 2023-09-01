@@ -41,6 +41,7 @@ export const EventRegistration = () => {
     equipments: "",
     security: "",
     special_request: "",
+    add_point: null,
     no_of_tickets: 0,
   });
   const [agree, setAgree] = useState(false);
@@ -74,6 +75,7 @@ export const EventRegistration = () => {
         formData.append("amount", state.amount);
         formData.append("no_of_tickets", state.no_of_tickets);
         formData.append("points_percent", state.points_percent);
+        formData.append("add_point", state.add_point);
         formData.append("event_location", state.event_location);
         formData.append("type_of_event", state.type_of_event);
         formData.append("expected_attendence", state.expected_attendence);
@@ -183,6 +185,10 @@ export const EventRegistration = () => {
       : 0;
   };
 
+  const getAddPoints = () => {
+    return ((state.add_point * 100) / state.amount).toFixed(2)
+  };
+
   return (
     <>
       <CRow>
@@ -258,7 +264,7 @@ export const EventRegistration = () => {
                     floatinglabel="Amount"
                     placeholder="Amount"
                     name="amount"
-                    label="Amount"
+                    label="Amount NGN"
                     defaultValue={state.amount}
                     onChange={handleOnChange}
                     required
@@ -266,6 +272,61 @@ export const EventRegistration = () => {
                   <CFormFeedback invalid>
                     Please provide a Amount Name.
                   </CFormFeedback>
+                </CCol>
+                <CCol md={6}>
+                  <CFormInput
+                    type="number"
+                    id="points_percent"
+                    floatingclassname="mb-3"
+                    floatinglabel="Points Percentage"
+                    placeholder="Points Percentage"
+                    label="Points Percentage %"
+                    name="points_percent"
+                    defaultValue={state.points_percent}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a Points Percentage
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={6}>
+                  <CFormInput
+                    type="number"
+                    id="add_point"
+                    floatingclassname="mb-3"
+                    floatinglabel="Add Points"
+                    placeholder="Add Points"
+                    label="Add Points"
+                    name="add_point"
+                    defaultValue={state.add_point}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a Add Points
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={6}>
+                  <CFormInput
+                    type="number"
+                    id="no_of_tickets"
+                    floatingclassname="mb-3"
+                    floatinglabel="No Of Tickets"
+                    placeholder="No Of Tickets"
+                    label="No Of Tickets"
+                    name="no_of_tickets"
+                    defaultValue={state.no_of_tickets}
+                    onChange={handleOnChange}
+                    required
+                  />
+                  <CFormFeedback invalid>
+                    Please provide a No Of Tickets
+                  </CFormFeedback>
+                </CCol>
+                <CCol md={12}>
+                  Customer will receive <strong>{getPoints()}</strong> points
+                  <hr></hr>
                 </CCol>
                 <CCol md={6}>
                   <CFormInput
@@ -362,43 +423,6 @@ export const EventRegistration = () => {
                     Please provide a Security needs
                   </CFormFeedback>
                 </CCol>
-                <CCol md={6}>
-                  <CFormInput
-                    type="number"
-                    id="points_percent"
-                    floatingclassname="mb-3"
-                    floatinglabel="Points Percentage"
-                    placeholder="Points Percentage"
-                    label="Points Percentage %"
-                    name="points_percent"
-                    defaultValue={state.points_percent}
-                    onChange={handleOnChange}
-                    required
-                  />
-                  <CFormFeedback invalid>
-                    Please provide a Points Percentage
-                  </CFormFeedback>
-                </CCol>
-                <CCol md={12}>
-                  Customer will receive <strong>{getPoints()}</strong> points
-                </CCol>
-                <CCol md={6}>
-                  <CFormInput
-                    type="number"
-                    id="no_of_tickets"
-                    floatingclassname="mb-3"
-                    floatinglabel="No Of Tickets"
-                    placeholder="No Of Tickets"
-                    label="No Of Tickets"
-                    name="no_of_tickets"
-                    defaultValue={state.no_of_tickets}
-                    onChange={handleOnChange}
-                    required
-                  />
-                  <CFormFeedback invalid>
-                    Please provide a No Of Tickets
-                  </CFormFeedback>
-                </CCol>
                 <CCol md={12}>
                   <CFormTextarea
                     rows={2}
@@ -450,7 +474,6 @@ export const EventRegistration = () => {
                     You must agree before submitting.
                   </CFormFeedback>
                 </CCol>
-
                 <CCol xs={12}>
                   <CButton
                     size="lg"

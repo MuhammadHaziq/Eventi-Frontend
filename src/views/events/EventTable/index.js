@@ -100,7 +100,7 @@ const EventTable = ({
       disabled: false,
     },
     {
-      key: "amount",
+      key: "Amount",
       label: " Amount",
       filter: false,
       isShow: true,
@@ -144,6 +144,9 @@ const EventTable = ({
       disabled: false,
     },
   ];
+
+
+  
   if (
     currentUser?.data?.user_type === "admin" &&
     currentUser?.data?.user_type !== "customer"
@@ -328,6 +331,7 @@ const EventTable = ({
           },
           Event_date: (item) => <td>{dateFormat(item.event_date)}</td>,
           Created_At: (item) => <td>{dateFormat(item.createdAt)}</td>,
+          Amount: (item) => <td>{item.amount + " " + "NGN"}</td>,
         }}
       />
       {+tableMeta?.pageCount > 1 && (

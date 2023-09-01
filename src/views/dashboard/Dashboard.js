@@ -252,20 +252,59 @@ const Dashboard = () => {
   return (
     <>
       {!isLoading ? "" : <AppProgress loading={isLoading} />}
-      <WidgetsDropdown />
-      <CCard className="mb-4">
+      <CCard >
+        <CCardBody>
+        <CCol xs>
+          <CCard className="m-3">
+            <CCardHeader>
+              <h5 id="traffic" className="card-title mb-0">
+                Points Summary
+              </h5>
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                <CCol sm={4}>
+                  <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">
+                      Used Points
+                    </div>
+                    <div className="fs-5 fw-semibold">0</div>
+                  </div>
+                </CCol>
+                <CCol sm={4}>
+                  <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">
+                      Remaining Points
+                    </div>
+                    <div className="fs-5 fw-semibold">2</div>
+                  </div>
+                </CCol>
+                <CCol sm={4}>
+                  <div className="border-start border-start-4 border-start-info py-1 px-3">
+                    <div className="text-medium-emphasis small">
+                      Total Points
+                    </div>
+                    <div className="fs-5 fw-semibold">2</div>
+                  </div>
+                </CCol>
+              </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
+        {/*  <WidgetsDropdown /> */}
+
         {currentUser?.data?.user_type === "customer" ? (
           <CCardBody>
             <CRow>
-              <CCol sm={5}>
+               {/*  <CCol sm={5}>
                 {/* <h4 id="traffic" className="card-title mb-0">
                   Customer QR Code
                 </h4>
                  <div className="small text-medium-emphasis">
                 January - July 2021
-              </div> */}
-              </CCol>
-              {/* <CCol sm={7} className="d-none d-md-block">
+              </div> 
+              </CCol
+            <CCol sm={7} className="d-none d-md-block">
               <CButton color="primary" className="float-end">
                 <CIcon icon={cilCloudDownload} />
               </CButton>
@@ -288,7 +327,7 @@ const Dashboard = () => {
                 {/*  <QrCode getCurDate={getCurDate} /> */}
                 <DashboardTable />
               </CCol>
-              <CCol sm={12}></CCol>
+            
             </CRow>
           </CCardBody>
         ) : (
@@ -432,17 +471,10 @@ const Dashboard = () => {
               </CCardFooter>
             </CRow>
           </CCardBody>
-        )}
+          )}
+          </CCardBody>
       </CCard>
-
       {/*       <WidgetsBrand withCharts /> */}
-
-      {/*
-      
-      
-     
- */}
-
       {/* <CRow>
         <CCol xs>
           <CCard className="mb-4">
