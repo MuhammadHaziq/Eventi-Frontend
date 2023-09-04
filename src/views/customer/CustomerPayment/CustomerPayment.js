@@ -26,7 +26,7 @@ const CustomerPayment = () => {
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
-    ["customers_payment"],
+    ["customers_payment", account_id],
     () => customerPaymentHistory(account_id),
     {
       onError: (error) => {

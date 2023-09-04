@@ -39,7 +39,7 @@ const DashboardTable = () => {
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
-    ["customer_dashboard_payment"],
+    ["customer_dashboard_payment", account_id],
     () => customerPaymentHistory(account_id),
     {
       onError: (error) => {
