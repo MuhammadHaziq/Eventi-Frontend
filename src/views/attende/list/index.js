@@ -27,7 +27,7 @@ const Attendes = () => {
       },
       keepPreviousData: false,
       staleTime: 5000,
-      retryOnMount: false,
+      retryOnMount: true,
       refetchOnWindowFocus: false,
       retry: false,
     }
