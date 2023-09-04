@@ -22,6 +22,7 @@ import QrCode from "qrcode.react";
 import { Link } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import { cilQrCode } from "@coreui/icons";
+import "./style.scss";
 
 const DashboardTable = () => {
   const { currentUser } = useAppState();
@@ -35,8 +36,7 @@ const DashboardTable = () => {
 
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const httpRgx = /^https?:\/\//;
-const qrRef = useRef(null);
-
+  const qrRef = useRef(null);
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
@@ -147,7 +147,6 @@ const qrRef = useRef(null);
     document.body.appendChild(qrAnchor);
     qrAnchor.click();
     document.body.removeChild(qrAnchor);
-
     setDownloaded(true);
   };
 
@@ -220,12 +219,9 @@ const qrRef = useRef(null);
                         <CModalHeader>
                           <CModalTitle>QR Code</CModalTitle>
                         </CModalHeader>
-                        <CModalBody>
+                        <CModalBody className="qrCenter">
                           <td>
-                            <span
-                              className="event-card-text vendarSpanInfo"
-                              ref={qrRef}
-                            >
+                            <span ref={qrRef}>
                               <QrCode
                                 size={250}
                                 value={
