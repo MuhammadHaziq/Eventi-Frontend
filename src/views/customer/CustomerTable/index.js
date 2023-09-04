@@ -49,13 +49,13 @@ const CustomerTable = ({
       isShow: true,
       disabled: false,
     },
-    {
-      key: "points_available",
-      label: "Points Available",
-      filter: true,
-      isShow: true,
-      disabled: false,
-    },
+    // {
+    //   key: "points_available",
+    //   label: "Points Available",
+    //   filter: true,
+    //   isShow: true,
+    //   disabled: false,
+    // },
     {
       key: "gender",
       label: "Gender",
@@ -85,8 +85,8 @@ const CustomerTable = ({
       disabled: false,
     },
   ]);
-  console.log("Customer Data -----------------------",customers);
-  console.log("Customer Data Table------------------",tableMeta);
+  console.log("Customer Data -----------------------", customers);
+  console.log("Customer Data Table------------------", tableMeta);
   useEffect(() => {
     if (columns.length > 0) {
       setFields(columns.filter((itm) => itm.isShow));

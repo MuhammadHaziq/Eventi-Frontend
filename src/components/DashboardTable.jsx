@@ -35,12 +35,11 @@ const DashboardTable = () => {
 
   const tableFilterDebounce = useDebounce(tableFilters, 300);
   const httpRgx = /^https?:\/\//;
-const qrRef = useRef(null);
-
+  const qrRef = useRef(null);
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
-    ["CustomersPayment"],
+    ["customer_dashboard_payment"],
     () => customerPaymentHistory(account_id),
     {
       onError: (error) => {
