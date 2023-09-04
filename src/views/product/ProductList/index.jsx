@@ -63,16 +63,18 @@ export const ProductList = () => {
       {isError ? "" : <AppProgress loading={isFetching} />}
       {permissions.find((item) => item.permission === "product-add") && (
         <>
-          <CButton
-            size="sm"
-            color="primary"
-            variant="outline"
-            onClick={() => setVisible(!visible)}
-          >
-            Add Product
-          </CButton>
-          <br></br>
-          <br></br>
+          <CRow className="mb-3">
+            <CCol>
+              <CButton
+                size="sm"
+                color="primary"
+                variant="outline"
+                onClick={() => setVisible(!visible)}
+              >
+                Add Product
+              </CButton>
+            </CCol>
+          </CRow>
         </>
       )}
       <CRow>
