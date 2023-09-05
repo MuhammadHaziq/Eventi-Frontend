@@ -43,8 +43,10 @@ const EventModal = ({ eventId, visible, setVisible }) => {
     points_percent: null,
     type_of_event: "",
     expected_attendence: "",
+    no_of_tickets: "",
     phone_number: "",
     equipments: "",
+    add_point: null,
     security: "",
     special_request: "",
   });
@@ -61,6 +63,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               event_start_date: response.data.data.event_start_date || "",
               event_end_date: response.data.data.event_end_date || "",
               amount: response.data.data.amount || "",
+              add_point: response.data.data.add_point || "",
               joined_customers: response.data.data.joined_customers || "",
               joined_vendors: response.data.data.joined_vendors || "",
               points_percent: response.data.data.points_percent || "",
@@ -68,6 +71,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               vendor_id: response.data.data.vendor_id || "",
               type_of_event: response.data.data.type_of_event || "",
               expected_attendence: response.data.data.expected_attendence || "",
+              no_of_tickets: response.data.data.no_of_tickets || "",
               phone_number: response.data.data.phone_number || "",
               equipments: response.data.data.equipments || "",
               security: response.data.data.security === true ? "Yes" : "No",
@@ -130,10 +134,12 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       formData.append("event_start_date", state.event_start_date);
       formData.append("event_end_date", state.event_end_date);
       formData.append("amount", state.amount);
+      formData.append("add_point", state.add_point);
       formData.append("points_percent", state.points_percent);
       formData.append("event_location", state.event_location);
       formData.append("type_of_event", state.type_of_event);
       formData.append("expected_attendence", state.expected_attendence);
+      formData.append("no_of_tickets", state.no_of_tickets);
       formData.append("phone_number", state.phone_number);
       formData.append("equipments", state.equipments);
       formData.append("special_request", state.special_request);
@@ -257,10 +263,25 @@ const EventModal = ({ eventId, visible, setVisible }) => {
     setFiles(files?.filter((item) => item.name !== fileName));
   };
   const getPoints = () => {
-    return state.points_percent ? ((state.points_percent/100) * state.amount).toFixed(2) : 0;
+    return state.points_percent
+      ? ((state.points_percent / 100) * state.amount).toFixed(2)
+      : 0;
+  };
+
+  const getAddPoints = () => {
+    return ((state.add_point * 100) / state.amount).toFixed(2);
+  };
+
+  const handleOnBlurPointPerc = (e) => {
+    setState({ ...state, add_point: getPoints() });
+  };
+  const handleOnBlurAddPoint = (e) => {
+    setState({ ...state, points_percent: getAddPoints() });
   };
   const isAllowedToChange = () => {
-    return state.joined_customers.length <= 0 && state.joined_vendors.length <= 0;
+    return (
+      state.joined_customers.length <= 0 && state.joined_vendors.length <= 0
+    );
   };
 
   return (
@@ -309,7 +330,9 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                   onChange={handleOnChange}
                   required
                 />
-                <CFormFeedback invalid>Please enter event date.</CFormFeedback>
+                <CFormFeedback invalid>
+                  Please enter event start date.
+                </CFormFeedback>
               </CInputGroup>
             </CCol>
             <CCol md={3} className="mt-5">
@@ -325,7 +348,9 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                   onChange={handleOnChange}
                   required
                 />
-                <CFormFeedback invalid>Please enter event date.</CFormFeedback>
+                <CFormFeedback invalid>
+                  Please enter event end date.
+                </CFormFeedback>
               </CInputGroup>
             </CCol>
 
@@ -337,16 +362,72 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatinglabel="Amount"
                 placeholder="Amount"
                 name="amount"
-                label="Amount"
-                disabled={!isAllowedToChange()}
+                label="Amount NGN"
                 defaultValue={state.amount}
+                disabled={!isAllowedToChange()}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>Please provide a Amount .</CFormFeedback>
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                type="number"
+                id="points_percent"
+                floatingclassname="mb-3"
+                floatinglabel="Points Percentage"
+                placeholder="Points Percentage"
+                label="Points Percentage %"
+                name="points_percent"
+                disabled={!isAllowedToChange()}
+                onBlur={handleOnBlurPointPerc}
+                value={state.points_percent}
                 onChange={handleOnChange}
                 required
               />
               <CFormFeedback invalid>
-                Please provide a Amount Name.
+                Please provide a Points Percentage
               </CFormFeedback>
             </CCol>
+            <CCol md={6}>
+              <CFormInput
+                type="number"
+                id="add_point"
+                floatingclassname="mb-3"
+                floatinglabel="Add Points"
+                placeholder="Add Points"
+                label="Add Points"
+                name="add_point"
+                disabled={!state.amount}
+                value={state.add_point}
+                onBlur={handleOnBlurAddPoint}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>Please provide a Add Points</CFormFeedback>
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                type="number"
+                id="no_of_tickets"
+                floatingclassname="mb-3"
+                floatinglabel="No Of Tickets"
+                placeholder="No Of Tickets"
+                label="No Of Tickets"
+                name="no_of_tickets"
+                defaultValue={state.no_of_tickets}
+                onChange={handleOnChange}
+                required
+              />
+              <CFormFeedback invalid>
+                Please provide a No Of Tickets
+              </CFormFeedback>
+            </CCol>
+            <CCol md={12}>
+              Customer will receive <strong>{getPoints()}</strong> points
+              <hr></hr>
+            </CCol>
+
             <CCol md={6}>
               <CFormInput
                 type="text"
@@ -422,7 +503,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 Please provide a Audio/visual equipment needs
               </CFormFeedback>
             </CCol>
-            <CCol md={6}> 
+            <CCol md={6}>
               <ReactSelect
                 id="validationSecurityNeeds"
                 floatinglabel="Security needs"
@@ -430,7 +511,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                   { value: "Yes", label: "Yes" },
                   { value: "No", label: "No" },
                 ]}
-                isRequired={true} 
+                isRequired={true}
                 handleChange={handleOnChange}
                 name="security"
                 placeholder="Security needs"
@@ -441,27 +522,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 Please provide a Security needs
               </CFormFeedback>
             </CCol>
-            <CCol md={6}>
-                  <CFormInput
-                    type="number"
-                    id="points_percent"
-                    floatingclassname="mb-3"
-                    floatinglabel="Points Percentage"
-                    placeholder="Points Percentage"
-                    label="Points Percentage %"
-                    name="points_percent"
-                    disabled={!isAllowedToChange()}
-                    defaultValue={state.points_percent}
-                    onChange={handleOnChange}
-                    required
-                  />
-                  <CFormFeedback invalid>
-                    Please provide a Points Percentage
-                  </CFormFeedback>
-                </CCol>
-                <CCol md={12}>
-                  Customer will receive <strong>{ getPoints() }</strong> points
-                </CCol>
+
             <CCol md={12}>
               <CFormTextarea
                 rows={2}

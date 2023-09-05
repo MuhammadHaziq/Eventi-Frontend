@@ -109,20 +109,20 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   {item?.event_name}
                 </span>
               </div>
-              <div className='divStyle'>
+              <div className="divStyle">
                 <h6 className="event-card-header vendarH6Info">
                   Event Location:
                 </h6>
                 <span className="event-card-text vendarSpanInfo">
                   {item?.event_location}
-                </span> 
+                </span>
               </div>
               <div>
                 <h6 className="event-card-header vendarH6Info">
                   Event Amount:
                 </h6>
                 <span className="event-card-text vendarSpanInfo">
-                  {item?.amount}
+                  {item?.amount} NGN
                 </span>
               </div>
               <div>
@@ -146,8 +146,8 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                     </span>
                   )}
                 </span>
-              </div> 
-              <div className="qr-event">
+              </div>
+              {/* <div className="qr-event">
                 <h6 className="event-card-header vendarH6Info">Event QR:</h6>
                 <span className="event-card-text vendarSpanInfo">
                   <QrCode
@@ -165,7 +165,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   />
                 </span>
               </div>
-              {/*  <div>
+                <div>
                 <h6 className="vendarH6Info">Mob Number:</h6>
                 <span className="vendarSpanInfo">{item?.phone_number}</span>
               </div>
@@ -173,8 +173,14 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                 <h6 className="vendarH6Info">Event Type:</h6>
                 <span className="vendarSpanInfo">{item?.type_of_event}</span>
               </div> */}
-              <div className="event-card-join-button">
-                <AppEventJoinButton item={item} />
+              <div className="event-card-join-button d-grid gap-2 mx-3">
+                {item?.joined_customers
+                  ?.map((ite) => ite?.customer_id)
+                  .includes(currentUser?.data?._id) ? (
+                  <AppEventJoinButton item={item} />
+                ) : item?.no_of_tickets - item?.no_of_tickets_sold > 0 ? (
+                  <AppEventJoinButton item={item} />
+                ) : null}
               </div>
               {currentUser?.data?.user_type === "customer" && (
                 <div
@@ -182,27 +188,64 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   style={{ marginTop: "10px", marginBottom: "10px" }}
                 >
                   {item?.event_end_date >= formattedDate ? (
-                    <CButton
-                      onClick={() => payNowClick(item)}
-                      color={
-                        item?.joined_customers
-                          ?.map((ite) => ite?.customer_id)
-                          .includes(currentUser?.data?._id)
-                          ? "warning"
-                          : "primary"
-                      }
-                      disabled={["Request To Join", "Approved"].includes(
-                        item?.joined_customers?.filter(
-                          (item) => item?.customer_id === currentUser?.data?._id
-                        )?.[0]?.event_status || "Pending"
-                      )}
-                    >
-                      {EventStatuses(
-                        item?.joined_customers?.filter(
-                          (item) => item?.customer_id === currentUser?.data?._id
-                        )?.[0]?.event_status || "Pending For Payment"
-                      ) || "Pay Now"}
-                    </CButton>
+                    item?.joined_customers
+                      ?.map((ite) => ite?.customer_id)
+                      .includes(currentUser?.data?._id) ? (
+                      <CButton
+                        onClick={() => payNowClick(item)}
+                        color={
+                          item?.joined_customers
+                            ?.map((ite) => ite?.customer_id)
+                            .includes(currentUser?.data?._id)
+                            ? "warning"
+                            : "primary"
+                        }
+                        disabled={["Request To Join", "Approved"].includes(
+                          item?.joined_customers?.filter(
+                            (item) =>
+                              item?.customer_id === currentUser?.data?._id
+                          )?.[0]?.event_status || "Pending"
+                        )}
+                      >
+                        {EventStatuses(
+                          item?.joined_customers?.filter(
+                            (item) =>
+                              item?.customer_id === currentUser?.data?._id
+                          )?.[0]?.event_status || "Pending For Payment"
+                        ) || "Pay Now"}
+                      </CButton>
+                    ) : item?.no_of_tickets - item?.no_of_tickets_sold > 0 ? (
+                      <CButton
+                        onClick={() => payNowClick(item)}
+                        color={
+                          item?.joined_customers
+                            ?.map((ite) => ite?.customer_id)
+                            .includes(currentUser?.data?._id)
+                            ? "warning"
+                            : "primary"
+                        }
+                        disabled={["Request To Join", "Approved"].includes(
+                          item?.joined_customers?.filter(
+                            (item) =>
+                              item?.customer_id === currentUser?.data?._id
+                          )?.[0]?.event_status || "Pending"
+                        )}
+                      >
+                        {EventStatuses(
+                          item?.joined_customers?.filter(
+                            (item) =>
+                              item?.customer_id === currentUser?.data?._id
+                          )?.[0]?.event_status || "Pending For Payment"
+                        ) || "Pay Now"}
+                      </CButton>
+                    ) : (
+                      <CCallout
+                        style={{ marginTop: "-10px", marginBottom: "-10px" }}
+                        color="danger"
+                      >
+                        All Tickets Sold
+                      </CCallout>
+                    )
                   ) : (
                     <CCallout
                       style={{ marginTop: "-10px", marginBottom: "-10px" }}

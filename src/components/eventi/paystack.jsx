@@ -17,7 +17,7 @@ const Paystack = ({ email,
              <CRow className="mb-3">
             <CFormLabel
               htmlFor="staticEmail"
-              className="col-sm-3 col-form-label"
+              className="col-sm-4 col-form-label"
             >
               <strong>Email :</strong>
             </CFormLabel>
@@ -34,7 +34,7 @@ const Paystack = ({ email,
           <CRow className="mb-3">
             <CFormLabel
               htmlFor="inputPassword"
-              className="col-sm-3 col-form-label"
+              className="col-sm-4 col-form-label"
             >
               <strong>First Name :</strong>
             </CFormLabel>
@@ -51,7 +51,7 @@ const Paystack = ({ email,
           <CRow className="mb-3">
             <CFormLabel
               htmlFor="inputPassword"
-              className="col-sm-3 col-form-label"
+              className="col-sm-4 col-form-label"
             >
               <strong>Last Name :</strong>
             </CFormLabel>
@@ -65,12 +65,12 @@ const Paystack = ({ email,
               />
             </CCol>
           </CRow>
-          <CRow className="mb-3">
+          <CRow className="mb-4">
             <CFormLabel
               htmlFor="inputPassword"
-              className="col-sm-3 col-form-label"
+              className="col-sm-4 col-form-label"
             >
-              <strong>Amount :</strong>
+              <strong>Amount{""} <small>NGN :</small></strong>
             </CFormLabel>
             <CCol sm={6}>
               <CFormInput
@@ -81,7 +81,8 @@ const Paystack = ({ email,
                 plainText
               />
             </CCol>
-          </CRow></CCol>
+          </CRow>
+        </CCol>
           <CCol sm={5}> </CCol>
           </CRow>
           </>

@@ -4,7 +4,10 @@ const EventRegistration = React.lazy(() =>
   import("./views/events/CreateEvent")
 );
 const CustomerList = React.lazy(() => import("./views/customer"));
-const customerPaymentHistory = React.lazy(() => import("./views/customer/CustomerPayment/CustomerPayment"));
+const customerPaymentHistory = React.lazy(() =>
+  import("./views/customer/CustomerPayment/CustomerPayment")
+);
+const Attendes = React.lazy(() => import("./views/attende/list"));
 const AdminList = React.lazy(() => import("./views/admin"));
 const Ticket = React.lazy(() => import("./views/ticket"));
 const VendorList = React.lazy(() => import("./views/vendor"));
@@ -108,8 +111,14 @@ const routes = [
   {
     path: "/ticket/:event_id",
     name: "Ticket",
-    permission:"ticket",
+    permission: "ticket",
     element: Ticket,
+  },
+  {
+    path: "/attends/:account_id/:event_id",
+    name: "Attendes",
+    permission: "ticket",
+    element: Attendes,
   },
   {
     path: "/event-detail/:account_id/:event_id",

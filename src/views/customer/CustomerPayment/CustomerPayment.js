@@ -26,7 +26,7 @@ const CustomerPayment = () => {
 
   const account_id = currentUser?.data?.user_detail?.account_id;
   const { data, error, isFetching, isLoading, isError } = useQuery(
-    ["CustomersPayment"],
+    ["customers_payment", account_id],
     () => customerPaymentHistory(account_id),
     {
       onError: (error) => {
@@ -40,17 +40,19 @@ const CustomerPayment = () => {
       },
       keepPreviousData: false,
       staleTime: 5000,
-      retryOnMount: false,
+      retryOnMount: true,
       refetchOnWindowFocus: false,
       retry: false,
     }
   );
 
-  const useGetData = (filterDatas) => {
-    setFilters({ ...filters, ...filterDatas });
-  };
+  // const useGetData = (filterDatas) => {
+  //   setFilters({ ...filters, ...filterDatas });
+  // };
 
-  const eventNames = data?.data?.data?.map((event) => event.event_id.event_name);
+  const eventNames = data?.data?.data?.map(
+    (event) => event.event_id.event_name
+  );
   console.log(eventNames);
 
   const [columns] = useState([
@@ -62,7 +64,7 @@ const CustomerPayment = () => {
       disabled: false,
     },
     {
-      key: "amount",
+      key: "Amount",
       label: "Amount",
       filter: false,
       isShow: true,
@@ -126,6 +128,13 @@ const CustomerPayment = () => {
                     <td>
                       <div className="d-flex gap-2">
                         {item?.event_id?.event_name}
+                      </div>
+                    </td>
+                  ),
+                  Amount: (item) => (
+                    <td>
+                      <div className="d-flex gap-2">
+                        {item.amount + " " + "NGN"}
                       </div>
                     </td>
                   ),

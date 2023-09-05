@@ -27,7 +27,7 @@ const Payment = ({
   eventDetail,
   approvedEventStatus,
   eventStatus,
-  selectedProducts
+  selectedProducts,
 }) => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const [email, setEmail] = useState("");
@@ -49,9 +49,7 @@ const Payment = ({
         setPhone(vendor?.phone_number || "");
         setFirstName(vendor?.first_name || "");
         setLastName(vendor?.last_name || "");
-        setName(
-          (vendor?.first_name || "") + " " + (vendor?.last_name || "")
-        );
+        setName((vendor?.first_name || "") + " " + (vendor?.last_name || ""));
       } else {
         const vendorDetail =
           eventDetail?.joined_vendors?.filter(
@@ -105,11 +103,11 @@ const Payment = ({
         status: UserRequestEventStatuses(eventStatus),
       };
       approvedEventStatus(data);
-      setVisiblePaymentModel(false)
+      setVisiblePaymentModel(false);
       // resetForm();
     },
     onClose: () => {
-      setVisiblePaymentModel(false)
+      setVisiblePaymentModel(false);
     },
   };
   const uuid = () => {
@@ -130,7 +128,7 @@ const Payment = ({
       payment_id: uuid(),
       amount: +amount * 100,
       currency: "NGN",
-      status: UserRequestEventStatuses('Approved'),
+      status: UserRequestEventStatuses("Approved"),
     };
     await approvedEventStatus(data);
     setIsPaying(false);
@@ -170,7 +168,6 @@ const Payment = ({
             amount={amount}
           />
           <CModalFooter>
-
             {currentUser?.data?.user_type !== "vendor" && isAdmin ? (
               <CButton className="paystack-button" onClick={payNowCash}>
                 {isPaying ? <CSpinner /> : "Pay Now"}

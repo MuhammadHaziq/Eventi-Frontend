@@ -5,7 +5,7 @@ import {
   CCardHeader,
   CCol,
   CFormSelect,
-  CRow, 
+  CRow,
   CButton,
   CFormSwitch,
 } from "@coreui/react";
@@ -46,12 +46,11 @@ const EventList = () => {
       },
       keepPreviousData: false,
       staleTime: 5000,
-      retryOnMount: false,
+      retryOnMount: true,
       refetchOnWindowFocus: false,
       retry: false,
     }
   );
-
 
   const useGetData = (filterDatas) => {
     setFilters({ ...filters, ...filterDatas });
@@ -117,7 +116,6 @@ const EventList = () => {
                 </span>
               </CCardHeader>
               <CCardBody>
-          
                 {gridView ? (
                   <GridView
                     data={data?.data?.data?.data || []}
@@ -129,8 +127,7 @@ const EventList = () => {
                     filters={filters}
                     setFilters={setFilters}
                   />
-                  ) : (
-                      
+                ) : (
                   <EventTable
                     events={data?.data?.data?.data || []}
                     isLoading={isLoading}

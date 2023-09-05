@@ -25,3 +25,7 @@ export const updateAccount = (account_id, data) => {
 export const getAttendes = async () => {
   return await authAxios.get("/api/attende/");
 };
+
+export const getAccountAttendes = async (account_id, event_id) => {
+  return await authAxios.get(`/api/attende/${account_id}/${event_id}`);
+};

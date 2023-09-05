@@ -8,6 +8,7 @@ import { approvedCustomerJoinEvent } from "src/context/EventContext/service";
 import { useNavigate } from "react-router-dom";
 import { PaystackButton } from "react-paystack";
 import { getAttendes } from "src/context/AppContext/service";
+import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 const Ticket = ({ data, eventDetail }) => {
   const navigate = useNavigate();
   const { currentUser } = useAppState();
@@ -113,7 +114,6 @@ const Ticket = ({ data, eventDetail }) => {
   };
 
   const payNowPaystack = async (data) => {
- 
     await approvedEventStatus(data);
     setIsPaying(false);
   };
@@ -153,11 +153,14 @@ const Ticket = ({ data, eventDetail }) => {
     }
   };
 
+  // const getPoints = () => {
+  //   return (
+  //     (eventDetail?.points_percent / 100) *
+  //     (eventDetail?.amount * (rowsData?.length || 1))
+  //   ).toFixed(2);
+  // };
   const getPoints = () => {
-    return (
-      (eventDetail?.points_percent / 100) *
-      (eventDetail?.amount * (rowsData?.length || 1))
-    ).toFixed(2);
+    return (eventDetail?.add_point / rowsData?.length || 1).toFixed(2);
   };
 
   const componentProps = {
@@ -179,7 +182,6 @@ const Ticket = ({ data, eventDetail }) => {
     text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
-
       setIsPaying(true);
       const data = {
         account_id: currentUser?.data?._id,
@@ -189,11 +191,13 @@ const Ticket = ({ data, eventDetail }) => {
         points_available: getPoints(),
         amount: eventDetail?.amount * (rowsData?.length || 1),
         currency: "NGN",
-        status: UserRequestEventStatuses(eventDetail?.joined_customers?.filter(
-                (item) =>
-                  item?.customer_id?.user_detail?.account_id ===
-                  currentUser?.data?._id
-              )?.[0]?.event_status || "Pending For Payment"),
+        status: UserRequestEventStatuses(
+          eventDetail?.joined_customers?.filter(
+            (item) =>
+              item?.customer_id?.user_detail?.account_id ===
+              currentUser?.data?._id
+          )?.[0]?.event_status || "Pending For Payment"
+        ),
       };
       //  approvedEventStatus(data);
       payNowPaystack(data);
@@ -203,117 +207,122 @@ const Ticket = ({ data, eventDetail }) => {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        {allAttendes?.length > 0 && (
-          <div className="col-sm-4">
-            <CFormSelect
-              size="lg"
-              className="mb-3"
-              aria-label="Large select example"
-              onChange={(e) => handleOnChangeAttende(e)}
-            >
-              <option value="0">Select Attende</option>
-              {allAttendes?.map((item) => (
-                <option value={item?._id}>
-                  {(item?.first_name || "") + " " + (item?.last_name || "")}
-                </option>
-              ))}
-            </CFormSelect>
-          </div>
-        )}
-        <div className="col-sm-12">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email Address</th>
-                <th>Phone No</th>
-                <th>
-                  <button
-                    className="btn btn-outline-success"
-                    onClick={addTableRows}
-                  >
-                    +
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <TableRows
-                rowsData={rowsData}
-                deleteTableRows={deleteTableRows}
-                handleChange={handleChange}
-              />
-            </tbody>
-          </table>
-        </div>
-
-        <div className="col-sm-12">
-          <div
-            className="d-grid gap-2 mx-3"
-            style={{ marginTop: "10px", marginBottom: "10px" }}
-          >
-            {eventDetail?.event_end_date >= formattedDate ? (
-              rowsData?.filter((item) => !item.first_name)?.length > 0 ? (
-                <CButton
-                  color={
-                    eventDetail?.joined_customers
-                      ?.map((ite) => ite?.customer_id)
-                      .includes(currentUser?.data?._id)
-                      ? "warning"
-                      : "primary"
-                  }
-                  onClick={() =>
-                    app_dispatch({
-                      type: "SHOW_RESPONSE",
-                      toast: AppToast({
-                        message: "Please Add First Name",
-                        color: "danger-alert",
-                      }),
-                    })
-                  }
-                >{`Pay Now ${
-                  eventDetail?.amount * (rowsData?.length || 1)
-                }`}</CButton>
-              ) : rowsData?.filter((item) => !item.email)?.length > 0 ? (
-                <CButton
-                  color={
-                    eventDetail?.joined_customers
-                      ?.map((ite) => ite?.customer_id)
-                      .includes(currentUser?.data?._id)
-                      ? "warning"
-                      : "primary"
-                  }
-                  onClick={() =>
-                    app_dispatch({
-                      type: "SHOW_RESPONSE",
-                      toast: AppToast({
-                        message: "Please Add Email",
-                        color: "danger-alert",
-                      }),
-                    })
-                  }
-                >{`Pay Now ${
-                  eventDetail?.amount * (rowsData?.length || 1)
-                }`}</CButton>
-              ) : (
-                <PaystackButton {...componentProps} />
-              )
-            ) : (
-              // <PaystackButton {...componentProps} />
-              <CCallout
-                style={{ marginTop: "-10px", marginBottom: "-10px" }}
-                color="danger"
-              >
-                We are currently unable to offer this event
-              </CCallout>
+    <CCard>
+      <CCardHeader>Attendance</CCardHeader>
+      <CCardBody>
+        <div className="container">
+          <div className="row">
+            {allAttendes?.length > 0 && (
+              <div className="col-sm-4">
+                <CFormSelect
+                  size="lg"
+                  className="mb-3"
+                  aria-label="Large select example"
+                  onChange={(e) => handleOnChangeAttende(e)}
+                >
+                  <option value="0">Select Attende</option>
+                  {allAttendes?.map((item) => (
+                    <option value={item?._id}>
+                      {(item?.first_name || "") + " " + (item?.last_name || "")}
+                    </option>
+                  ))}
+                </CFormSelect>
+              </div>
             )}
+            <div className="col-sm-12">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>Phone No</th>
+                    <th>
+                      <button
+                        className="btn btn-outline-success"
+                        onClick={addTableRows}
+                      >
+                        +
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <TableRows
+                    rowsData={rowsData}
+                    deleteTableRows={deleteTableRows}
+                    handleChange={handleChange}
+                  />
+                </tbody>
+              </table>
+            </div>
+
+            <div className="col-sm-12">
+              <div
+                className="d-grid gap-2 mx-3"
+                style={{ marginTop: "10px", marginBottom: "10px" }}
+              >
+                {eventDetail?.event_end_date >= formattedDate ? (
+                  rowsData?.filter((item) => !item.first_name)?.length > 0 ? (
+                    <CButton
+                      color={
+                        eventDetail?.joined_customers
+                          ?.map((ite) => ite?.customer_id)
+                          .includes(currentUser?.data?._id)
+                          ? "warning"
+                          : "primary"
+                      }
+                      onClick={() =>
+                        app_dispatch({
+                          type: "SHOW_RESPONSE",
+                          toast: AppToast({
+                            message: "Please Add First Name",
+                            color: "danger-alert",
+                          }),
+                        })
+                      }
+                    >{`Pay Now ${
+                      eventDetail?.amount * (rowsData?.length || 1)
+                    }`}</CButton>
+                  ) : rowsData?.filter((item) => !item.email)?.length > 0 ? (
+                    <CButton
+                      color={
+                        eventDetail?.joined_customers
+                          ?.map((ite) => ite?.customer_id)
+                          .includes(currentUser?.data?._id)
+                          ? "warning"
+                          : "primary"
+                      }
+                      onClick={() =>
+                        app_dispatch({
+                          type: "SHOW_RESPONSE",
+                          toast: AppToast({
+                            message: "Please Add Email",
+                            color: "danger-alert",
+                          }),
+                        })
+                      }
+                    >{`Pay Now ${
+                      eventDetail?.amount * (rowsData?.length || 1)
+                    }`}</CButton>
+                  ) : (
+                    <PaystackButton {...componentProps} />
+                  )
+                ) : (
+                  // <PaystackButton {...componentProps} />
+                  <CCallout
+                    style={{ marginTop: "-10px", marginBottom: "-10px" }}
+                    color="danger"
+                  >
+                    We are currently unable to offer this event
+                  </CCallout>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </CCardBody>
+    </CCard>
   );
 };
 export default Ticket;
