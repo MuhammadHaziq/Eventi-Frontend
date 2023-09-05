@@ -13,7 +13,7 @@ const Attendes = () => {
   const app_dispatch = useAppDispatch();
 
   const { data, error, isFetching, isLoading, isError } = useQuery(
-    ["account_attendes"],
+    ["account_attendes", { event_id, account_id }],
     () => getAccountAttendes(account_id, event_id),
     {
       onError: (error) => {
@@ -27,7 +27,7 @@ const Attendes = () => {
       },
       keepPreviousData: false,
       staleTime: 5000,
-      retryOnMount: false,
+      retryOnMount: true,
       refetchOnWindowFocus: false,
       retry: false,
     }

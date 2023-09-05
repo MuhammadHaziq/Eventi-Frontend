@@ -186,7 +186,14 @@ export const EventRegistration = () => {
   };
 
   const getAddPoints = () => {
-    return ((state.add_point * 100) / state.amount).toFixed(2)
+    return ((state.add_point * 100) / state.amount).toFixed(2);
+  };
+
+  const handleOnBlurPointPerc = (e) => {
+    setState({ ...state, add_point: getPoints() });
+  };
+  const handleOnBlurAddPoint = (e) => {
+    setState({ ...state, points_percent: getAddPoints() });
   };
 
   return (
@@ -282,7 +289,9 @@ export const EventRegistration = () => {
                     placeholder="Points Percentage"
                     label="Points Percentage %"
                     name="points_percent"
-                    defaultValue={state.points_percent}
+                    disabled={!state.amount}
+                    onBlur={handleOnBlurPointPerc}
+                    value={state.points_percent}
                     onChange={handleOnChange}
                     required
                   />
@@ -299,7 +308,9 @@ export const EventRegistration = () => {
                     placeholder="Add Points"
                     label="Add Points"
                     name="add_point"
-                    defaultValue={state.add_point}
+                    disabled={!state.amount}
+                    value={state.add_point}
+                    onBlur={handleOnBlurAddPoint}
                     onChange={handleOnChange}
                     required
                   />
