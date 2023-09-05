@@ -242,7 +242,7 @@ export const EventRegistration = () => {
                     required
                   />
                   <CFormFeedback invalid>
-                    Please enter event birth.
+                    Please enter start event.
                   </CFormFeedback>
                 </CCol>
                 <CCol md={3}>
@@ -260,7 +260,7 @@ export const EventRegistration = () => {
                     required
                   />
                   <CFormFeedback invalid>
-                    Please enter event birth.
+                    Please enter end event.
                   </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
@@ -277,7 +277,7 @@ export const EventRegistration = () => {
                     required
                   />
                   <CFormFeedback invalid>
-                    Please provide a Amount Name.
+                    Please provide a Amount .
                   </CFormFeedback>
                 </CCol>
                 <CCol md={6}>
