@@ -362,7 +362,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatinglabel="Amount"
                 placeholder="Amount"
                 name="amount"
-                label="Amount ZAR"
+                label="Amount NGN"
                 defaultValue={state.amount}
                 disabled={!isAllowedToChange()}
                 onChange={handleOnChange}

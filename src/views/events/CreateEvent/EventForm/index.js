@@ -271,7 +271,7 @@ export const EventRegistration = () => {
                     floatinglabel="Amount"
                     placeholder="Amount"
                     name="amount"
-                    label="Amount ZAR"
+                    label="Amount NGN"
                     defaultValue={state.amount}
                     onChange={handleOnChange}
                     required

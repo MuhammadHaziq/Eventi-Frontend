@@ -70,7 +70,7 @@ const Paystack = ({ email,
               htmlFor="inputPassword"
               className="col-sm-4 col-form-label"
             >
-              <strong>Amount{""} <small>ZAR :</small></strong>
+              <strong>Amount{""} <small>NGN :</small></strong>
             </CFormLabel>
             <CCol sm={6}>
               <CFormInput

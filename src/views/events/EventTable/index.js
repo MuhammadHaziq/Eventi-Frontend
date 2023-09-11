@@ -331,7 +331,7 @@ const EventTable = ({
           },
           Event_date: (item) => <td>{dateFormat(item.event_date)}</td>,
           Created_At: (item) => <td>{dateFormat(item.createdAt)}</td>,
-          Amount: (item) => <td>{item.amount + " " + "ZAR"}</td>,
+          Amount: (item) => <td>{item.amount + " " + "NGN"}</td>,
         }}
       />
       {+tableMeta?.pageCount > 1 && (

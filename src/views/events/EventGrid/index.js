@@ -122,7 +122,7 @@ const GridView = ({ data, tableMeta, updateFilter, filters }) => {
                   Event Amount:
                 </h6>
                 <span className="event-card-text vendarSpanInfo">
-                  {item?.amount} ZAR
+                  {item?.amount} NGN
                 </span>
               </div>
               <div>

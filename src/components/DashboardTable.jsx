@@ -190,7 +190,7 @@ const DashboardTable = () => {
                   Amount: (item) => (
                     <td>
                       <div className="d-flex gap-2">
-                        {item.amount + " " + "ZAR"}
+                        {item.amount + " " + "NGN"}
                       </div>
                     </td>
                   ),
