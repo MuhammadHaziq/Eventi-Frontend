@@ -12,9 +12,10 @@ const AppFooter = () => {
       </div>
       <div className="ms-auto">
         <span className="me-1">Powered by</span>
-        <a href="https://kodxsystem.com/" target="_blank" rel="noopener noreferrer">
-          KOD X SYSTEM &amp; Dashboard 
+        <a href="https://www.deedoc.com" target="_blank" rel="noopener noreferrer">
+        Deedoc Consulting Inc  
         </a>
+        {/*  &amp; Dashboard */}
       </div>
     </CFooter>
   )

@@ -134,7 +134,7 @@ const CustomerPayment = () => {
                   Amount: (item) => (
                     <td>
                       <div className="d-flex gap-2">
-                        {item.amount + " " + "NGN"}
+                        {item.amount + " " + "ZAR"}
                       </div>
                     </td>
                   ),

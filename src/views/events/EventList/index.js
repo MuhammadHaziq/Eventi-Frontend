@@ -39,7 +39,7 @@ const EventList = () => {
         app_dispatch({
           type: "SHOW_MESSAGE",
           toast: AppToast({
-            message: error.response.data.message,
+            message: error.response.data?.message,
             color: "dangar-alert",
           }),
         });

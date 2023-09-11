@@ -142,7 +142,7 @@ const ProductTable = ({
           ),
           productPrice: (item) => (
             <td>
-              {item.product_price+" "+"NGN"}
+              {item.product_price+" "+"ZAR"}
             </td>
           ),
         }}

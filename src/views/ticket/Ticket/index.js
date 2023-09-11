@@ -114,8 +114,12 @@ const Ticket = ({ data, eventDetail }) => {
   };
 
   const payNowPaystack = async (data) => {
-    await approvedEventStatus(data);
-    setIsPaying(false);
+    try {
+      await approvedEventStatus(data);
+      setIsPaying(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const approvedEventStatus = async (data) => {
@@ -160,13 +164,13 @@ const Ticket = ({ data, eventDetail }) => {
   //   ).toFixed(2);
   // };
   const getPoints = () => {
-    return (eventDetail?.add_point / rowsData?.length || 1).toFixed(2);
+    return (eventDetail?.add_event_point / rowsData?.length || 1).toFixed(2);
   };
 
   const componentProps = {
     email,
     amount: eventDetail?.amount * (rowsData?.length || 1) * 100,
-    currency: "NGN",
+    currency: "ZAR",
     metadata: {
       name,
       phone,
@@ -179,7 +183,7 @@ const Ticket = ({ data, eventDetail }) => {
         ? "btn btn-warning"
         : "btn btn-primary"
     }`,
-    text: `Pay Now ${eventDetail?.amount * (rowsData?.length || 1)}`,
+    text: `Pay Now  ${eventDetail?.amount * (rowsData?.length || 1)} NGN`,
     // ref: (props.type == "customer" ? "c_" : "v_") + props.ref,
     onSuccess: ({ reference }) => {
       setIsPaying(true);
@@ -190,7 +194,7 @@ const Ticket = ({ data, eventDetail }) => {
         payment_method: "Paystack",
         points_available: getPoints(),
         amount: eventDetail?.amount * (rowsData?.length || 1),
-        currency: "NGN",
+        currency: "ZAR",
         status: UserRequestEventStatuses(
           eventDetail?.joined_customers?.filter(
             (item) =>
@@ -199,9 +203,8 @@ const Ticket = ({ data, eventDetail }) => {
           )?.[0]?.event_status || "Pending For Payment"
         ),
       };
-      //  approvedEventStatus(data);
+
       payNowPaystack(data);
-      // resetForm();
     },
     onClose: () => console.log("Wait! don't go!!!!"),
   };
@@ -283,7 +286,7 @@ const Ticket = ({ data, eventDetail }) => {
                       }
                     >{`Pay Now ${
                       eventDetail?.amount * (rowsData?.length || 1)
-                    }`}</CButton>
+                    } NGN`}</CButton>
                   ) : rowsData?.filter((item) => !item.email)?.length > 0 ? (
                     <CButton
                       color={
@@ -304,7 +307,7 @@ const Ticket = ({ data, eventDetail }) => {
                       }
                     >{`Pay Now ${
                       eventDetail?.amount * (rowsData?.length || 1)
-                    }`}</CButton>
+                    } NGN`}</CButton>
                   ) : (
                     <PaystackButton {...componentProps} />
                   )

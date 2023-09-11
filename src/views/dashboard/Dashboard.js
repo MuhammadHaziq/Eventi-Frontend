@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  CAvatar,
   CButton,
   CButtonGroup,
   CCard,
@@ -10,70 +9,75 @@ import {
   CCol,
   CProgress,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from "@coreui/react";
 import { CChartLine } from "@coreui/react-chartjs";
 import { getStyle, hexToRgba } from "@coreui/utils";
 import CIcon from "@coreui/icons-react";
 import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
   cibGoogle,
   cibFacebook,
   cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
   cibTwitter,
   cilCloudDownload,
-  cilPeople,
   cilUser,
   cilUserFemale,
 } from "@coreui/icons";
 import AppProgress from "src/components/AppProgress";
-
-import avatar1 from "src/assets/images/avatars/1.jpg";
-import avatar2 from "src/assets/images/avatars/2.jpg";
-import avatar3 from "src/assets/images/avatars/3.jpg";
-import avatar4 from "src/assets/images/avatars/4.jpg";
-import avatar5 from "src/assets/images/avatars/5.jpg";
-import avatar6 from "src/assets/images/avatars/6.jpg";
-import { getCurrentUserDetail } from "src/context/AppContext/service";
-import WidgetsBrand from "../widgets/WidgetsBrand";
-import WidgetsDropdown from "../widgets/WidgetsDropdown";
-import QrCode from "src/components/QrCardCode";
+import {
+  getCurrentUserDetail,
+  summaryCustomerPoints,
+} from "src/context/AppContext/service";
 import DashboardTable from "src/components/DashboardTable";
 import { AppToast } from "src/components/AppToast";
 import { useAppDispatch, useAppState } from "src/context/AppContext";
+import { customerPaymentHistory } from "src/context/CustomerContext/service";
+import { useQuery } from "@tanstack/react-query";
 
 const Dashboard = () => {
   const { currentUser, permissions } = useAppState();
   const [getCurDate, setCurData] = useState(""),
     [isLoading, setIsLoading] = useState(false);
+  const [state, setState] = useState({
+    usedPoints: 0,
+    remainingPoints: 0,
+    totalPoints: 0,
+  });
 
   const app_dispatch = useAppDispatch();
   const account_id = currentUser?.data?._id;
 
+  const { data, error, isFetching, isError } = useQuery(
+    ["customer_dashboard_payment", account_id],
+    () => customerPaymentHistory(account_id),
+    {
+      onError: (error) => {
+        app_dispatch({
+          type: "SHOW_MESSAGE",
+          toast: AppToast({
+            message: error.response?.data?.message,
+            color: "dangar-alert",
+          }),
+        });
+      },
+      keepPreviousData: false,
+      staleTime: 5000,
+      retryOnMount: true,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
+
+  const eventId = data?.data?.data?.map((event) => event.event_id?._id)[0];
+
   const getAccountDetail = useCallback(() => {
     try {
       setIsLoading(true);
-      getCurrentUserDetail(account_id)
+      getCurrentUserDetail(account_id);
+      summaryCustomerPoints(eventId, account_id)
         .then((response) => {
           if (response.data.data) {
             const { user_detail } = response?.data?.data?.data || {};
-            // console.log(user_detail);
+
             setCurData(user_detail);
             // app_dispatch({
             //   type: "SHOW_RESPONSE",
@@ -109,9 +113,49 @@ const Dashboard = () => {
     }
   }, [account_id]);
 
+  const getSummaryPoints = useCallback(() => {
+    try {
+      setIsLoading(true);
+
+      summaryCustomerPoints(eventId, account_id)
+        .then((response) => {
+          if (response.data.data) {
+            setState({
+              usedPoints: response.data.data.customer_consumed_point,
+              remainingPoints: response.data.data.points_available,
+              totalPoints: response.data.data.totalPoints,
+            });
+          } else {
+            app_dispatch({
+              type: "SHOW_RESPONSE",
+              toast: AppToast({
+                message: response.data.message,
+                color: "danger-alert",
+              }),
+            });
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          app_dispatch({
+            type: "SHOW_RESPONSE",
+            toast: AppToast({ message: err.message, color: "danger-alert" }),
+          });
+        });
+    } catch (err) {
+      setIsLoading(false);
+      app_dispatch({
+        type: "SHOW_RESPONSE",
+        toast: AppToast({ message: err.message, color: "danger-alert" }),
+      });
+    }
+  });
+
   useEffect(() => {
     if (account_id) {
       getAccountDetail();
+      getSummaryPoints();
     }
   }, [account_id, getAccountDetail]);
 
@@ -177,7 +221,7 @@ const Dashboard = () => {
                       <div className="text-medium-emphasis small">
                         Used Points
                       </div>
-                      <div className="fs-5 fw-semibold">0</div>
+                      <div className="fs-5 fw-semibold">{state.usedPoints}</div>
                     </div>
                   </CCol>
                   <CCol sm={4}>
@@ -185,7 +229,7 @@ const Dashboard = () => {
                       <div className="text-medium-emphasis small">
                         Remaining Points
                       </div>
-                      <div className="fs-5 fw-semibold">2</div>
+                      <div className="fs-5 fw-semibold">{state.remainingPoints}</div>
                     </div>
                   </CCol>
                   <CCol sm={4}>
@@ -193,7 +237,7 @@ const Dashboard = () => {
                       <div className="text-medium-emphasis small">
                         Total Points
                       </div>
-                      <div className="fs-5 fw-semibold">2</div>
+                      <div className="fs-5 fw-semibold">{state.totalPoints}</div>
                     </div>
                   </CCol>
                 </CRow>

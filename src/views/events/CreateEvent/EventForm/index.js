@@ -41,7 +41,7 @@ export const EventRegistration = () => {
     equipments: "",
     security: "",
     special_request: "",
-    add_point: null,
+    add_event_point: null,
     no_of_tickets: 0,
   });
   const [agree, setAgree] = useState(false);
@@ -75,7 +75,7 @@ export const EventRegistration = () => {
         formData.append("amount", state.amount);
         formData.append("no_of_tickets", state.no_of_tickets);
         formData.append("points_percent", state.points_percent);
-        formData.append("add_point", state.add_point);
+        formData.append("add_event_point", state.add_event_point);
         formData.append("event_location", state.event_location);
         formData.append("type_of_event", state.type_of_event);
         formData.append("expected_attendence", state.expected_attendence);
@@ -186,11 +186,11 @@ export const EventRegistration = () => {
   };
 
   const getAddPoints = () => {
-    return ((state.add_point * 100) / state.amount).toFixed(2);
+    return ((state.add_event_point * 100) / state.amount).toFixed(2);
   };
 
   const handleOnBlurPointPerc = (e) => {
-    setState({ ...state, add_point: getPoints() });
+    setState({ ...state, add_event_point: getPoints() });
   };
   const handleOnBlurAddPoint = (e) => {
     setState({ ...state, points_percent: getAddPoints() });
@@ -271,7 +271,7 @@ export const EventRegistration = () => {
                     floatinglabel="Amount"
                     placeholder="Amount"
                     name="amount"
-                    label="Amount NGN"
+                    label="Amount ZAR"
                     defaultValue={state.amount}
                     onChange={handleOnChange}
                     required
@@ -302,14 +302,14 @@ export const EventRegistration = () => {
                 <CCol md={6}>
                   <CFormInput
                     type="number"
-                    id="add_point"
+                    id="add_event_point"
                     floatingclassname="mb-3"
                     floatinglabel="Add Points"
                     placeholder="Add Points"
                     label="Add Points"
-                    name="add_point"
+                    name="add_event_point"
                     disabled={!state.amount}
-                    value={state.add_point}
+                    value={state.add_event_point}
                     onBlur={handleOnBlurAddPoint}
                     onChange={handleOnChange}
                     required

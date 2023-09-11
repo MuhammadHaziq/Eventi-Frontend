@@ -54,7 +54,7 @@ export const approvedCustomerJoinEvent = async (eventId, account_id, data) => {
     return null;
   }
 };
-
+ 
 export const updateCustomerStatus = (eventId, customer_id, data) => {
   return authAxios.put(
     `/api/event/update-customer-status/${eventId}/${customer_id}`,

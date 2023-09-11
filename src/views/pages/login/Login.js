@@ -13,7 +13,10 @@ import {
   CInputGroupText,
   CRow,
   CFormFeedback,
+  CImage,
+  CCardImage,
   CFormCheck,
+  CCardHeader,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
@@ -23,6 +26,7 @@ import authAxios from "src/utils/axios";
 import { useAppDispatch } from "src/context/AppContext";
 import { AppToast } from "src/components/AppToast";
 import { useAuthAppDispatch } from "src/context/AuthContext";
+import logo from "../../../assets/logs/Eventsrack-white.png";
 const Login = () => {
   const [userType, setUserType] = useState("admin");
   const [email, setEmail] = useState("");
@@ -68,7 +72,7 @@ const Login = () => {
             app_dispatch({
               type: "SHOW_RESPONSE",
               toast: AppToast({
-                message: err.response.data.message,
+                message: err.response?.data?.message,
                 color: "danger-alert",
               }),
             });
@@ -86,6 +90,11 @@ const Login = () => {
 
     setValidated(true);
   };
+  const logoStyle={
+    textAlign : "center",
+    padding : "0px 100px 0px 100px",
+    marginTop : "-60px",
+  }
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -175,6 +184,7 @@ const Login = () => {
                 className="text-white bg-primary py-5"
                 style={{ width: "44%" }}
               >
+                <CCardImage style={logoStyle} orientation="top" src={logo}></CCardImage>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>

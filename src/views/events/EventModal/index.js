@@ -46,7 +46,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
     no_of_tickets: "",
     phone_number: "",
     equipments: "",
-    add_point: null,
+    add_event_point: null,
     security: "",
     special_request: "",
   });
@@ -63,7 +63,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
               event_start_date: response.data.data.event_start_date || "",
               event_end_date: response.data.data.event_end_date || "",
               amount: response.data.data.amount || "",
-              add_point: response.data.data.add_point || "",
+              add_event_point: response.data.data.add_event_point || "",
               joined_customers: response.data.data.joined_customers || "",
               joined_vendors: response.data.data.joined_vendors || "",
               points_percent: response.data.data.points_percent || "",
@@ -134,7 +134,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
       formData.append("event_start_date", state.event_start_date);
       formData.append("event_end_date", state.event_end_date);
       formData.append("amount", state.amount);
-      formData.append("add_point", state.add_point);
+      formData.append("add_event_point", state.add_event_point);
       formData.append("points_percent", state.points_percent);
       formData.append("event_location", state.event_location);
       formData.append("type_of_event", state.type_of_event);
@@ -269,11 +269,11 @@ const EventModal = ({ eventId, visible, setVisible }) => {
   };
 
   const getAddPoints = () => {
-    return ((state.add_point * 100) / state.amount).toFixed(2);
+    return ((state.add_event_point * 100) / state.amount).toFixed(2);
   };
 
   const handleOnBlurPointPerc = (e) => {
-    setState({ ...state, add_point: getPoints() });
+    setState({ ...state, add_event_point: getPoints() });
   };
   const handleOnBlurAddPoint = (e) => {
     setState({ ...state, points_percent: getAddPoints() });
@@ -362,7 +362,7 @@ const EventModal = ({ eventId, visible, setVisible }) => {
                 floatinglabel="Amount"
                 placeholder="Amount"
                 name="amount"
-                label="Amount NGN"
+                label="Amount ZAR"
                 defaultValue={state.amount}
                 disabled={!isAllowedToChange()}
                 onChange={handleOnChange}
@@ -392,14 +392,14 @@ const EventModal = ({ eventId, visible, setVisible }) => {
             <CCol md={6}>
               <CFormInput
                 type="number"
-                id="add_point"
+                id="add_event_point"
                 floatingclassname="mb-3"
                 floatinglabel="Add Points"
                 placeholder="Add Points"
                 label="Add Points"
-                name="add_point"
+                name="add_event_point"
                 disabled={!state.amount}
-                value={state.add_point}
+                value={state.add_event_point}
                 onBlur={handleOnBlurAddPoint}
                 onChange={handleOnChange}
                 required

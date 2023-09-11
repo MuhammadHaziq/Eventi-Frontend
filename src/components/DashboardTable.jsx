@@ -60,14 +60,10 @@ const DashboardTable = () => {
     }
   );
 
-  //   const useGetData = (filterDatas) => {
-  //     setFilters({ ...filters, ...filterDatas });
-  //   };
 
-  const eventNames = data?.data?.data?.map(
-    (event) => event.event_id.event_name
-  );
-  console.log(eventNames);
+  // const eventNames = data?.data?.data?.map(
+  //   (event) => event.event_id.event_name
+  // );
 
   const [columns] = useState([
     {
@@ -147,8 +143,11 @@ const DashboardTable = () => {
     document.body.appendChild(qrAnchor);
     qrAnchor.click();
     document.body.removeChild(qrAnchor);
+
     setDownloaded(true);
   };
+
+ 
 
   return (
     <>
@@ -191,7 +190,7 @@ const DashboardTable = () => {
                   Amount: (item) => (
                     <td>
                       <div className="d-flex gap-2">
-                        {item.amount + " " + "NGN"}
+                        {item.amount + " " + "ZAR"}
                       </div>
                     </td>
                   ),
@@ -221,17 +220,16 @@ const DashboardTable = () => {
                         </CModalHeader>
                         <CModalBody className="qrCenter">
                           <td>
+                           
                             <span ref={qrRef}>
                               <QrCode
                                 size={250}
-                                value={
-                                  item?._id
+                              value={  item?._id
                                     ? JSON.stringify([
-                                        { event_id: item?._id },
+                                        { event_id: item?.event_id?._id },
                                         { account_id: currentUser?.data?._id },
                                       ])
-                                    : "No Data Found"
-                                }
+                                    : "No Data Found"}
                                 // level="H"
                                 includeMargin
                               />

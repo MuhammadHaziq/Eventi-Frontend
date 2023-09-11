@@ -29,3 +29,9 @@ export const getAttendes = async () => {
 export const getAccountAttendes = async (account_id, event_id) => {
   return await authAxios.get(`/api/attende/${account_id}/${event_id}`);
 };
+export const summaryCustomerPoints = (eventId, customer_id) => {
+  
+  return authAxios.get(
+    `/api/dashboard/customer_dashboard/${eventId}/${customer_id}`,
+  );
+};
